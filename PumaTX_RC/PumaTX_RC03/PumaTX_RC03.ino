@@ -7,7 +7,7 @@
  * Add buttons for channel change
  */
 
-const char* ssid = "iPhoneX";
+const char* ssid = "iPhone";
 const char* password = "nico1809";
 
 #include <U8glib.h>
