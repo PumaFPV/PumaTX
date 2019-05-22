@@ -40,7 +40,7 @@ int rcChannels[SBUS_CHANNEL_NUMBER];
 uint32_t sbusTime = 0;
 
 //--------------------------------------------------struct--------------------------------------------------
-struct Channel {    
+typedef struct Channel {    
   int MLX;  //from -10000 to 10000
   int Min;  //MLX Scale
   int Max;  //MLX Scale
@@ -54,12 +54,12 @@ struct Channel {
   uint8_t EepromMax;
   uint8_t EepromTrim;
   bool reverse;
-}
+};
 
 struct Button {
   uint8_t Pin;
   bool State;
-}
+};
 
 struct ADC {
   uint8_t Pin;
