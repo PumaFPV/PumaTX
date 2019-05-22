@@ -1,5 +1,5 @@
 /*TO-DO
- * 
+ * Make lib work
  * Make S-Bus work
  * Soft Power
  * Clean code (variable at beginning, Struct, void, define)
@@ -7,7 +7,7 @@
  * Add buttons for channel change
  */
 
-const char* ssid = "iPhone";
+const char* ssid = "iPhoneX";
 const char* password = "nico1809";
 
 //#include <U8glib.h>
@@ -41,7 +41,7 @@ uint32_t sbusTime = 0;
 
 //--------------------------------------------------struct--------------------------------------------------
 typedef struct Channel {    
-  int MLX;  //from -10000 to 10000
+  int Reading;  //from -10000 to 10000
   int Min;  //MLX Scale
   int Max;  //MLX Scale
   int Trim; //MLX Scale
@@ -189,7 +189,7 @@ void setup(){
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  
   EEPROM.begin(12); //Ask for 
-  //MLX::begin();
+  MLX.begin();
   
 //--------------------------------------------------ShowSketchName--------------------------------------------------
     String path = __FILE__;
@@ -312,7 +312,7 @@ WiFi.mode(WIFI_STA);
 //===============================================================================================================================================================================================================
 void loop(){
   ArduinoOTA.handle();
-  //MLX::process();
+  MLX.process();
 
   
 /*
@@ -441,41 +441,41 @@ if (page == 1){   //Calibrate procedure begin
     calibrate = 1;
 
     //Calibrate trims
-    Throttle.Trim = Throttle.MLX;  
-    Yaw.Trim = Yaw.MLX;
-    Pitch.Trim = Pitch.MLX;
-    Roll.Trim = Roll.MLX;  
+    Throttle.Trim = Throttle.Reading;  
+    Yaw.Trim = Yaw.Reading;
+    Pitch.Trim = Pitch.Reading;
+    Roll.Trim = Roll.Reading;  
 
     //Calibrate min/max----------Throttle
-    if (Throttle.MLX > Throttle.Max){
-      Throttle.Max = Throttle.MLX - 20;
+    if (Throttle.Reading > Throttle.Max){
+      Throttle.Max = Throttle.Reading - 20;
     }
-    if(Throttle.MLX < Throttle.Min){
-      Throttle.Min = Throttle.MLX + 20;
+    if(Throttle.Reading < Throttle.Min){
+      Throttle.Min = Throttle.Reading + 20;
     }
     
     //Calibrate min/max----------Yaw
-    if (Yaw.MLX > Yaw.Max){
-      Yaw.Max = Yaw.MLX - 20;
+    if (Yaw.Reading > Yaw.Max){
+      Yaw.Max = Yaw.Reading - 20;
     }
-    if (Yaw.MLX < Yaw.Min){
-      Yaw.Min = Yaw.MLX + 20;
+    if (Yaw.Reading < Yaw.Min){
+      Yaw.Min = Yaw.Reading + 20;
     }
 
     //Calibrate min/max----------Pitch
-    if (Pitch.MLX > Pitch.Max){
-      Pitch.Max = Pitch.MLX - 20;
+    if (Pitch.Reading > Pitch.Max){
+      Pitch.Max = Pitch.Reading - 20;
     }
-    if (Pitch.MLX < Pitch.Min){
-      Pitch.Min = Pitch.MLX + 20;
+    if (Pitch.Reading < Pitch.Min){
+      Pitch.Min = Pitch.Reading + 20;
     }
 
     //Calibrate min/max----------Roll
-    if (Roll.MLX > Roll.Max){
-      Roll.Max = Roll.MLX - 20;
+    if (Roll.Reading > Roll.Max){
+      Roll.Max = Roll.Reading - 20;
     }
-    if (Roll.MLX < Roll.Min){
-      Roll.Min = Roll.MLX + 20;
+    if (Roll.Reading < Roll.Min){
+      Roll.Min = Roll.Reading + 20;
     }
 //--------------------------------------------------EEPROM--------------------------------------------------
     //compact way to store calibration values in eeprom
@@ -514,33 +514,33 @@ calibrate = 0;
 
 
 //---------------------------------------------------RC--------------------------------------------------
-if (Throttle.MLX <= Throttle.Trim) {    //------------------------------Throttle
-  Throttle.Output = map(Throttle.MLX, Throttle.Min, Throttle.Trim, -100, 0);
+if (Throttle.Reading <= Throttle.Trim) {    //------------------------------Throttle
+  Throttle.Output = map(Throttle.Reading, Throttle.Min, Throttle.Trim, -100, 0);
 }
-else if (Throttle.MLX > Throttle.Trim) {
-  Throttle.Output = map(Throttle.MLX, Throttle.Trim, Throttle.Max, 0, 100);
+else if (Throttle.Reading > Throttle.Trim) {
+  Throttle.Output = map(Throttle.Reading, Throttle.Trim, Throttle.Max, 0, 100);
 }
 
-if (Yaw.MLX <= Yaw.Trim) {    //------------------------------yaw
-  Yaw.Output = map(Yaw.MLX, Yaw.Min, Yaw.Trim, -100, 0);
+if (Yaw.Reading <= Yaw.Trim) {    //------------------------------yaw
+  Yaw.Output = map(Yaw.Reading, Yaw.Min, Yaw.Trim, -100, 0);
 }
-else if (Yaw.MLX > Yaw.Trim) {
-  Yaw.Output = map(Yaw.MLX, Yaw.Trim, Yaw.Max, 0, 100);
+else if (Yaw.Reading > Yaw.Trim) {
+  Yaw.Output = map(Yaw.Reading, Yaw.Trim, Yaw.Max, 0, 100);
 }
 Yaw.Output = - Yaw.Output; //reverse yaw output
 
-if (Pitch.MLX <= Pitch.Trim) {    //------------------------------pitch
-  Pitch.Output = map(Pitch.MLX, Pitch.Min, Pitch.Trim, -100, 0);
+if (Pitch.Reading <= Pitch.Trim) {    //------------------------------pitch
+  Pitch.Output = map(Pitch.Reading, Pitch.Min, Pitch.Trim, -100, 0);
 }
-else if (Pitch.MLX > Pitch.Trim) {
-  Pitch.Output = map(Pitch.MLX, Pitch.Trim, Pitch.Max, 0, 100);
+else if (Pitch.Reading > Pitch.Trim) {
+  Pitch.Output = map(Pitch.Reading, Pitch.Trim, Pitch.Max, 0, 100);
 }
 
-if (Roll.MLX <= Roll.Trim) {    //------------------------------roll
-  Roll.Output = map(Roll.MLX, Roll.Min, Roll.Trim, -100, 0);
+if (Roll.Reading <= Roll.Trim) {    //------------------------------roll
+  Roll.Output = map(Roll.Reading, Roll.Min, Roll.Trim, -100, 0);
 }
-else if (Roll.MLX > Roll.Trim) {
-  Roll.Output = map(Roll.MLX, Roll.Trim, Roll.Max, 0, 100);
+else if (Roll.Reading > Roll.Trim) {
+  Roll.Output = map(Roll.Reading, Roll.Trim, Roll.Max, 0, 100);
 }
   Roll.Output = - Roll.Output; //reverse roll output
 
