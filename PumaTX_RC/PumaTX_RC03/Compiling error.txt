@@ -1,35 +1,25 @@
+sketch\PumaTX_RC03.ino.cpp.o:(.data.Throttle+0x0): multiple definition of `Throttle'
 
+sketch\MLX.cpp.o:(.bss.Throttle+0x0): first defined here
 
-MLX.cpp:49:9: error: expected initializer before '.' token
+c:/users/nicolas dg/appdata/local/arduino15/packages/esp32/tools/xtensa-esp32-elf-gcc/1.22.0-80-g6c4433a-5.2.0/bin/../lib/gcc/xtensa-esp32-elf/5.2.0/../../../../xtensa-esp32-elf/bin/ld.exe: Warning: size of symbol `Throttle' changed from 4 in sketch\MLX.cpp.o to 32 in sketch\PumaTX_RC03.ino.cpp.o
 
- void MLX.begin(){
+sketch\PumaTX_RC03.ino.cpp.o:(.data.Yaw+0x0): multiple definition of `Yaw'
 
-         ^
+sketch\MLX.cpp.o:(.bss.Yaw+0x0): first defined here
 
-MLX.cpp:83:9: error: expected initializer before '.' token
+c:/users/nicolas dg/appdata/local/arduino15/packages/esp32/tools/xtensa-esp32-elf-gcc/1.22.0-80-g6c4433a-5.2.0/bin/../lib/gcc/xtensa-esp32-elf/5.2.0/../../../../xtensa-esp32-elf/bin/ld.exe: Warning: size of symbol `Yaw' changed from 4 in sketch\MLX.cpp.o to 32 in sketch\PumaTX_RC03.ino.cpp.o
 
- void MLX.beginRight(){ //0x0D
+sketch\PumaTX_RC03.ino.cpp.o:(.data.Pitch+0x0): multiple definition of `Pitch'
 
-         ^
+sketch\MLX.cpp.o:(.bss.Pitch+0x0): first defined here
 
-Plusieurs bibliothèque trouvées pour "WiFi.h"
-Utilisé : C:\Users\Nicolas DG\AppData\Local\Arduino15\packages\esp32\hardware\esp32\1.0.3-rc1\libraries\WiFi
-Non utilisé : C:\Program Files (x86)\Arduino\libraries\Stock_WiFi
-exit status 1
-C:\Users\Nicolas DG\Desktop\PumaTX\PumaTX_RC\PumaTX_RC03\PumaTX_RC03.ino: In function 'void setup()':
+c:/users/nicolas dg/appdata/local/arduino15/packages/esp32/tools/xtensa-esp32-elf-gcc/1.22.0-80-g6c4433a-5.2.0/bin/../lib/gcc/xtensa-esp32-elf/5.2.0/../../../../xtensa-esp32-elf/bin/ld.exe: Warning: size of symbol `Pitch' changed from 4 in sketch\MLX.cpp.o to 32 in sketch\PumaTX_RC03.ino.cpp.o
 
-PumaTX_RC03:192:6: error: expected unqualified-id before '.' token
+sketch\PumaTX_RC03.ino.cpp.o:(.data.Roll+0x0): multiple definition of `Roll'
 
-   MLX.begin();
+sketch\MLX.cpp.o:(.bss.Roll+0x0): first defined here
 
-      ^
+c:/users/nicolas dg/appdata/local/arduino15/packages/esp32/tools/xtensa-esp32-elf-gcc/1.22.0-80-g6c4433a-5.2.0/bin/../lib/gcc/xtensa-esp32-elf/5.2.0/../../../../xtensa-esp32-elf/bin/ld.exe: Warning: size of symbol `Roll' changed from 4 in sketch\MLX.cpp.o to 32 in sketch\PumaTX_RC03.ino.cpp.o
 
-C:\Users\Nicolas DG\Desktop\PumaTX\PumaTX_RC\PumaTX_RC03\PumaTX_RC03.ino: In function 'void loop()':
-
-PumaTX_RC03:315:6: error: expected unqualified-id before '.' token
-
-   MLX.process();
-
-      ^
-
-expected initializer before '.' token
+collect2.exe: error: ld returned 1 exit status

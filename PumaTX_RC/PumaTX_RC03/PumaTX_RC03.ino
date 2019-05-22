@@ -19,7 +19,7 @@ const char* password = "nico1809";
 #include <ArduinoOTA.h>
 #include "MLX.h"
 
-MLX mlx();
+MLX mlx(0x0C);
 
 //--------------------------------------------------S-BUS--------------------------------------------------
 #define RC_CHANNEL_MIN 990

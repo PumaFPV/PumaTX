@@ -9,11 +9,10 @@
 #include "Arduino.h"
 
 class MLX {
-	
 	public:
-	
-		//MLX(){};
+		MLX(int addr);
 		void begin();
+    void begin(bool init);
 		void beginRight();
 		void beginLeft();
 		void process();
@@ -25,12 +24,11 @@ class MLX {
 		int getRoll();
 	
 	private:  //Put here variables (in pin for example)
-
     int _ThrottleReading;
     int _YawReading; 
     int _PitchReading;
     int _RollReading;
-		
+    int LeftAddr;	
 };
 
 #endif

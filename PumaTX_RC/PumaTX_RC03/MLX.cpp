@@ -18,44 +18,25 @@ int Yaw;
 int Pitch;
 int Roll;
 
-/*void MLX::begin(addr){	//Trying to compact stuff a little more (only one begin)
- Wire.beginTransmission(addr);   // Start I2C Transmission
-    Wire.write(0x60);   // Select Write register command
-    Wire.write(0x00);   // Set AH = 0x00, BIST disabled
-    Wire.write(0x5C);   // Set AL = 0x5C, Hall plate spinning rate = DEFAULT, GAIN_SEL = 5
-    Wire.write(0x00);   // Select address register, (0x00 << 2)
-    Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(addr, 1);    // Request 1 byte of data
- 
-  if(Wire.available() == 1){   // Read status byte
-    unsigned int c = Wire.read();
-  }
- 
-    Wire.beginTransmission(addr);   // Start I2C Transmission
-    Wire.write(0x60);   // Select Write register command
-    Wire.write(0x02);   // Set AH = 0x02
-    Wire.write(0xB4);   // Set AL = 0xB4, RES for magnetic measurement = 0
-    Wire.write(0x08);   // Select address register, (0x02 << 2)
-    Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(addr, 1);    // Request 1 byte of data  
-
-  if(Wire.available() == 1){   // Read status byte
-    unsigned int c = Wire.read();
-  }
+MLX::MLX(int addr){    //Add support for Right address
+  LeftAddr = addr;
 }
-*/
 
-//MLX::MLX(){
-//}
+
+void MLX::begin() {
+  MLX::begin(true);
+}
 
 //For void setup();
-void MLX::begin(){
-	
-	MLX::beginLeft();
-	MLX::beginRight();	
-	
+void MLX::begin(bool init){
+  if (init) {    
+  MLX::beginLeft();
+  MLX::beginRight(); 
+  }
 }
 
+
+//void MLX::begin(){
 void MLX::beginLeft(){	//0x0C
 
 Wire.beginTransmission(0x0C);   // Start I2C Transmission
