@@ -13,10 +13,10 @@
 #include "MLX.h"
 #include <Wire.h>
 
-int Throttle;
-int Yaw;
-int Pitch;
-int Roll;
+int _ThrottleReading;
+int _YawReading;
+int _PitchReading;
+int _RollReading;
 
 MLX::MLX(int addr){    //Add support for Right address
   LeftAddr = addr;
