@@ -45,15 +45,18 @@ int Roll;
 }
 */
 
+//MLX::MLX(){
+//}
+
 //For void setup();
-void MLX.begin(){
+void MLX::begin(){
 	
 	MLX::beginLeft();
 	MLX::beginRight();	
 	
 }
 
-void MLX.beginLeft(){	//0x0C
+void MLX::beginLeft(){	//0x0C
 
 Wire.beginTransmission(0x0C);   // Start I2C Transmission
     Wire.write(0x60);   // Select Write register command
@@ -80,7 +83,7 @@ Wire.beginTransmission(0x0C);   // Start I2C Transmission
   }
 }	
 	
-void MLX.beginRight(){	//0x0D
+void MLX::beginRight(){	//0x0D
 
 	Wire.beginTransmission(0x0D);   // Start I2C Transmission
     Wire.write(0x60);   // Select Write register command
@@ -109,14 +112,14 @@ void MLX.beginRight(){	//0x0D
 
 
 //For void loop();
-void MLX.process(){
+void MLX::process(){
 	
-	MLX.processLeft();
-	MLX.processRight();
+	MLX::processLeft();
+	MLX::processRight();
 	
 }
 
-void MLX.processLeft(){
+void MLX::processLeft(){
   
   int ThrottleReading;
   int YawReading;
@@ -149,11 +152,11 @@ void MLX.processLeft(){
   }
  
 // Convert the data
-ThrottleReading = data[1] * 256 + data[2];
-YawReading = data[3] * 256 + data[4];
+_ThrottleReading = data[1] * 256 + data[2];
+_YawReading = data[3] * 256 + data[4];
 
 }
-void MLX.processRight(){
+void MLX::processRight(){
 
   int PitchReading;
   int RollReading;
@@ -186,28 +189,28 @@ void MLX.processRight(){
   }
  
 // Convert the data
-PitchReading = data[1] * 256 + data[2];
-RollReading = data[3] * 256 + data[4];
+_PitchReading = data[1] * 256 + data[2];
+_RollReading = data[3] * 256 + data[4];
 
 }
 
-int MLX.getThrottle(){
+int MLX::getThrottle(){
   
-	return ThrottleReading;
+	return _ThrottleReading;
   
 }
-int MLX.getYaw(){
+int MLX::getYaw(){
 
-	return YawReading;
+	return _YawReading;
  
 }
-int MLX.getPitch(){
+int MLX::getPitch(){
 
-	return PitchReading;
+	return _PitchReading;
   
 }
-int MLX.getRoll(){
+int MLX::getRoll(){
 
-	return RollReading;
+	return _RollReading;
   
 }

@@ -12,7 +12,7 @@ class MLX {
 	
 	public:
 	
-		MLX();
+		//MLX(){};
 		void begin();
 		void beginRight();
 		void beginLeft();
@@ -26,10 +26,10 @@ class MLX {
 	
 	private:  //Put here variables (in pin for example)
 
-    int ThrottleReading;
-    int YawReading; 
-    int PitchReading;
-    int RollReading;
+    int _ThrottleReading;
+    int _YawReading; 
+    int _PitchReading;
+    int _RollReading;
 		
 };
 

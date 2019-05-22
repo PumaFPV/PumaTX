@@ -19,6 +19,8 @@ const char* password = "nico1809";
 #include <ArduinoOTA.h>
 #include "MLX.h"
 
+MLX mlx();
+
 //--------------------------------------------------S-BUS--------------------------------------------------
 #define RC_CHANNEL_MIN 990
 #define RC_CHANNEL_MAX 2010
@@ -189,7 +191,7 @@ void setup(){
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  
   EEPROM.begin(12); //Ask for 
-  MLX.begin();
+  mlx.begin();
   
 //--------------------------------------------------ShowSketchName--------------------------------------------------
     String path = __FILE__;
@@ -312,7 +314,7 @@ WiFi.mode(WIFI_STA);
 //===============================================================================================================================================================================================================
 void loop(){
   ArduinoOTA.handle();
-  MLX.process();
+  mlx.process();
 
   
 /*

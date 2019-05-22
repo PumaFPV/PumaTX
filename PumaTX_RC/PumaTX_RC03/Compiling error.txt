@@ -1,12 +1,14 @@
+
+
 MLX.cpp:49:9: error: expected initializer before '.' token
 
  void MLX.begin(){
 
          ^
 
-MLX.cpp:56:9: error: expected initializer before '.' token
+MLX.cpp:83:9: error: expected initializer before '.' token
 
- void MLX.beginLeft(){ //0x0C
+ void MLX.beginRight(){ //0x0D
 
          ^
 
