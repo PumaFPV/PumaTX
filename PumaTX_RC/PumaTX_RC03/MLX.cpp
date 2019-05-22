@@ -13,6 +13,10 @@
 #include "MLX.h"
 #include <Wire.h>
 
+int Throttle;
+int Yaw;
+int Pitch;
+int Roll;
 
 /*void MLX::begin(addr){	//Trying to compact stuff a little more (only one begin)
  Wire.beginTransmission(addr);   // Start I2C Transmission
@@ -48,6 +52,7 @@ void MLX::begin(){
 	MLX::beginRight();	
 	
 }
+
 void MLX::beginLeft(){	//0x0C
 
 Wire.beginTransmission(0x0C);   // Start I2C Transmission
@@ -110,10 +115,11 @@ void MLX::process(){
 	MLX::processRight();
 	
 }
+
 void MLX::processLeft(){
   
-  int Throttle;
-  int Yaw;
+  int ThrottleReading;
+  int YawReading;
 	
 	 unsigned int data[7];
   
@@ -143,14 +149,14 @@ void MLX::processLeft(){
   }
  
 // Convert the data
-Throttle = data[1] * 256 + data[2];
-Yaw = data[3] * 256 + data[4];
+ThrottleReading = data[1] * 256 + data[2];
+YawReading = data[3] * 256 + data[4];
 
 }
 void MLX::processRight(){
 
-  int Pitch;
-  int Roll;
+  int PitchReading;
+  int RollReading;
   
 	 unsigned int data[7];
   
@@ -180,29 +186,29 @@ void MLX::processRight(){
   }
  
 // Convert the data
-Pitch = data[1] * 256 + data[2];
-Roll = data[3] * 256 + data[4];
+PitchReading = data[1] * 256 + data[2];
+RollReading = data[3] * 256 + data[4];
 
 }
 
 //To read data
 int MLX::getThrottle(){
   
-	return Throttle;
+	return ThrottleReading;
   
 }
 int MLX::getYaw(){
 
-	return Yaw;
+	return YawReading;
  
 }
 int MLX::getPitch(){
 
-	return Pitch;
+	return PitchReading;
   
 }
 int MLX::getRoll(){
 
-	return Roll;
+	return RollReading;
   
 }

@@ -8,7 +8,7 @@
 
 #include "Arduino.h"
 
-class MLX{
+class MLX {
 	
 	public:
 	
@@ -25,6 +25,11 @@ class MLX{
 		int getRoll();
 	
 	private:  //Put here variables (in pin for example)
+
+    int ThrottleReading;
+    int YawReading; 
+    int PitchReading;
+    int RollReading;
 		
 };
 

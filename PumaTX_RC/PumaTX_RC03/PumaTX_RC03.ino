@@ -10,7 +10,7 @@
 const char* ssid = "iPhone";
 const char* password = "nico1809";
 
-#include <U8glib.h>
+//#include <U8glib.h>
 #include <Wire.h>
 #include <EEPROM.h>
 #include <WiFi.h>
@@ -56,23 +56,48 @@ typedef struct Channel {
   bool reverse;
 };
 
-struct Button {
+typedef struct Button {
   uint8_t Pin;
-  bool State;
+  int State;
 };
 
-struct ADC {
+typedef struct ADC {
   uint8_t Pin;
   float State;
-}
+};
 
-struct Graph {
+typedef struct Graph {
   int x;
   int y;
-}
+};
+
+Channel Throttle = {0, 0, 0, 0, 0, 992, 1, 2, 3, 0, 0, 0, 0};
+Channel Yaw = {0, 0, 0, 0, 0, 992, 4, 5, 6, 0, 0, 0, 0};
+Channel Pitch = {0, 0, 0, 0, 0, 992, 7, 8, 9, 0, 0, 0, 0};
+Channel Roll = {0, 0, 0, 0, 0, 992, 10, 11, 12, 0, 0, 0, 0};
+
+Button Right = {32, 1};
+Button Left = {33, 1};
+Button Up = {25, 1};
+Button Down = {26, 1};
+Button Ok = {27, 1};
+Button RTH = {14, 1};
+Button Pause = {12, 1};
+Button Power = {13, 1};
+//Button Arm = {pin, 1};
+//Button Pre = {pin, 1};
+//Button C1 = {pin, 1};
+//Button C2 = {pin, 1};
+
+ADC Voltage = {A7, 0.00}; //GPIO35
+ADC LeftPot = {A6, 0.0};  //GPIO34
+ADC RightPot = {A3, 0.0}; //GPIO39
+
+Graph Graph1 = {0, 0};
+Graph Graph2 = {0, 0};
 
 
-int calibrate = 0;
+bool calibrate = 0;
 
 unsigned long lastdebouncetime = 0;
 unsigned long debouncedelay = 50;
@@ -85,8 +110,8 @@ int HallSensorMin = -10000;
 int HallSensorMax = 10000;
 
 
--------------------------------------------------SCREEN--------------------------------------------------
-U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);
+//-------------------------------------------------SCREEN--------------------------------------------------
+//U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);
 
 //--------------------------------------------------BITMAP--------------------------------------------------
 const unsigned char PROGMEM screen1 [] = {
@@ -164,7 +189,7 @@ void setup(){
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  
   EEPROM.begin(12); //Ask for 
-  MLX::begin();
+  //MLX::begin();
   
 //--------------------------------------------------ShowSketchName--------------------------------------------------
     String path = __FILE__;
@@ -176,30 +201,7 @@ void setup(){
 
 
 //--------------------------------------------------struct--------------------------------------------------
-Channel Throttle = {0, 0, 0, 0, 0, 992, 1, 2, 3, 0, 0, 0, FALSE};
-Channel Yaw = {0, 0, 0, 0, 0, 992, 4, 5, 6, 0, 0, 0, FALSE};
-Channel Pitch = {0, 0, 0, 0, 0, 992, 7, 8, 9, 0, 0, 0, FALSE};
-Channel Roll = {0, 0, 0, 0, 0, 992, 10, 11, 12, 0, 0, 0, FALSE};
 
-Button Right = {32, HIGH};
-Button Left = {33, HIGH};
-Button Up = {25, HIGH};
-Button Down = {26, HIGH};
-Button Ok = {27, HIGH};
-Button RTH = {14, HIGH};
-Button Pause = {12, HIGH};
-Button Power = {13, HIGH};
-//Button Arm = {pin, HIGH};
-//Button Pre = {pin, HIGH};
-//Button C1 = {pin, HIGH};
-//Button C2 = {pin, HIGH};
-
-ADC Voltage = {A7, 0.00}; //GPIO35
-ADC LeftPot = {A6, 0};  //GPIO34
-ADC RightPot = {A3, 0}; //GPIO39
-
-Graph Graph1 = {0, 0};
-Graph Graph2 = {0, 0};
 
 //--------------------------------------------------SBUS--------------------------------------------------   
     for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
@@ -310,9 +312,7 @@ WiFi.mode(WIFI_STA);
 //===============================================================================================================================================================================================================
 void loop(){
   ArduinoOTA.handle();
-
-
-MLX::process();
+  //MLX::process();
 
   
 /*
@@ -392,11 +392,11 @@ roll = data[3] * 256 + data[4];
 */
 
 //--------------------------------------------------LOOP-SCREEN--------------------------------------------------
-  u8g.firstPage();  
+ /* u8g.firstPage();  
     do {
       draw();
   } while( u8g.nextPage() );
-  
+  */
 
 //--------------------------------------------------LOOP--S-BUS-------------------------------------------------------
     uint32_t currentMillis = millis();
@@ -411,11 +411,11 @@ roll = data[3] * 256 + data[4];
     }
 
 //--------------------------------------------------MENU--------------------------------------------------
-int Ok.State = digitalRead(Ok.Pin);
-int Right.State = digitalRead(Right.Pin);
-int Left.State = digitalRead(Left.Pin);
-int Up.State = digitalRead(Up.Pin);
-int Down.State = digitalRead(Down.Pin);
+    Ok.State = digitalRead(Ok.Pin);
+    Right.State = digitalRead(Right.Pin);
+    Left.State = digitalRead(Left.Pin);
+    Up.State = digitalRead(Up.Pin);
+    Down.State = digitalRead(Down.Pin);
 
 //--------------------------------------------------FILTRATION--------------------------------------------------
 //Average Method 
@@ -434,7 +434,7 @@ if (page == 1){   //Calibrate procedure begin
   //Serial.print(readingmenuok);
   //Serial.print("  ");
   
- if (Ok.State == HIGH || calibrate == 1) {
+ if (Ok.State == 1 || calibrate == 1) {
     lastdebouncetime = millis();
  }
   if (millis() - lastdebouncetime > 2000){
@@ -447,7 +447,7 @@ if (page == 1){   //Calibrate procedure begin
     Roll.Trim = Roll.MLX;  
 
     //Calibrate min/max----------Throttle
-    if (Throttle.MLX > maxthrottle){
+    if (Throttle.MLX > Throttle.Max){
       Throttle.Max = Throttle.MLX - 20;
     }
     if(Throttle.MLX < Throttle.Min){
@@ -484,11 +484,11 @@ if (page == 1){   //Calibrate procedure begin
     EEPROM.write(Throttle.EepromAddrTrim, map(Throttle.Trim, HallSensorMin, HallSensorMax, 0, 255));
     
     EEPROM.write(Yaw.EepromAddrMin, map(Yaw.Min, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Yaw.EepromAddrMaw, map(Yaw.Max, HallSensorMin, HallSensorMax, 0, 255));
+    EEPROM.write(Yaw.EepromAddrMax, map(Yaw.Max, HallSensorMin, HallSensorMax, 0, 255));
     EEPROM.write(Yaw.EepromAddrTrim, map(Yaw.Trim, HallSensorMin, HallSensorMax, 0, 255));
     
     EEPROM.write(Pitch.EepromAddrMin, map(Pitch.Min, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Pitch.EepromAddrMaw, map(Pitch.Max, HallSensorMin, HallSensorMax, 0, 255));
+    EEPROM.write(Pitch.EepromAddrMax, map(Pitch.Max, HallSensorMin, HallSensorMax, 0, 255));
     EEPROM.write(Pitch.EepromAddrTrim, map(Pitch.Trim, HallSensorMin, HallSensorMax, 0, 255));
     
     EEPROM.write(Roll.EepromAddrMin, map(Roll.Min, HallSensorMin, HallSensorMax, 0, 255));
@@ -500,12 +500,15 @@ if (page == 1){   //Calibrate procedure begin
   //Serial.print("Calibration State:");
   //Serial.println(calibrate);
 }
+else 
+calibrate = 0;
 
 //reset calibrate procedure
-if (OK.State == LOW){
+
+/* if (OK.State == 0){
     calibrate = 0;
 }
-
+*/
 //--------------------------------------------------TRIMS--------------------------------------------------
 
 
@@ -514,7 +517,7 @@ if (OK.State == LOW){
 if (Throttle.MLX <= Throttle.Trim) {    //------------------------------Throttle
   Throttle.Output = map(Throttle.MLX, Throttle.Min, Throttle.Trim, -100, 0);
 }
-else if (Throttle.MLX > trimthrottle) {
+else if (Throttle.MLX > Throttle.Trim) {
   Throttle.Output = map(Throttle.MLX, Throttle.Trim, Throttle.Max, 0, 100);
 }
 
@@ -524,9 +527,9 @@ if (Yaw.MLX <= Yaw.Trim) {    //------------------------------yaw
 else if (Yaw.MLX > Yaw.Trim) {
   Yaw.Output = map(Yaw.MLX, Yaw.Trim, Yaw.Max, 0, 100);
 }
-Yaw.Output = - Yaw.Outout; //reverse yaw output
+Yaw.Output = - Yaw.Output; //reverse yaw output
 
-if (Pitch.MLX <= Pitch.Trim {    //------------------------------pitch
+if (Pitch.MLX <= Pitch.Trim) {    //------------------------------pitch
   Pitch.Output = map(Pitch.MLX, Pitch.Min, Pitch.Trim, -100, 0);
 }
 else if (Pitch.MLX > Pitch.Trim) {
@@ -549,12 +552,12 @@ Roll.Output = constrain(Roll.Output, -100, 100);
 
 //--------------------------------------------------NAVIGATION--------------------------------------------------
 //Simple method
-if (Right.State == LOW && page < MaxPage) { //menu right -> page+
+if (Right.State == 0 && page < MaxPage) { //menu right -> page+
   ++page;
   delay(50);
 }
 
-if (Left.State == LOW && page > 0){ //menu left -> page-
+if (Left.State == 0 && page > 0){ //menu left -> page-
   --page;
   delay(50);
 }
@@ -576,7 +579,7 @@ if (Left.State == LOW && page > 0){ //menu left -> page-
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------VOID-DRAW-PAGE---------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
-  
+ /* 
 void draw(void) {
   u8g.setFont(u8g_font_5x7);
   u8g.setPrintPos(123, 57);
@@ -666,7 +669,7 @@ if (page == 3){ //--------------------------------------------------Page-3------
 }
 
 }
-
+*/
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------VOID-END---------------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
