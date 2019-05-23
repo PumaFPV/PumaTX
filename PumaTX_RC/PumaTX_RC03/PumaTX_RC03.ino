@@ -2,7 +2,6 @@
  * Make lib work
  * Make S-Bus work
  * Soft Power
- * Clean code (variable at beginning, Struct, void, define)
  * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
  * Add buttons for channel change
  */
@@ -17,7 +16,7 @@ const char* password = "nico1809";
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "MLX.h"
-#include <Adafruit_GFX.h>
+#include "Adafruit_GFX.h"
 #include "Adafruit_SH1106.h"
 
 MLX mlx(0x0C, 0x0D);  //Left, Right
@@ -187,6 +186,8 @@ const unsigned char PROGMEM screen1 [] = {
 };
 
 
+
+
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------SETUP------------------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
@@ -198,8 +199,12 @@ void setup(){
   mlx.begin();
   display.begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
   display.display();
+  delay(2000);
   display.clearDisplay();  
-
+  display.drawPixel(10, 10, WHITE);
+  display.display();
+  delay(2000);
+  display.clearDisplay();
 
 //--------------------------------------------------ShowSketchName--------------------------------------------------
     String path = __FILE__;
@@ -208,9 +213,6 @@ void setup(){
     int dot_loc = the_cpp_name.lastIndexOf('.');
     String Firmware = the_cpp_name.substring(0, dot_loc);
     Serial.println(Firmware);
-
-
-//--------------------------------------------------struct--------------------------------------------------
 
 
 //--------------------------------------------------SBUS--------------------------------------------------   
@@ -336,12 +338,13 @@ Roll.Reading = mlx.getRoll();
       draw();
   } while( u8g.nextPage() );
   */
+  //draw();
+  drawscreen();
+  display.display();
 
 //--------------------------------------------------LOOP--S-BUS-------------------------------------------------------
-    uint32_t currentMillis = millis();
-   
-     //Here you can modify values of rcChannels while keeping it in 1000:2000 range
-     
+uint32_t currentMillis = millis();
+
     if (currentMillis > sbusTime) {
         sbusPreparePacket(sbusPacket, rcChannels, false, false);
         Serial.write(sbusPacket, SBUS_PACKET_LENGTH);
@@ -519,11 +522,14 @@ if (Left.State == 0 && page > 0){ //menu left -> page-
 //----------------------------------------------------------------------------------------------------VOID-DRAW-PAGE---------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
  
-void draw(void) {
-  display.setTextSize(2);
+void drawscreen(void) {
+  display.clearDisplay();
+  display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.setCursor(123, 57);
+  display.setCursor(0, 0); //123,57
   display.print(page);
+  display.display();
+  }
 /*
 if (page == 0){ //--------------------------------------------------Page-0--------------------------------------------------
   u8g.drawBitmapP( 0, 0, 16, 64, screen1);
@@ -667,6 +673,7 @@ void sbusPreparePacket(uint8_t packet[], int channels[], bool isSignalLoss, bool
     packet[23] = stateByte; //Flags byte
     packet[24] = SBUS_FRAME_FOOTER; //Footer
 }
+
 
 //===============================================================================================================================================================================================================
 //---------------------------------------------------------------------------------------------------END-VOID-SETUP----------------------------------------------------------------------------------------------

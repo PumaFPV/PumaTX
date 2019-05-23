@@ -145,7 +145,7 @@ void setup()   {
   display.setTextColor(WHITE);
   display.print("0x"); display.println(0xDEADBEEF, HEX);
   display.display();
-  delay(20000);
+  delay(5000);
 
   // miniature bitmap display
   display.clearDisplay();
