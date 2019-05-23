@@ -114,10 +114,8 @@ int MaxPage = 3;
 int HallSensorMin = -10000;
 int HallSensorMax = 10000;
 
-
-//--------------------------------------------------SCREEN--------------------------------------------------
-
-
+bool ScreenPwr;
+unsigned long Now;
 
 //--------------------------------------------------BITMAP--------------------------------------------------
 
@@ -181,34 +179,38 @@ void setup(void){
   u8g2.begin();
   mlx.begin();
 
-
-//--------------------------------------------------ShowSketchName--------------------------------------------------
-    String path = __FILE__;
-    int slash = path.lastIndexOf('\x5C');
-    String the_cpp_name = path.substring(slash+1);
-    int dot_loc = the_cpp_name.lastIndexOf('.');
-    String Firmware = the_cpp_name.substring(0, dot_loc);
-    Serial.println(Firmware);
-
-
-//--------------------------------------------------SBUS--------------------------------------------------   
-    for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
-        rcChannels[i] = 1500;
-    }
-    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
-  
-
-//--------------------------------------------------MENU--------------------------------------------------
-  pinMode(Right.Pin, INPUT_PULLUP);
-  pinMode(Left.Pin, INPUT_PULLUP);
-  pinMode(Up.Pin, INPUT_PULLUP);
-  pinMode(Down.Pin, INPUT_PULLUP);
-  pinMode(Ok.Pin, INPUT_PULLUP);
-  
-//--------------------------------------------------READ-CALIBRATION-FROM-EEPROM--------------------------------------------------
-//Enable if first time flash
+  ShowSketchName();
+  SBusInit();
+  ReadEEPROM();
+  PinModeDef();
+  FirstBoot();
+  //OTASetup();
+  Screen();
+}
+//===============================================================================================================================================================================================================
+//----------------------------------------------------------------------------------------------------END-VOID-SETUP---------------------------------------------------------------------------------------------
+//===============================================================================================================================================================================================================
 
 
+//===============================================================================================================================================================================================================
+//----------------------------------------------------------------------------------------------------VOID-LOOP--------------------------------------------------------------------------------------------------
+//===============================================================================================================================================================================================================
+void loop(void){
+  //ArduinoOTA.handle();
+  mlx.process();
+  OptimizeScreenUsage();
+  GetMLXData();
+  SBus();
+  Calibrate();
+  ComputeRC();
+  Navigation();
+  ReadVoltage();
+}
+
+//===============================================================================================================================================================================================================
+//----------------------------------------------------------------------------------------------------Void-loop-end----------------------------------------------------------------------------------------------
+//===============================================================================================================================================================================================================
+void FirstBoot(){
     EEPROM.write(Throttle.EepromAddrMin, 250);    //EEPROM.write(Address, Value(from 0 to 255));
     EEPROM.write(Throttle.EepromAddrMax, 10);
     EEPROM.write(Throttle.EepromAddrTrim, 124);
@@ -226,9 +228,24 @@ void setup(void){
     EEPROM.write(Roll.EepromAddrTrim, 124);
 
     EEPROM.commit();
+}
 
+void PinModeDef(){
+  pinMode(Right.Pin, INPUT_PULLUP);
+  pinMode(Left.Pin, INPUT_PULLUP);
+  pinMode(Up.Pin, INPUT_PULLUP);
+  pinMode(Down.Pin, INPUT_PULLUP);
+  pinMode(Ok.Pin, INPUT_PULLUP);    
+}
+void SBusInit(){
+   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
+        rcChannels[i] = 1500;
+    }
+    
+    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
+}
 
-
+void ReadEEPROM(){
   Throttle.Min = map(EEPROM.read(Throttle.EepromAddrMin), 0, 255, HallSensorMin, HallSensorMax);
   Throttle.Max = map(EEPROM.read(Throttle.EepromAddrMax), 0, 255, HallSensorMin, HallSensorMax);
   Throttle.Trim = map(EEPROM.read(Throttle.EepromAddrTrim), 0, 255, HallSensorMin, HallSensorMax);
@@ -241,10 +258,10 @@ void setup(void){
   Roll.Min = map(EEPROM.read(Roll.EepromAddrMin), 0, 255, HallSensorMin, HallSensorMax);
   Roll.Max = map(EEPROM.read(Roll.EepromAddrMax), 0, 255, HallSensorMin, HallSensorMax);
   Roll.Trim = map(EEPROM.read(Roll.EepromAddrTrim), 0, 255, HallSensorMin, HallSensorMax);  
-
-//--------------------------------------------------OTA--------------------------------------------------
+}
 /*
-WiFi.mode(WIFI_STA);
+void OTASetup(){
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
     ESP.restart();
@@ -270,46 +287,26 @@ WiFi.mode(WIFI_STA);
     });
 
   ArduinoOTA.begin();
-*/
-//--------------------------------------------------OTA-END--------------------------------------------------
-
-
 }
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------END-VOID-SETUP---------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
+*/
+void ShowSketchName(){
+    String path = __FILE__;
+    int slash = path.lastIndexOf('\x5C');
+    String the_cpp_name = path.substring(slash+1);
+    int dot_loc = the_cpp_name.lastIndexOf('.');
+    String Firmware = the_cpp_name.substring(0, dot_loc);
+    Serial.println(Firmware);
+}
 
+void GetMLXData(){
+  Throttle.Reading = mlx.getThrottle();
+  Yaw.Reading = mlx.getYaw();
+  Pitch.Reading = mlx.getPitch();
+  Roll.Reading = mlx.getRoll();
+}
 
-
-
-
-
-
-
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------VOID-LOOP--------------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
-void loop(void){
-  //ArduinoOTA.handle();
-  mlx.process();
-
-//--------------------------------------------------LOOP-MLX--------------------------------------------------
-
-Throttle.Reading = mlx.getThrottle();
-Yaw.Reading = mlx.getYaw();
-Pitch.Reading = mlx.getPitch();
-Roll.Reading = mlx.getRoll();
-
-
-//--------------------------------------------------LOOP-SCREEN--------------------------------------------------
-
-  u8g2.firstPage();  
-    do {
-      DrawScreen();
-    } while ( u8g2.nextPage() );
-
-//--------------------------------------------------LOOP--S-BUS-------------------------------------------------------
-uint32_t currentMillis = millis();
+void SBus(){
+  uint32_t currentMillis = millis();
 
     if (currentMillis > sbusTime) {
         sbusPreparePacket(sbusPacket, rcChannels, false, false);
@@ -317,20 +314,57 @@ uint32_t currentMillis = millis();
 
         sbusTime = currentMillis + SBUS_UPDATE_RATE;
     }
+}
 
-//--------------------------------------------------MENU--------------------------------------------------
+void OptimizeScreenUsage(){
+  if (ScreenPwr == 1 && page == 0){
+    delay(50);
+    ScreenPwr = 0;
+    Serial.println(ScreenPwr);
+  }
+
+  if (page == 1 && ScreenPwr == 0){
+    ScreenPwr = 1;
+  }
+
+  if (ScreenPwr == 1){
+    Screen();
+  }
+  
+}
+
+void Screen(){
+    u8g2.firstPage();  
+    do {
+      DrawScreen();
+    } while ( u8g2.nextPage() );
+}
+
+void ReadVoltage(){
+  Voltage.State = analogRead(Voltage.Pin) * ( 5.00 / 1023.00) / 0.4443;
+}
+
+void Navigation(){
+  
     Ok.State = digitalRead(Ok.Pin);
     Right.State = digitalRead(Right.Pin);
     Left.State = digitalRead(Left.Pin);
     Up.State = digitalRead(Up.Pin);
     Down.State = digitalRead(Down.Pin);
+    
+  if (Right.State == 0 && page < MaxPage) { //menu right -> page+
+    ++page;
+    delay(50);
+  }
 
-//--------------------------------------------------FILTRATION--------------------------------------------------
-//Average Method 
+  if (Left.State == 0 && page > 0){ //menu left -> page-
+    --page;
+    delay(50);
+  }
+}
 
-
-//--------------------------------------------------CALIBRATION--------------------------------------------------
-if (page == 1){   //Calibrate procedure begin
+void Calibrate(){
+  if (page == 1){   //Calibrate procedure begin
   //Serial.print(readingmenuok);
   //Serial.print("  ");
   
@@ -401,80 +435,47 @@ if (page == 1){   //Calibrate procedure begin
   //Serial.println(calibrate);
 }
 else 
-calibrate = 0;
+  calibrate = 0;
 
-//reset calibrate procedure
-
-/* if (OK.State == 0){
-    calibrate = 0;
-}
-*/
-//--------------------------------------------------TRIMS--------------------------------------------------
-
-
-
-//---------------------------------------------------RC--------------------------------------------------
-if (Throttle.Reading <= Throttle.Trim) {    //------------------------------Throttle
-  Throttle.Output = map(Throttle.Reading, Throttle.Min, Throttle.Trim, -100, 0);
-}
-else if (Throttle.Reading > Throttle.Trim) {
-  Throttle.Output = map(Throttle.Reading, Throttle.Trim, Throttle.Max, 0, 100);
 }
 
-if (Yaw.Reading <= Yaw.Trim) {    //------------------------------yaw
-  Yaw.Output = map(Yaw.Reading, Yaw.Min, Yaw.Trim, -100, 0);
+void ComputeRC(){
+  if (Throttle.Reading <= Throttle.Trim) {    //------------------------------Throttle
+    Throttle.Output = map(Throttle.Reading, Throttle.Min, Throttle.Trim, -100, 0);
+  }
+  else if (Throttle.Reading > Throttle.Trim) {
+    Throttle.Output = map(Throttle.Reading, Throttle.Trim, Throttle.Max, 0, 100);
+  }
+
+  if (Yaw.Reading <= Yaw.Trim) {    //------------------------------yaw
+    Yaw.Output = map(Yaw.Reading, Yaw.Min, Yaw.Trim, -100, 0);
+  }
+  else if (Yaw.Reading > Yaw.Trim) {
+    Yaw.Output = map(Yaw.Reading, Yaw.Trim, Yaw.Max, 0, 100);
+  }
+  Yaw.Output = - Yaw.Output; //reverse yaw output
+
+  if (Pitch.Reading <= Pitch.Trim) {    //------------------------------pitch
+   Pitch.Output = map(Pitch.Reading, Pitch.Min, Pitch.Trim, -100, 0);
+  }
+  else if (Pitch.Reading > Pitch.Trim) {
+    Pitch.Output = map(Pitch.Reading, Pitch.Trim, Pitch.Max, 0, 100);
+  }
+
+  if (Roll.Reading <= Roll.Trim) {    //------------------------------roll
+    Roll.Output = map(Roll.Reading, Roll.Min, Roll.Trim, -100, 0);
+  }
+  else if (Roll.Reading > Roll.Trim) {
+    Roll.Output = map(Roll.Reading, Roll.Trim, Roll.Max, 0, 100);
+  }
+    Roll.Output = - Roll.Output; //reverse roll output
+
+  Throttle.Output = constrain(Throttle.Output, -100, 100);
+  Yaw.Output = constrain(Yaw.Output, -100, 100);
+  Pitch.Output = constrain(Pitch.Output, -100, 100);
+  Roll.Output = constrain(Roll.Output, -100, 100);
+
 }
-else if (Yaw.Reading > Yaw.Trim) {
-  Yaw.Output = map(Yaw.Reading, Yaw.Trim, Yaw.Max, 0, 100);
-}
-Yaw.Output = - Yaw.Output; //reverse yaw output
-
-if (Pitch.Reading <= Pitch.Trim) {    //------------------------------pitch
-  Pitch.Output = map(Pitch.Reading, Pitch.Min, Pitch.Trim, -100, 0);
-}
-else if (Pitch.Reading > Pitch.Trim) {
-  Pitch.Output = map(Pitch.Reading, Pitch.Trim, Pitch.Max, 0, 100);
-}
-
-if (Roll.Reading <= Roll.Trim) {    //------------------------------roll
-  Roll.Output = map(Roll.Reading, Roll.Min, Roll.Trim, -100, 0);
-}
-else if (Roll.Reading > Roll.Trim) {
-  Roll.Output = map(Roll.Reading, Roll.Trim, Roll.Max, 0, 100);
-}
-  Roll.Output = - Roll.Output; //reverse roll output
-
-//Constrain values
-Throttle.Output = constrain(Throttle.Output, -100, 100);
-Yaw.Output = constrain(Yaw.Output, -100, 100);
-Roll.Output = constrain(Roll.Output, -100, 100);
-
-
-//--------------------------------------------------NAVIGATION--------------------------------------------------
-//Simple method
-if (Right.State == 0 && page < MaxPage) { //menu right -> page+
-  ++page;
-  delay(50);
-}
-
-if (Left.State == 0 && page > 0){ //menu left -> page-
-  --page;
-  delay(50);
-}
-
-
-//--------------------------------------------------Page-3-fan-control--------------------------------------------------
-  Voltage.State = analogRead(Voltage.Pin) * ( 5.00 / 1023.00) / 0.4443;
-  /*
-  Serial.print("Voltage:");
-  Serial.println(voltage);
-  */
-}
-
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------Void-loop-end----------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
-
 
 
 //===============================================================================================================================================================================================================
@@ -491,7 +492,7 @@ if (page == 0){ //--------------------------------------------------Page-0------
   u8g2.drawXBMP( 0, 0, 60, 64, Puma);
   
   u8g2.setFont(u8g2_font_fub17_tr);
-  u8g2.setCursor(64, 28);
+  u8g2.setCursor(63, 27);
   u8g2.print("Puma");
   u8g2.setFont(u8g2_font_fub25_tr);
   u8g2.setCursor(64, 54);
