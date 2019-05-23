@@ -17,9 +17,12 @@ int _ThrottleReading;
 int _YawReading;
 int _PitchReading;
 int _RollReading;
+int _LeftAddr;
+int _RightAddr;
 
-MLX::MLX(int addr){    //Add support for Right address
-  LeftAddr = addr;
+MLX::MLX(int LeftAddr, int RightAddr){    //Add support for Right address
+  _LeftAddr = LeftAddr;
+  _RightAddr = RightAddr;
 }
 
 
@@ -39,25 +42,25 @@ void MLX::begin(bool init){
 //void MLX::begin(){
 void MLX::beginLeft(){	//0x0C
 
-Wire.beginTransmission(0x0C);   // Start I2C Transmission
+Wire.beginTransmission(_LeftAddr);   // Start I2C Transmission
     Wire.write(0x60);   // Select Write register command
     Wire.write(0x00);   // Set AH = 0x00, BIST disabled
     Wire.write(0x5C);   // Set AL = 0x5C, Hall plate spinning rate = DEFAULT, GAIN_SEL = 5
     Wire.write(0x00);   // Select address register, (0x00 << 2)
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0C, 1);    // Request 1 byte of data
+    Wire.requestFrom(_LeftAddr, 1);    // Request 1 byte of data
  
   if(Wire.available() == 1){   // Read status byte
     unsigned int c = Wire.read();
   }
  
-    Wire.beginTransmission(0x0C);   // Start I2C Transmission
+    Wire.beginTransmission(_LeftAddr);   // Start I2C Transmission
     Wire.write(0x60);   // Select Write register command
     Wire.write(0x02);   // Set AH = 0x02
     Wire.write(0xB4);   // Set AL = 0xB4, RES for magnetic measurement = 0
     Wire.write(0x08);   // Select address register, (0x02 << 2)
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0C, 1);    // Request 1 byte of data  
+    Wire.requestFrom(_LeftAddr, 1);    // Request 1 byte of data  
 
   if(Wire.available() == 1){   // Read status byte
     unsigned int c = Wire.read();
@@ -66,25 +69,25 @@ Wire.beginTransmission(0x0C);   // Start I2C Transmission
 	
 void MLX::beginRight(){	//0x0D
 
-	Wire.beginTransmission(0x0D);   // Start I2C Transmission
+	Wire.beginTransmission(_RightAddr);   // Start I2C Transmission
     Wire.write(0x60);   // Select Write register command
     Wire.write(0x00);   // Set AH = 0x00, BIST disabled
     Wire.write(0x5C);   // Set AL = 0x5C, Hall plate spinning rate = DEFAULT, GAIN_SEL = 5
     Wire.write(0x00);   // Select address register, (0x00 << 2)
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0D, 1);    // Request 1 byte of data
+    Wire.requestFrom(_RightAddr, 1);    // Request 1 byte of data
  
   if(Wire.available() == 1){   // Read status byte
     unsigned int c = Wire.read();
   }
  
-    Wire.beginTransmission(0x0D);   // Start I2C Transmission
+    Wire.beginTransmission(_RightAddr);   // Start I2C Transmission
     Wire.write(0x60);   // Select Write register command
     Wire.write(0x02);   // Set AH = 0x02
     Wire.write(0xB4);   // Set AL = 0xB4, RES for magnetic measurement = 0
     Wire.write(0x08);   // Select address register, (0x02 << 2)
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0D, 1);    // Request 1 byte of data  
+    Wire.requestFrom(_RightAddr, 1);    // Request 1 byte of data  
 
   if(Wire.available() == 1){   // Read status byte
     unsigned int c = Wire.read();
@@ -107,19 +110,19 @@ void MLX::processLeft(){
 	
 	 unsigned int data[7];
   
-    Wire.beginTransmission(0x0C);   // Start I2C Transmission
+    Wire.beginTransmission(_LeftAddr);   // Start I2C Transmission
     Wire.write(0x3E);   // Start single meaurement mode, ZYX enabled
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0C, 1);    // Request 1 byte of data
+    Wire.requestFrom(_LeftAddr, 1);    // Request 1 byte of data
  
   if(Wire.available() == 1){   // Read status byte
     unsigned int c = Wire.read();
   }
 
-    Wire.beginTransmission(0x0C);   // Start I2C Transmission
+    Wire.beginTransmission(_LeftAddr);   // Start I2C Transmission
     Wire.write(0x4E);   // Send read measurement command, ZYX enabled
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0C, 7);    // Request 7 bytes of data
+    Wire.requestFrom(_LeftAddr, 7);    // Request 7 bytes of data
  
   if(Wire.available() == 7){;    // Read 7 bytes of data   status, xMag msb, xMag lsb, yMag msb, yMag lsb, zMag msb, zMag lsb
 
@@ -144,19 +147,19 @@ void MLX::processRight(){
   
 	 unsigned int data[7];
   
-    Wire.beginTransmission(0x0D);   // Start I2C Transmission
+    Wire.beginTransmission(_RightAddr);   // Start I2C Transmission
     Wire.write(0x3E);   // Start single meaurement mode, ZYX enabled
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0D, 1);    // Request 1 byte of data
+    Wire.requestFrom(_RightAddr, 1);    // Request 1 byte of data
  
   if(Wire.available() == 1){   // Read status byte
     unsigned int c = Wire.read();
   }
 
-    Wire.beginTransmission(0x0D);   // Start I2C Transmission
+    Wire.beginTransmission(_RightAddr);   // Start I2C Transmission
     Wire.write(0x4E);   // Send read measurement command, ZYX enabled
     Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0D, 7);    // Request 7 bytes of data
+    Wire.requestFrom(_RightAddr, 7);    // Request 7 bytes of data
  
   if(Wire.available() == 7){;    // Read 7 bytes of data   status, xMag msb, xMag lsb, yMag msb, yMag lsb, zMag msb, zMag lsb
 

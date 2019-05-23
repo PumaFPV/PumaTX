@@ -19,7 +19,7 @@ const char* password = "nico1809";
 #include <ArduinoOTA.h>
 #include "MLX.h"
 
-MLX mlx(0x0C);
+MLX mlx(0x0C, 0x0D);  //Left, Right
 
 //--------------------------------------------------S-BUS--------------------------------------------------
 #define RC_CHANNEL_MIN 990
@@ -316,82 +316,11 @@ void loop(){
   ArduinoOTA.handle();
   mlx.process();
 
-  
-/*
-//--------------------------------------------------READ-I2C-0x0C-LEFT-GIMBAL--------------------------------------------------
-  unsigned int data[7];
-  
-    Wire.beginTransmission(0x0C);   // Start I2C Transmission
-    Wire.write(0x3E);   // Start single meaurement mode, ZYX enabled
-    Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0C, 1);    // Request 1 byte of data
- 
-  if(Wire.available() == 1){   // Read status byte
-    unsigned int c = Wire.read();
-  }
-
-    Wire.beginTransmission(0x0C);   // Start I2C Transmission
-    Wire.write(0x4E);   // Send read measurement command, ZYX enabled
-    Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0C, 7);    // Request 7 bytes of data
- 
-  if(Wire.available() == 7){;    // Read 7 bytes of data   status, xMag msb, xMag lsb, yMag msb, yMag lsb, zMag msb, zMag lsb
-
-    data[0] = Wire.read();
-    data[1] = Wire.read();
-    data[2] = Wire.read();
-    data[3] = Wire.read();
-    data[4] = Wire.read();
-    data[5] = Wire.read();
-    data[6] = Wire.read();
-  }
- 
-// Convert the data
-throttle = data[1] * 256 + data[2];
-yaw = data[3] * 256 + data[4];
- 
-// Output data to serial monitor
-//Serial.print("throttle: ");
-//Serial.print(throttle);
-//Serial.print("yaw: ");
-//Serial.print(yaw);
-
-//--------------------------------------------------READ-I2C-0x0D-RIGHT-GIMBAL--------------------------------------------------
-    Wire.beginTransmission(0x0D);   // Start I2C Transmission
-    Wire.write(0x3E);   // Start single meaurement mode, ZYX enabled
-    Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0D, 1);    // Request 1 byte of data
- 
-  if(Wire.available() == 1){   // Read status byte
-    unsigned int c = Wire.read();
-  }
-
-    Wire.beginTransmission(0x0D);   // Start I2C Transmission
-    Wire.write(0x4E);   // Send read measurement command, ZYX enabled
-    Wire.endTransmission();   // Stop I2C Transmission
-    Wire.requestFrom(0x0D, 7);    // Request 7 bytes of data
- 
-  if(Wire.available() == 7){;    // Read 7 bytes of data   status, xMag msb, xMag lsb, yMag msb, yMag lsb, zMag msb, zMag lsb
-
-    data[0] = Wire.read();
-    data[1] = Wire.read();
-    data[2] = Wire.read();
-    data[3] = Wire.read();
-    data[4] = Wire.read();
-    data[5] = Wire.read();
-    data[6] = Wire.read();
-  }
- 
-// Convert the data
-pitch = data[1] * 256 + data[2];
-roll = data[3] * 256 + data[4];
- 
-// Output data to serial monitor
-//Serial.print("pitch: ");
-//Serial.print(pitch);
-//Serial.print("roll: ");
-//Serial.println(roll);
-*/
+//--------------------------------------------------LOOP-MLX--------------------------------------------------
+Throttle.Reading = mlx.getThrottle();
+Yaw.Reading = mlx.getYaw();
+Pitch.Reading = mlx.getPitch();
+Roll.Reading = mlx.getRoll();
 
 //--------------------------------------------------LOOP-SCREEN--------------------------------------------------
  /* u8g.firstPage();  

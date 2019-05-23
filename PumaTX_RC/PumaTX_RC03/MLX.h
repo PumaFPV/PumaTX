@@ -10,7 +10,7 @@
 
 class MLX {
 	public:
-		MLX(int addr);
+		MLX(int LeftAddr, int RightAddr);
 		void begin();
     void begin(bool init);
 		void beginRight();
@@ -29,6 +29,7 @@ class MLX {
     int _PitchReading;
     int _RollReading;
     int LeftAddr;	
+    int RightAddr;
 };
 
 #endif
