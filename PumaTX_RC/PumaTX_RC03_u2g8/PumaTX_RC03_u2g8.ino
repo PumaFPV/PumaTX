@@ -193,7 +193,7 @@ const unsigned char PROGMEM screen1 [] = {
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------SETUP------------------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
-void setup(){
+void setup(void){
   
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  
@@ -228,36 +228,26 @@ void setup(){
 //--------------------------------------------------READ-CALIBRATION-FROM-EEPROM--------------------------------------------------
 //Enable if first time flash
 
-/*
-Serial.print(" Throttle:");
-Serial.print(throttle);
-Serial.print(" Min throttle:");
-Serial.print(minthrottle);
-Serial.print(" Max throttle:");
-Serial.print(maxthrottle);
-Serial.print(" Trim throttle:");
-Serial.println(trimthrottle);
 
-
-    EEPROM.write(eepromaddrminthrottle, 250);    //EEPROM.write(Address, Value(from 0 to 255));
-    EEPROM.write(eepromaddrmaxthrottle, 10);
-    EEPROM.write(eepromaddrtrimthrottle, 124);
+    EEPROM.write(Throttle.EepromAddrMin, 250);    //EEPROM.write(Address, Value(from 0 to 255));
+    EEPROM.write(Throttle.EepromAddrMax, 10);
+    EEPROM.write(Throttle.EepromAddrTrim, 124);
     
-    EEPROM.write(eepromaddrminyaw, 250);
-    EEPROM.write(eepromaddrmaxyaw, 10);
-    EEPROM.write(eepromaddrtrimyaw, 124);
+    EEPROM.write(Yaw.EepromAddrMin, 250);
+    EEPROM.write(Yaw.EepromAddrMin, 10);
+    EEPROM.write(Yaw.EepromAddrTrim, 124);
     
-    EEPROM.write(eepromaddrminpitch, 250);
-    EEPROM.write(eepromaddrmaxpitch, 10);
-    EEPROM.write(eepromaddrtrimpitch, 124);
+    EEPROM.write(Pitch.EepromAddrMin, 250);
+    EEPROM.write(Pitch.EepromAddrMax, 10);
+    EEPROM.write(Pitch.EepromAddrTrim, 124);
     
-    EEPROM.write(eepromaddrminroll, 250);
-    EEPROM.write(eepromaddrmaxroll, 10); 
-    EEPROM.write(eepromaddrtrimroll, 124);
+    EEPROM.write(Roll.EepromAddrMin, 250);
+    EEPROM.write(Roll.EepromAddrMax, 10); 
+    EEPROM.write(Roll.EepromAddrTrim, 124);
 
     EEPROM.commit();
 
-*/
+
 
   Throttle.Min = map(EEPROM.read(Throttle.EepromAddrMin), 0, 255, HallSensorMin, HallSensorMax);
   Throttle.Max = map(EEPROM.read(Throttle.EepromAddrMax), 0, 255, HallSensorMin, HallSensorMax);
@@ -318,11 +308,12 @@ WiFi.mode(WIFI_STA);
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------VOID-LOOP--------------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
-void loop(){
+void loop(void){
   ArduinoOTA.handle();
   mlx.process();
 
 //--------------------------------------------------LOOP-MLX--------------------------------------------------
+
 Throttle.Reading = mlx.getThrottle();
 Yaw.Reading = mlx.getYaw();
 Pitch.Reading = mlx.getPitch();
@@ -330,14 +321,12 @@ Roll.Reading = mlx.getRoll();
 
 
 //--------------------------------------------------LOOP-SCREEN--------------------------------------------------
-u8g2.setFont(u8g2_font_5x7_tr);
- u8g2.firstPage();  
+
+  u8g2.firstPage();  
     do {
-      u8g2.setCursor(0, 20);
-    u8g2.print(F("Hello World!"));
-       //DrawScreen();
+      DrawScreen();
     } while ( u8g2.nextPage() );
-  delay(1000);
+
 //--------------------------------------------------LOOP--S-BUS-------------------------------------------------------
 uint32_t currentMillis = millis();
 
@@ -357,14 +346,6 @@ uint32_t currentMillis = millis();
 
 //--------------------------------------------------FILTRATION--------------------------------------------------
 //Average Method 
-/*
-for(int i = 0; i < 200; ++i)
-  {
-    averagethrottle += Throttle;
-    delay(1);
-  }
-  averagethrottle /= 200;
-  */
 
 
 //--------------------------------------------------CALIBRATION--------------------------------------------------
@@ -526,7 +507,7 @@ void DrawScreen(void) {
 
 
 if (page == 0){ //--------------------------------------------------Page-0--------------------------------------------------
-  //u8g2.drawBitmapP( 0, 0, 16, 64, screen1);
+  u8g2.drawXBMP( 0, 0, 128, 64, screen1);
 }
 
 if (page == 1){ //--------------------------------------------------Page-1--------------------------------------------------
