@@ -2,9 +2,8 @@
 
 # Introduction:
 This is a try to build my own FPV controller based on ESP32 (RC03).
-The goal is to make an alternative to OpenTX (it won't be as versatile of course) based on a DJI Mavic controller GL200A.
-
-It's a really high quality object and it's very compact too, that's only what I'm asking for a controller.
+I want to make an alternative to OpenTX (it won't be as versatile of course) based on a DJI Mavic controller GL200A.
+Which is supposed to be cheaper (less than 50€ is my goal but actual controller is more expensive so I'll have to try 3D print it)
 
 # Required specs:
 -Read data from the hall effect MLX sensors from the controller
