@@ -1,6 +1,6 @@
 /*TO-DO
  * Make OTA timeout if no wifi instead of rebooting the ESP32 (OTA is now turned off)
- * Make S-Bus work
+ * Turn off OTA via menu
  * Soft Power
  * Make navigation easier
  * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
@@ -117,6 +117,8 @@ int HallSensorMax = 10000;
 
 bool ScreenPwr;
 unsigned long Now;
+
+String Firmware;
 
 //--------------------------------------------------BITMAP--------------------------------------------------
 
@@ -300,7 +302,8 @@ void OTASetup(){
     ESP.restart();
   }
   
-  ArduinoOTA.onStart([]() {
+  ArduinoOTA
+    .onStart([]() {
       String type;
       if (ArduinoOTA.getCommand() == U_FLASH)
         type = "sketch";
@@ -327,7 +330,7 @@ void ShowSketchName(){
     int slash = path.lastIndexOf('\x5C');
     String the_cpp_name = path.substring(slash+1);
     int dot_loc = the_cpp_name.lastIndexOf('.');
-    String Firmware = the_cpp_name.substring(0, dot_loc);
+    Firmware = the_cpp_name.substring(0, dot_loc);
     //Serial.println(Firmware);
 }
 
@@ -609,7 +612,10 @@ if (page == 3){ //--------------------------------------------------Page-3------
   u8g2.setFont(u8g_font_unifont);
   u8g2.setCursor(0, 11);
   u8g2.print("Setup");
-
+  u8g2.setFont(u8g_font_5x7);
+  u8g2.setCursor(0, 20);
+  u8g2.print(Firmware);
+  
   //Voltage
   u8g2.setFont(u8g_font_5x7);
   u8g2.setCursor(0, 50);
