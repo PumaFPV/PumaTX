@@ -1,30 +1,31 @@
 /*TO-DO
- * Make screen work
+ * Make OTA timeout if no wifi instead of rebooting the ESP32 (OTA is now turned off)
  * Make S-Bus work
  * Soft Power
+ * Make navigation easier
  * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
  * Add buttons for channel change
  */
 
-const char* ssid = "iPhoneX";
-const char* password = "nico1809";
+const char* ssid = "NICOLASDG";
+const char* password = "Nico1809";
 
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include <Wire.h>
 #include <EEPROM.h>
-//#include <WiFi.h>
-//#include <ESPmDNS.h>
-//#include <WiFiUdp.h>
-//#include <ArduinoOTA.h>
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 #include "MLX.h"
 
 
 MLX mlx(0x0C, 0x0D);  //Left, Right
 U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 //--------------------------------------------------S-BUS--------------------------------------------------
-#define RC_CHANNEL_MIN 990
-#define RC_CHANNEL_MAX 2010
+#define RC_CHANNEL_MIN -100    //990  
+#define RC_CHANNEL_MAX 100   //2010
 
 #define SBUS_MIN_OFFSET 173
 #define SBUS_MID_OFFSET 992
@@ -174,7 +175,7 @@ static const unsigned char Puma[] PROGMEM = {
 void setup(void){
   
   Wire.begin();   // Initialise I2C communication as MASTER
-  Serial.begin(115200);  
+  //Serial.begin(115200);  
   EEPROM.begin(12); //Ask for 12 addresses
   u8g2.begin();
   mlx.begin();
@@ -184,8 +185,8 @@ void setup(void){
   ReadEEPROM();
   PinModeDef();
   FirstBoot();
-  //OTASetup();
-  Screen();
+  OTASetup();
+  
 }
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------END-VOID-SETUP---------------------------------------------------------------------------------------------
@@ -196,20 +197,50 @@ void setup(void){
 //----------------------------------------------------------------------------------------------------VOID-LOOP--------------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
 void loop(void){
-  //ArduinoOTA.handle();
+  ArduinoOTA.handle();
   mlx.process();
-  OptimizeScreenUsage();
   GetMLXData();
-  SBus();
   Calibrate();
-  ComputeRC();
+  //ComputeRC();
+  ComputeRC2();
+  SBus();
   Navigation();
+  //OptimizeScreenUsage();
+  Screen();
   ReadVoltage();
 }
 
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------Void-loop-end----------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
+
+void ComputeRC2(){
+  if(Throttle.Reading < 35){
+    Throttle.Output = map(Throttle.Reading, 0, 34, 0, 100);
+  }
+  else 
+  Throttle.Output = map(Throttle.Reading, 255, 223, -1, -100);
+
+  if(Yaw.Reading < 38){
+    Yaw.Output = map(Yaw.Reading, 37, 5, -100, 0);
+  }
+  else 
+  Yaw.Output = map(Yaw.Reading, 255, 224, 0, 100);
+  
+  if(Pitch.Reading < 36){
+    Pitch.Output = map(Pitch.Reading, 4, 35, 0, 100);
+  }
+  else 
+  Pitch.Output = map(Pitch.Reading, 255, 224, -1, -100);  //May need to be adjusted
+  
+  if(Roll.Reading < 36){
+    Roll.Output = map(Roll.Reading, 0, 35, -1, -100);
+  }
+  else 
+  Roll.Output = map(Roll.Reading, 255, 221, 1, 100);
+  
+}
+
 void FirstBoot(){
     EEPROM.write(Throttle.EepromAddrMin, 250);    //EEPROM.write(Address, Value(from 0 to 255));
     EEPROM.write(Throttle.EepromAddrMax, 10);
@@ -237,6 +268,7 @@ void PinModeDef(){
   pinMode(Down.Pin, INPUT_PULLUP);
   pinMode(Ok.Pin, INPUT_PULLUP);    
 }
+
 void SBusInit(){
    for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
         rcChannels[i] = 1500;
@@ -259,7 +291,8 @@ void ReadEEPROM(){
   Roll.Max = map(EEPROM.read(Roll.EepromAddrMax), 0, 255, HallSensorMin, HallSensorMax);
   Roll.Trim = map(EEPROM.read(Roll.EepromAddrTrim), 0, 255, HallSensorMin, HallSensorMax);  
 }
-/*
+
+
 void OTASetup(){
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -267,8 +300,7 @@ void OTASetup(){
     ESP.restart();
   }
   
-  ArduinoOTA
-    .onStart([]() {
+  ArduinoOTA.onStart([]() {
       String type;
       if (ArduinoOTA.getCommand() == U_FLASH)
         type = "sketch";
@@ -288,14 +320,15 @@ void OTASetup(){
 
   ArduinoOTA.begin();
 }
-*/
+
+
 void ShowSketchName(){
     String path = __FILE__;
     int slash = path.lastIndexOf('\x5C');
     String the_cpp_name = path.substring(slash+1);
     int dot_loc = the_cpp_name.lastIndexOf('.');
     String Firmware = the_cpp_name.substring(0, dot_loc);
-    Serial.println(Firmware);
+    //Serial.println(Firmware);
 }
 
 void GetMLXData(){
@@ -306,11 +339,17 @@ void GetMLXData(){
 }
 
 void SBus(){
+
+  rcChannels[1] = Throttle.Output;
+  rcChannels[2] = Pitch.Output;
+  rcChannels[3] = Roll.Output;
+  rcChannels[4] = Yaw.Output;
+  
   uint32_t currentMillis = millis();
 
     if (currentMillis > sbusTime) {
         sbusPreparePacket(sbusPacket, rcChannels, false, false);
-        Serial.write(sbusPacket, SBUS_PACKET_LENGTH);
+        Serial2.write(sbusPacket, SBUS_PACKET_LENGTH);
 
         sbusTime = currentMillis + SBUS_UPDATE_RATE;
     }
@@ -318,9 +357,9 @@ void SBus(){
 
 void OptimizeScreenUsage(){
   if (ScreenPwr == 1 && page == 0){
-    delay(50);
+    delay(500);
     ScreenPwr = 0;
-    Serial.println(ScreenPwr);
+    //Serial.println(ScreenPwr);
   }
 
   if (page == 1 && ScreenPwr == 0){
@@ -438,6 +477,7 @@ else
   calibrate = 0;
 
 }
+
 
 void ComputeRC(){
   if (Throttle.Reading <= Throttle.Trim) {    //------------------------------Throttle
