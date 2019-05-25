@@ -301,6 +301,7 @@ void OTASetup(){
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
     ESP.restart();
   }
+  WiFi.setHostname("PumaTX");
   
   ArduinoOTA
     .onStart([]() {
