@@ -1,14 +1,18 @@
 /*TO-DO
- * Make OTA timeout if no wifi instead of rebooting the ESP32 (OTA is now turned off)
+ * 1- Make OTA timeout if no wifi instead of rebooting the ESP32 (OTA is now turned off)
+ * 2- Add support for onboard buttons
+ * 3- Soft Power
+ * 4- Add buttons for channel change
  * Turn off OTA via menu
- * Soft Power
  * Make navigation easier
  * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
- * Add buttons for channel change
+
  */
 
 const char* ssid = "NICOLASDG";
 const char* password = "Nico1809";
+
+
 
 #include <Arduino.h>
 #include <U8g2lib.h>
@@ -24,8 +28,8 @@ const char* password = "Nico1809";
 MLX mlx(0x0C, 0x0D);  //Left, Right
 U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 //--------------------------------------------------S-BUS--------------------------------------------------
-#define RC_CHANNEL_MIN -100    //990  
-#define RC_CHANNEL_MAX 100   //2010
+#define RC_CHANNEL_MIN -100  
+#define RC_CHANNEL_MAX 100   
 
 #define SBUS_MIN_OFFSET 173
 #define SBUS_MID_OFFSET 992
@@ -87,10 +91,11 @@ Button Up = {25, 1};
 Button Down = {26, 1};
 Button Ok = {27, 1};
 Button RTH = {14, 1};
-Button Pause = {12, 1};
-Button Power = {13, 1};
-//Button Arm = {pin, 1};
-//Button Pre = {pin, 1};
+Button Pause = {13, 1};
+Button Power = {4, 1};
+Button Arm = {12, 1};
+Button Pre = {15, 1};
+Button LED = {2, 1};
 //Button C1 = {pin, 1};
 //Button C2 = {pin, 1};
 
@@ -110,7 +115,7 @@ unsigned long debouncedelay = 50;
 unsigned long currenttime = 0;
 
 int page = 0;
-int MaxPage = 3;
+int MaxPage = 4;
 
 int HallSensorMin = -10000;
 int HallSensorMax = 10000;
@@ -177,7 +182,7 @@ static const unsigned char Puma[] PROGMEM = {
 void setup(void){
   
   Wire.begin();   // Initialise I2C communication as MASTER
-  //Serial.begin(115200);  
+  Serial.begin(115200);  
   EEPROM.begin(12); //Ask for 12 addresses
   u8g2.begin();
   mlx.begin();
@@ -269,13 +274,14 @@ void PinModeDef(){
   pinMode(Up.Pin, INPUT_PULLUP);
   pinMode(Down.Pin, INPUT_PULLUP);
   pinMode(Ok.Pin, INPUT_PULLUP);    
+  pinMode(LED.Pin, OUTPUT); 
+  digitalWrite(LED.Pin, HIGH);
 }
 
 void SBusInit(){
    for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
         rcChannels[i] = 1500;
     }
-    
     Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
 }
 
@@ -344,14 +350,15 @@ void GetMLXData(){
 
 void SBus(){
 
-  rcChannels[1] = Throttle.Output;
-  rcChannels[2] = Pitch.Output;
-  rcChannels[3] = Roll.Output;
-  rcChannels[4] = Yaw.Output;
+  rcChannels[0] = Throttle.Output;
+  rcChannels[1] = Pitch.Output;
+  rcChannels[2] = Roll.Output;
+  rcChannels[3] = Yaw.Output;
   
   uint32_t currentMillis = millis();
 
     if (currentMillis > sbusTime) {
+      
         sbusPreparePacket(sbusPacket, rcChannels, false, false);
         Serial2.write(sbusPacket, SBUS_PACKET_LENGTH);
 
@@ -625,10 +632,26 @@ if (page == 3){ //--------------------------------------------------Page-3------
   u8g2.print(Voltage.State);
 
   }
+
+
+if (page == 4){ //--------------------------------------------------Page-4--------------------------------------------------
+
+  u8g2.setFont(u8g_font_unifont);
+  u8g2.setCursor(0, 11);
+  u8g2.print("Config");
+  u8g2.setFont(u8g_font_5x7);
+  u8g2.setCursor(0, 20);
+  u8g2.print("OTA:");
+  u8g2.setCursor(25, 20);
+  u8g2.print("OTA.State");
+  u8g2.setCursor(0, 27);
+  u8g2.print("" );
+  
+  }
 }
 
 //===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------VOID-END---------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------VOID-END-SCREEN--------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
 
 
@@ -687,5 +710,5 @@ void sbusPreparePacket(uint8_t packet[], int channels[], bool isSignalLoss, bool
 
 
 //===============================================================================================================================================================================================================
-//---------------------------------------------------------------------------------------------------END-VOID-SETUP----------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------END-VOID-SBus-----------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
