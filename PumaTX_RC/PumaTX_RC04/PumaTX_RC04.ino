@@ -68,11 +68,14 @@ typedef struct Channel {
 typedef struct Button {
   uint8_t Pin;
   int State;
+  int Output;
+  int Prev;
 };
 
 typedef struct ADC {
   uint8_t Pin;
   float State;
+  int Output;
 };
 
 typedef struct Graph {
@@ -85,23 +88,23 @@ Channel Yaw = {0, 0, 0, 0, 0, 992, 4, 5, 6, 0, 0, 0, 0};
 Channel Pitch = {0, 0, 0, 0, 0, 992, 7, 8, 9, 0, 0, 0, 0};
 Channel Roll = {0, 0, 0, 0, 0, 992, 10, 11, 12, 0, 0, 0, 0};
 
-Button Right = {32, 1};
-Button Left = {33, 1};
-Button Up = {25, 1};
-Button Down = {26, 1};
-Button Ok = {27, 1};
-Button RTH = {14, 1};
-Button Pause = {13, 1};
-Button Power = {4, 1};
-Button Arm = {12, 1};
-Button Pre = {15, 1};
-Button LED = {2, 1};
-//Button C1 = {pin, 1};
-//Button C2 = {pin, 1};
+Button Right = {32, 1, 1, 1};
+Button Left = {33, 1, 1, 1};
+Button Up = {25, 1, 1, 1};
+Button Down = {26, 1, 1, 1};
+Button Ok = {27, 1, 1, 1};
+Button RTH = {14, 1, 1, 1};
+Button Pause = {13, 1, 1, 1};
+Button Pwr = {4, 1, 1, 1};
+Button Arm = {12, 1, 1, 1};
+Button Pre = {15, 1, 1, 1};
+Button LED = {2, 1, 1, 1};
+//Button C1 = {pin, 1, 1, 1};
+//Button C2 = {pin, 1, 1, 1};
 
-ADC Voltage = {A7, 0.00}; //GPIO35
-ADC LeftPot = {A6, 0.0};  //GPIO34
-ADC RightPot = {A3, 0.0}; //GPIO39
+ADC Voltage = {A7, 0.00, 0}; //GPIO35
+ADC LeftPot = {A6, 0.0, 0};  //GPIO34
+ADC RightPot = {A3, 0.0, 0}; //GPIO39
 
 Graph LeftJoy = {0, 0};
 Graph RightJoy = {0, 0};
@@ -124,6 +127,7 @@ bool ScreenPwr;
 unsigned long Now;
 
 String Firmware;
+
 
 //--------------------------------------------------BITMAP--------------------------------------------------
 
@@ -210,16 +214,26 @@ void loop(void){
   Calibrate();
   //ComputeRC();
   ComputeRC2();
+  ProcessButtons();
   SBus();
   Navigation();
   //OptimizeScreenUsage();
   Screen();
   ReadVoltage();
+
 }
 
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------Void-loop-end----------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
+void ProcessButtons(){
+  RightPot.State = analogRead(RightPot.Pin);
+  LeftPot.State = analogRead(LeftPot.Pin);
+  Arm.State = digitalRead(Arm.Pin);
+  Pre.State = digitalRead(Pre.Pin);
+  RTH.State = digitalRead(RTH.Pin);
+  Pwr.State = digitalRead(Pwr.Pin);
+}
 
 void ComputeRC2(){
   if(Throttle.Reading < 35){
@@ -245,6 +259,36 @@ void ComputeRC2(){
   }
   else 
   Roll.Output = map(Roll.Reading, 255, 221, 1, 100);
+
+  RightPot.Output = map(RightPot.State, 0, 4095, -100, 100);
+  constrain(RightPot.Output, -100, 100);
+
+  LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
+  constrain(LeftPot.Output, -100, 100);
+
+  if (Arm.State == 0 && Arm.Prev == 1 && millis() - currenttime > debouncedelay) {
+    if (Arm.Output == -100)
+      Arm.Output = 100;
+    else
+      Arm.Output = -100;
+
+    currenttime = millis();    
+  }
+
+  Arm.Prev = Arm.State;
+
+  if (RTH.State == 0 && RTH.Prev == 1 && millis() - currenttime > debouncedelay) {
+    if (RTH.Output == -100)
+      RTH.Output = 100;
+    else
+      RTH.Output = -100;
+
+    currenttime = millis();    
+  }
+
+  Arm.Prev = Arm.State;
+
+  Pre.Output = map(Pre.State, 0, 1, 100, -100);
   
 }
 
@@ -275,7 +319,10 @@ void PinModeDef(){
   pinMode(Down.Pin, INPUT_PULLUP);
   pinMode(Ok.Pin, INPUT_PULLUP);    
   pinMode(LED.Pin, OUTPUT); 
-  digitalWrite(LED.Pin, HIGH);
+  pinMode(Arm.Pin, INPUT_PULLUP);
+  pinMode(Pre.Pin, INPUT_PULLUP);
+  pinMode(RTH.Pin, INPUT_PULLUP);
+  digitalWrite(LED.Pin, Pwr.State);
 }
 
 void SBusInit(){
@@ -354,6 +401,11 @@ void SBus(){
   rcChannels[1] = Pitch.Output;
   rcChannels[2] = Roll.Output;
   rcChannels[3] = Yaw.Output;
+  rcChannels[4] = Arm.Output;
+  rcChannels[5] = Pre.Output;    
+  rcChannels[6] = RightPot.Output;
+  rcChannels[7] = LeftPot.Output; 
+  rcChannels[8] = RTH.Output;
   
   uint32_t currentMillis = millis();
 
@@ -562,11 +614,11 @@ if (page == 1){ //--------------------------------------------------Page-1------
   u8g2.print(Throttle.Output);
   
   //Yaw
-  u8g2.setCursor(0, 40); 
+  u8g2.setCursor(0, 32); 
   u8g2.print("Yaw:");
-  u8g2.setCursor(0, 48);
+  u8g2.setCursor(0, 40);
   u8g2.print(Yaw.Reading);
-  u8g2.setCursor(0, 56);
+  u8g2.setCursor(0, 48);
   u8g2.print(Yaw.Output);
   
   //Pitch
@@ -578,12 +630,23 @@ if (page == 1){ //--------------------------------------------------Page-1------
   u8g2.print(Pitch.Output);
   
   //Roll
-  u8g2.setCursor(64, 40); 
+  u8g2.setCursor(64, 32); 
   u8g2.print("Roll:");
-  u8g2.setCursor(64, 48);
+  u8g2.setCursor(64, 40);
   u8g2.print(Roll.Reading);
-  u8g2.setCursor(64, 56);
+  u8g2.setCursor(64, 48);
   u8g2.print(Roll.Output);
+
+  u8g2.setCursor(0, 56); 
+  u8g2.print(LeftPot.Output);
+  u8g2.setCursor(0, 64);
+  u8g2.print(Arm.Output);
+
+
+  u8g2.setCursor(64, 56); 
+  u8g2.print(RightPot.Output);
+  u8g2.setCursor(64, 64);
+  u8g2.print(Pre.Output);  
 
 }
 
@@ -645,7 +708,7 @@ if (page == 4){ //--------------------------------------------------Page-4------
   u8g2.setCursor(25, 20);
   u8g2.print("OTA.State");
   u8g2.setCursor(0, 27);
-  u8g2.print("" );
+  u8g2.print("");
   
   }
 }
