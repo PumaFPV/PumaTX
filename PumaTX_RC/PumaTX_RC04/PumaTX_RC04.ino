@@ -95,7 +95,7 @@ Button Down = {26, 1, 1, 1};
 Button Ok = {27, 1, 1, 1};
 Button RTH = {14, 1, -100, 1};
 Button Pause = {13, 1, -100, 1};
-Button Pwr = {4, 1, 1, 1};
+Button Pwr = {4, 1, 1, 1};  //
 Button Arm = {12, 1, -100, 1};
 Button Pre = {15, 1, -100, 1};
 Button LED = {2, 1, 1, 1};
@@ -118,7 +118,7 @@ unsigned long debouncedelay = 50;
 unsigned long currenttime = 0;
 
 int page = 0;
-int MaxPage = 4;
+int MaxPage = 5;
 
 int HallSensorMin = -10000;
 int HallSensorMax = 10000;
@@ -197,6 +197,7 @@ void setup(void){
   PinModeDef();
   FirstBoot();
   OTASetup();
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
   
 }
 //===============================================================================================================================================================================================================
@@ -220,6 +221,7 @@ void loop(void){
   //OptimizeScreenUsage();
   Screen();
   ReadVoltage();
+  Serial.println(Pwr.State);
 
 }
 
@@ -233,6 +235,13 @@ void ProcessButtons(){
   Pre.State = digitalRead(Pre.Pin);
   RTH.State = digitalRead(RTH.Pin);
   Pwr.State = digitalRead(Pwr.Pin);
+  digitalWrite(LED.Pin, Arm.State);
+}
+
+void SoftPower(){
+  if (Pwr.State == 0 && millis() - currenttime > debouncedelay){
+    
+  }
 }
 
 void ComputeRC2(){
@@ -260,7 +269,7 @@ void ComputeRC2(){
   else 
   Roll.Output = map(Roll.Reading, 255, 221, 1, 100);
 
-  RightPot.Output = map(RightPot.State, 0, 4095, -100, 100);
+  RightPot.Output = map(RightPot.State, 0, 4095, 100, -100);
   constrain(RightPot.Output, -100, 100);
 
   LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
@@ -318,11 +327,12 @@ void PinModeDef(){
   pinMode(Up.Pin, INPUT_PULLUP);
   pinMode(Down.Pin, INPUT_PULLUP);
   pinMode(Ok.Pin, INPUT_PULLUP);    
-  pinMode(LED.Pin, OUTPUT); 
   pinMode(Arm.Pin, INPUT_PULLUP);
   pinMode(Pre.Pin, INPUT_PULLUP);
   pinMode(RTH.Pin, INPUT_PULLUP);
-  digitalWrite(LED.Pin, Pwr.State);
+  pinMode(Pwr.Pin, INPUT_PULLUP);
+  pinMode(LED.Pin, OUTPUT);
+
 }
 
 void SBusInit(){
@@ -350,10 +360,13 @@ void ReadEEPROM(){
 
 void OTASetup(){
   WiFi.mode(WIFI_STA);
+  //tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA, "PumaTX");
   WiFi.begin(ssid, password);
+  /*
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
     ESP.restart();
   }
+  */
   WiFi.setHostname("PumaTX");
   
   ArduinoOTA
@@ -470,7 +483,7 @@ void Calibrate(){
   //Serial.print(readingmenuok);
   //Serial.print("  ");
   
- if (Ok.State == 1 || calibrate == 1) {
+ if (Ok.State == 0 || calibrate == 1) {
     lastdebouncetime = millis();
  }
   if (millis() - lastdebouncetime > 2000){
@@ -640,8 +653,8 @@ if (page == 1){ //--------------------------------------------------Page-1------
   u8g2.setCursor(0, 56); 
   u8g2.print(LeftPot.Output);
   u8g2.setCursor(0, 64);
+  //u8g2.print(Arm.Output);
   u8g2.print(Arm.Output);
-
 
   u8g2.setCursor(64, 56); 
   u8g2.print(RightPot.Output);
@@ -697,8 +710,7 @@ if (page == 3){ //--------------------------------------------------Page-3------
   }
 
 
-if (page == 4){ //--------------------------------------------------Page-4--------------------------------------------------
-
+if (page == 4){ //--------------------------------------------------Page-4-------------------------------------------------- 
   u8g2.setFont(u8g_font_unifont);
   u8g2.setCursor(0, 11);
   u8g2.print("Config");
@@ -709,13 +721,18 @@ if (page == 4){ //--------------------------------------------------Page-4------
   u8g2.print("OTA.State");
   u8g2.setCursor(0, 27);
   u8g2.print("");
+ 
   
+  }
+if (page == 5){ //--------------------------------------------------Page-5--------------------------------------------------
+  u8g2.clear();
+  esp_deep_sleep_start();
   }
 }
 
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------VOID-END-SCREEN--------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
+//==============================================================================================================================================================================================================
 
 
 
