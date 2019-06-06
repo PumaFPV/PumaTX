@@ -186,17 +186,18 @@ static const unsigned char Puma[] PROGMEM = {
 void setup(void){
   
   Wire.begin();   // Initialise I2C communication as MASTER
-  Serial.begin(115200);  
-  EEPROM.begin(12); //Ask for 12 addresses
-  u8g2.begin();
-  mlx.begin();
+  Serial.begin(115200);  //Initialise Serial 1
+  EEPROM.begin(12); //Initialise EEPROM and Ask for 12 addresses
+  u8g2.begin(); //Initialise SH1106
+  mlx.begin();  //Initialise MLX
 
-  ShowSketchName();
-  SBusInit();
-  ReadEEPROM();
-  PinModeDef();
   FirstBoot();
+  ShowSketchName(); 
   OTASetup();
+  PinModeDef();
+  ReadEEPROM();  
+  SBusInit();
+
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
   
 }
@@ -209,6 +210,7 @@ void setup(void){
 //----------------------------------------------------------------------------------------------------VOID-LOOP--------------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
 void loop(void){
+  
   ArduinoOTA.handle();
   mlx.process();
   GetMLXData();
@@ -228,7 +230,117 @@ void loop(void){
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------Void-loop-end----------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
+void SoftPower(){
+  
+  if (Pwr.State == 0 && millis() - currenttime > debouncedelay){
+    
+  }
+  
+}
+
+
+void FirstBoot(){
+  
+    EEPROM.write(Throttle.EepromAddrMin, 250);    //EEPROM.write(Address, Value(from 0 to 255));
+    EEPROM.write(Throttle.EepromAddrMax, 10);
+    EEPROM.write(Throttle.EepromAddrTrim, 124);
+    
+    EEPROM.write(Yaw.EepromAddrMin, 250);
+    EEPROM.write(Yaw.EepromAddrMin, 10);
+    EEPROM.write(Yaw.EepromAddrTrim, 124);
+    
+    EEPROM.write(Pitch.EepromAddrMin, 250);
+    EEPROM.write(Pitch.EepromAddrMax, 10);
+    EEPROM.write(Pitch.EepromAddrTrim, 124);
+    
+    EEPROM.write(Roll.EepromAddrMin, 250);
+    EEPROM.write(Roll.EepromAddrMax, 10); 
+    EEPROM.write(Roll.EepromAddrTrim, 124);
+
+    EEPROM.commit();
+    
+}
+
+
+void ShowSketchName(){
+  
+    String path = __FILE__;
+    int slash = path.lastIndexOf('\x5C');
+    String the_cpp_name = path.substring(slash+1);
+    int dot_loc = the_cpp_name.lastIndexOf('.');
+    Firmware = the_cpp_name.substring(0, dot_loc);
+    //Serial.println(Firmware);
+    
+}
+
+
+void PinModeDef(){
+  
+  pinMode(Right.Pin, INPUT_PULLUP);
+  pinMode(Left.Pin, INPUT_PULLUP);
+  pinMode(Up.Pin, INPUT_PULLUP);
+  pinMode(Down.Pin, INPUT_PULLUP);
+  pinMode(Ok.Pin, INPUT_PULLUP);    
+  pinMode(Arm.Pin, INPUT_PULLUP);
+  pinMode(Pre.Pin, INPUT_PULLUP);
+  pinMode(RTH.Pin, INPUT_PULLUP);
+  pinMode(Pwr.Pin, INPUT_PULLUP);
+  pinMode(LED.Pin, OUTPUT);
+  
+}
+
+
+void SBusInit(){
+  
+   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
+        rcChannels[i] = 1500;
+    }
+    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
+}
+void OTASetup(){
+  
+  WiFi.mode(WIFI_STA);
+  //tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA, "PumaTX");
+  WiFi.begin(ssid, password);
+  /*
+  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
+    ESP.restart();
+  }
+  */
+  WiFi.setHostname("PumaTX");
+  
+  ArduinoOTA
+    .onStart([]() {
+      String type;
+      if (ArduinoOTA.getCommand() == U_FLASH)
+        type = "sketch";
+      else // U_SPIFFS
+        type = "filesystem";
+    })
+    .onEnd([]() {
+    })
+    .onProgress([](unsigned int progress, unsigned int total) {})
+    .onError([](ota_error_t error) {
+      if (error == OTA_AUTH_ERROR);
+      else if (error == OTA_BEGIN_ERROR);
+      else if (error == OTA_CONNECT_ERROR);
+      else if (error == OTA_RECEIVE_ERROR);
+      else if (error == OTA_END_ERROR);
+    });
+
+  ArduinoOTA.begin();
+  
+}
+
+
+
+
+
+
+
+
 void ProcessButtons(){
+  
   RightPot.State = analogRead(RightPot.Pin);
   LeftPot.State = analogRead(LeftPot.Pin);
   Arm.State = digitalRead(Arm.Pin);
@@ -236,15 +348,12 @@ void ProcessButtons(){
   RTH.State = digitalRead(RTH.Pin);
   Pwr.State = digitalRead(Pwr.Pin);
   digitalWrite(LED.Pin, Arm.State);
+  
 }
 
-void SoftPower(){
-  if (Pwr.State == 0 && millis() - currenttime > debouncedelay){
-    
-  }
-}
 
 void ComputeRC2(){
+  
   if(Throttle.Reading < 35){
     Throttle.Output = map(Throttle.Reading, 0, 34, 0, 100);
   }
@@ -301,48 +410,9 @@ void ComputeRC2(){
   
 }
 
-void FirstBoot(){
-    EEPROM.write(Throttle.EepromAddrMin, 250);    //EEPROM.write(Address, Value(from 0 to 255));
-    EEPROM.write(Throttle.EepromAddrMax, 10);
-    EEPROM.write(Throttle.EepromAddrTrim, 124);
-    
-    EEPROM.write(Yaw.EepromAddrMin, 250);
-    EEPROM.write(Yaw.EepromAddrMin, 10);
-    EEPROM.write(Yaw.EepromAddrTrim, 124);
-    
-    EEPROM.write(Pitch.EepromAddrMin, 250);
-    EEPROM.write(Pitch.EepromAddrMax, 10);
-    EEPROM.write(Pitch.EepromAddrTrim, 124);
-    
-    EEPROM.write(Roll.EepromAddrMin, 250);
-    EEPROM.write(Roll.EepromAddrMax, 10); 
-    EEPROM.write(Roll.EepromAddrTrim, 124);
-
-    EEPROM.commit();
-}
-
-void PinModeDef(){
-  pinMode(Right.Pin, INPUT_PULLUP);
-  pinMode(Left.Pin, INPUT_PULLUP);
-  pinMode(Up.Pin, INPUT_PULLUP);
-  pinMode(Down.Pin, INPUT_PULLUP);
-  pinMode(Ok.Pin, INPUT_PULLUP);    
-  pinMode(Arm.Pin, INPUT_PULLUP);
-  pinMode(Pre.Pin, INPUT_PULLUP);
-  pinMode(RTH.Pin, INPUT_PULLUP);
-  pinMode(Pwr.Pin, INPUT_PULLUP);
-  pinMode(LED.Pin, OUTPUT);
-
-}
-
-void SBusInit(){
-   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
-        rcChannels[i] = 1500;
-    }
-    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
-}
 
 void ReadEEPROM(){
+  
   Throttle.Min = map(EEPROM.read(Throttle.EepromAddrMin), 0, 255, HallSensorMin, HallSensorMax);
   Throttle.Max = map(EEPROM.read(Throttle.EepromAddrMax), 0, 255, HallSensorMin, HallSensorMax);
   Throttle.Trim = map(EEPROM.read(Throttle.EepromAddrTrim), 0, 255, HallSensorMin, HallSensorMax);
@@ -355,61 +425,22 @@ void ReadEEPROM(){
   Roll.Min = map(EEPROM.read(Roll.EepromAddrMin), 0, 255, HallSensorMin, HallSensorMax);
   Roll.Max = map(EEPROM.read(Roll.EepromAddrMax), 0, 255, HallSensorMin, HallSensorMax);
   Roll.Trim = map(EEPROM.read(Roll.EepromAddrTrim), 0, 255, HallSensorMin, HallSensorMax);  
-}
-
-
-void OTASetup(){
-  WiFi.mode(WIFI_STA);
-  //tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA, "PumaTX");
-  WiFi.begin(ssid, password);
-  /*
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    ESP.restart();
-  }
-  */
-  WiFi.setHostname("PumaTX");
   
-  ArduinoOTA
-    .onStart([]() {
-      String type;
-      if (ArduinoOTA.getCommand() == U_FLASH)
-        type = "sketch";
-      else // U_SPIFFS
-        type = "filesystem";
-    })
-    .onEnd([]() {
-    })
-    .onProgress([](unsigned int progress, unsigned int total) {})
-    .onError([](ota_error_t error) {
-      if (error == OTA_AUTH_ERROR);
-      else if (error == OTA_BEGIN_ERROR);
-      else if (error == OTA_CONNECT_ERROR);
-      else if (error == OTA_RECEIVE_ERROR);
-      else if (error == OTA_END_ERROR);
-    });
-
-  ArduinoOTA.begin();
 }
 
-
-void ShowSketchName(){
-    String path = __FILE__;
-    int slash = path.lastIndexOf('\x5C');
-    String the_cpp_name = path.substring(slash+1);
-    int dot_loc = the_cpp_name.lastIndexOf('.');
-    Firmware = the_cpp_name.substring(0, dot_loc);
-    //Serial.println(Firmware);
-}
 
 void GetMLXData(){
+  
   Throttle.Reading = mlx.getThrottle();
   Yaw.Reading = mlx.getYaw();
   Pitch.Reading = mlx.getPitch();
   Roll.Reading = mlx.getRoll();
+  
 }
 
-void SBus(){
 
+void SBus(){
+  
   rcChannels[0] = Throttle.Output;
   rcChannels[1] = Pitch.Output;
   rcChannels[2] = Roll.Output;
@@ -429,7 +460,9 @@ void SBus(){
 
         sbusTime = currentMillis + SBUS_UPDATE_RATE;
     }
+    
 }
+
 
 void OptimizeScreenUsage(){
   if (ScreenPwr == 1 && page == 0){
@@ -448,16 +481,23 @@ void OptimizeScreenUsage(){
   
 }
 
+
 void Screen(){
+  
     u8g2.firstPage();  
     do {
       DrawScreen();
     } while ( u8g2.nextPage() );
+    
 }
 
+
 void ReadVoltage(){
+  
   Voltage.State = analogRead(Voltage.Pin) * ( 5.00 / 1023.00) / 0.4443;
+  
 }
+
 
 void Navigation(){
   
@@ -477,6 +517,7 @@ void Navigation(){
     delay(50);
   }
 }
+
 
 void Calibrate(){
   if (page == 1){   //Calibrate procedure begin
