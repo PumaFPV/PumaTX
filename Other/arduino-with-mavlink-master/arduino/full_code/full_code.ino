@@ -13,6 +13,7 @@ int connectionLED = 26; //White
 //###########################
 //#Configuration for the app#
 //###########################
+int len;
 
 //Reflects connection with the ESP32
 static const String PINGING = "PINGING";
