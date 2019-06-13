@@ -1,16 +1,14 @@
 /*TO-DO
  * 1- Make OTA timeout if no wifi instead of rebooting the ESP32 (OTA is now turned off)
- * 2- Add support for onboard buttons
- * 3- Soft Power
- * 4- Add buttons for channel change
+ * 2- Soft Power
  * Turn off OTA via menu
  * Make navigation easier
  * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
 
  */
 
-const char* ssid = "NICOLASDG";
-const char* password = "Nico1809";
+extern const char* ssid = "NICOLASDG";
+extern const char* password = "Nico1809";
 
 
 
@@ -24,6 +22,15 @@ const char* password = "Nico1809";
 #include <ArduinoOTA.h>
 #include "MLX.h"
 
+#include "OTA.h"
+#include "Battery.h"
+#include "Buttons.h"
+#include "ComputeRCData.h"
+#include "Navigation.h"
+#include "SBus.h"
+#include "SH1106.h"
+#include "ShowSketchName.h"
+#include "SoftPower.h"
 
 MLX mlx(0x0C, 0x0D);  //Left, Right
 U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
@@ -49,7 +56,7 @@ uint32_t sbusTime = 0;
 
 
 //--------------------------------------------------struct--------------------------------------------------
-typedef struct Channel {    
+extern typedef struct Channel {    
   int Reading;  //from -10000 to 10000
   int Min;  //MLX Scale
   int Max;  //MLX Scale
@@ -65,20 +72,20 @@ typedef struct Channel {
   bool reverse;
 };
 
-typedef struct Button {
+extern typedef struct Button {
   uint8_t Pin;
   int State;
   int Output;
   int Prev;
 };
 
-typedef struct ADC {
+extern typedef struct ADC {
   uint8_t Pin;
   float State;
   int Output;
 };
 
-typedef struct Graph {
+extern typedef struct Graph {
   int x;
   int y;
 };
@@ -102,36 +109,36 @@ Button LED = {2, 1, 1, 1};
 //Button C1 = {pin, 1, 1, 1};
 //Button C2 = {pin, 1, 1, 1};
 
-ADC Voltage = {A7, 0.00, 0}; //GPIO35
-ADC LeftPot = {A6, 0.0, 0};  //GPIO34
-ADC RightPot = {A3, 0.0, 0}; //GPIO39
+extern ADC Voltage = {A7, 0.00, 0}; //GPIO35
+extern ADC LeftPot = {A6, 0.0, 0};  //GPIO34
+extern ADC RightPot = {A3, 0.0, 0}; //GPIO39
 
-Graph LeftJoy = {0, 0};
-Graph RightJoy = {0, 0};
+extern Graph LeftJoy = {0, 0};
+extern Graph RightJoy = {0, 0};
 
 
 //--------------------------------------------------VARIABLE--------------------------------------------------
-bool calibrate = 0;
+extern bool calibrate = 0;
 
-unsigned long lastdebouncetime = 0;
-unsigned long debouncedelay = 50;
-unsigned long currenttime = 0;
+extern unsigned long lastdebouncetime = 0;
+extern unsigned long debouncedelay = 50;
+extern unsigned long currenttime = 0;
 
-int page = 0;
-int MaxPage = 5;
+extern int page = 0;
+extern int MaxPage = 5;
 
-int HallSensorMin = -10000;
-int HallSensorMax = 10000;
+extern int HallSensorMin = -10000;
+extern int HallSensorMax = 10000;
 
-bool ScreenPwr;
-unsigned long Now;
+extern bool ScreenPwr;
+extern unsigned long Now;
 
-String Firmware;
+extern String Firmware;
 
 
 //--------------------------------------------------BITMAP--------------------------------------------------
 
-static const unsigned char Puma[] PROGMEM = {
+extern static const unsigned char Puma[] PROGMEM = {
   0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE0, 0x00, 0xF0, 0x06, 0x00, 0x00, 
   0x00, 0x00, 0xFC, 0x01, 0xF8, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x66, 0x03, 
   0x68, 0x31, 0x00, 0x00, 0x00, 0x80, 0xD3, 0x06, 0x6C, 0x63, 0x00, 0x00, 
@@ -201,14 +208,7 @@ void setup(void){
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
   
 }
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------END-VOID-SETUP---------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
 
-
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------VOID-LOOP--------------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
 void loop(void){
   
   ArduinoOTA.handle();
@@ -226,18 +226,6 @@ void loop(void){
   Serial.println(Pwr.State);
 
 }
-
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------Void-loop-end----------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
-void SoftPower(){
-  
-  if (Pwr.State == 0 && millis() - currenttime > debouncedelay){
-    
-  }
-  
-}
-
 
 void FirstBoot(){
   
@@ -273,144 +261,6 @@ void ShowSketchName(){
     
 }
 
-
-void PinModeDef(){
-  
-  pinMode(Right.Pin, INPUT_PULLUP);
-  pinMode(Left.Pin, INPUT_PULLUP);
-  pinMode(Up.Pin, INPUT_PULLUP);
-  pinMode(Down.Pin, INPUT_PULLUP);
-  pinMode(Ok.Pin, INPUT_PULLUP);    
-  pinMode(Arm.Pin, INPUT_PULLUP);
-  pinMode(Pre.Pin, INPUT_PULLUP);
-  pinMode(RTH.Pin, INPUT_PULLUP);
-  pinMode(Pwr.Pin, INPUT_PULLUP);
-  pinMode(LED.Pin, OUTPUT);
-  
-}
-
-
-void SBusInit(){
-  
-   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
-        rcChannels[i] = 1500;
-    }
-    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
-}
-void OTASetup(){
-  
-  WiFi.mode(WIFI_STA);
-  //tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA, "PumaTX");
-  WiFi.begin(ssid, password);
-  /*
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    ESP.restart();
-  }
-  */
-  WiFi.setHostname("PumaTX");
-  
-  ArduinoOTA
-    .onStart([]() {
-      String type;
-      if (ArduinoOTA.getCommand() == U_FLASH)
-        type = "sketch";
-      else // U_SPIFFS
-        type = "filesystem";
-    })
-    .onEnd([]() {
-    })
-    .onProgress([](unsigned int progress, unsigned int total) {})
-    .onError([](ota_error_t error) {
-      if (error == OTA_AUTH_ERROR);
-      else if (error == OTA_BEGIN_ERROR);
-      else if (error == OTA_CONNECT_ERROR);
-      else if (error == OTA_RECEIVE_ERROR);
-      else if (error == OTA_END_ERROR);
-    });
-
-  ArduinoOTA.begin();
-  
-}
-
-
-
-
-
-
-
-
-void ProcessButtons(){
-  
-  RightPot.State = analogRead(RightPot.Pin);
-  LeftPot.State = analogRead(LeftPot.Pin);
-  Arm.State = digitalRead(Arm.Pin);
-  Pre.State = digitalRead(Pre.Pin);
-  RTH.State = digitalRead(RTH.Pin);
-  Pwr.State = digitalRead(Pwr.Pin);
-  digitalWrite(LED.Pin, Arm.State);
-  
-}
-
-
-void ComputeRC2(){
-  
-  if(Throttle.Reading < 35){
-    Throttle.Output = map(Throttle.Reading, 0, 34, 0, 100);
-  }
-  else 
-  Throttle.Output = map(Throttle.Reading, 255, 223, -1, -100);
-
-  if(Yaw.Reading < 38){
-    Yaw.Output = map(Yaw.Reading, 37, 5, -100, 0);
-  }
-  else 
-  Yaw.Output = map(Yaw.Reading, 255, 224, 0, 100);
-  
-  if(Pitch.Reading < 36){
-    Pitch.Output = map(Pitch.Reading, 4, 35, 0, 100);
-  }
-  else 
-  Pitch.Output = map(Pitch.Reading, 255, 224, -1, -100);  //May need to be adjusted
-  
-  if(Roll.Reading < 36){
-    Roll.Output = map(Roll.Reading, 0, 35, -1, -100);
-  }
-  else 
-  Roll.Output = map(Roll.Reading, 255, 221, 1, 100);
-
-  RightPot.Output = map(RightPot.State, 0, 4095, 100, -100);
-  constrain(RightPot.Output, -100, 100);
-
-  LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
-  constrain(LeftPot.Output, -100, 100);
-
-  if (Arm.State == 0 && Arm.Prev == 1 && millis() - currenttime > debouncedelay) {
-    if (Arm.Output == -100)
-      Arm.Output = 100;
-    else
-      Arm.Output = -100;
-
-    currenttime = millis();    
-  }
-
-  Arm.Prev = Arm.State;
-
-  if (RTH.State == 0 && RTH.Prev == 1 && millis() - currenttime > debouncedelay) {
-    if (RTH.Output == -100)
-      RTH.Output = 100;
-    else
-      RTH.Output = -100;
-
-    currenttime = millis();    
-  }
-
-  Arm.Prev = Arm.State;
-
-  Pre.Output = map(Pre.State, 0, 1, 100, -100);
-  
-}
-
-
 void ReadEEPROM(){
   
   Throttle.Min = map(EEPROM.read(Throttle.EepromAddrMin), 0, 255, HallSensorMin, HallSensorMax);
@@ -428,7 +278,6 @@ void ReadEEPROM(){
   
 }
 
-
 void GetMLXData(){
   
   Throttle.Reading = mlx.getThrottle();
@@ -437,399 +286,3 @@ void GetMLXData(){
   Roll.Reading = mlx.getRoll();
   
 }
-
-
-void SBus(){
-  
-  rcChannels[0] = Throttle.Output;
-  rcChannels[1] = Pitch.Output;
-  rcChannels[2] = Roll.Output;
-  rcChannels[3] = Yaw.Output;
-  rcChannels[4] = Arm.Output;
-  rcChannels[5] = Pre.Output;    
-  rcChannels[6] = RightPot.Output;
-  rcChannels[7] = LeftPot.Output; 
-  rcChannels[8] = RTH.Output;
-  
-  uint32_t currentMillis = millis();
-
-    if (currentMillis > sbusTime) {
-      
-        sbusPreparePacket(sbusPacket, rcChannels, false, false);
-        Serial2.write(sbusPacket, SBUS_PACKET_LENGTH);
-
-        sbusTime = currentMillis + SBUS_UPDATE_RATE;
-    }
-    
-}
-
-
-void OptimizeScreenUsage(){
-  if (ScreenPwr == 1 && page == 0){
-    delay(500);
-    ScreenPwr = 0;
-    //Serial.println(ScreenPwr);
-  }
-
-  if (page == 1 && ScreenPwr == 0){
-    ScreenPwr = 1;
-  }
-
-  if (ScreenPwr == 1){
-    Screen();
-  }
-  
-}
-
-
-void Screen(){
-  
-    u8g2.firstPage();  
-    do {
-      DrawScreen();
-    } while ( u8g2.nextPage() );
-    
-}
-
-
-void ReadVoltage(){
-  
-  Voltage.State = analogRead(Voltage.Pin) * ( 5.00 / 1023.00) / 0.4443;
-  
-}
-
-
-void Navigation(){
-  
-    Ok.State = digitalRead(Ok.Pin);
-    Right.State = digitalRead(Right.Pin);
-    Left.State = digitalRead(Left.Pin);
-    Up.State = digitalRead(Up.Pin);
-    Down.State = digitalRead(Down.Pin);
-    
-  if (Right.State == 0 && page < MaxPage) { //menu right -> page+
-    ++page;
-    delay(50);
-  }
-
-  if (Left.State == 0 && page > 0){ //menu left -> page-
-    --page;
-    delay(50);
-  }
-}
-
-
-void Calibrate(){
-  if (page == 1){   //Calibrate procedure begin
-  //Serial.print(readingmenuok);
-  //Serial.print("  ");
-  
- if (Ok.State == 0 || calibrate == 1) {
-    lastdebouncetime = millis();
- }
-  if (millis() - lastdebouncetime > 2000){
-    calibrate = 1;
-
-    //Calibrate trims
-    Throttle.Trim = Throttle.Reading;  
-    Yaw.Trim = Yaw.Reading;
-    Pitch.Trim = Pitch.Reading;
-    Roll.Trim = Roll.Reading;  
-
-    //Calibrate min/max----------Throttle
-    if (Throttle.Reading > Throttle.Max){
-      Throttle.Max = Throttle.Reading - 20;
-    }
-    if(Throttle.Reading < Throttle.Min){
-      Throttle.Min = Throttle.Reading + 20;
-    }
-    
-    //Calibrate min/max----------Yaw
-    if (Yaw.Reading > Yaw.Max){
-      Yaw.Max = Yaw.Reading - 20;
-    }
-    if (Yaw.Reading < Yaw.Min){
-      Yaw.Min = Yaw.Reading + 20;
-    }
-
-    //Calibrate min/max----------Pitch
-    if (Pitch.Reading > Pitch.Max){
-      Pitch.Max = Pitch.Reading - 20;
-    }
-    if (Pitch.Reading < Pitch.Min){
-      Pitch.Min = Pitch.Reading + 20;
-    }
-
-    //Calibrate min/max----------Roll
-    if (Roll.Reading > Roll.Max){
-      Roll.Max = Roll.Reading - 20;
-    }
-    if (Roll.Reading < Roll.Min){
-      Roll.Min = Roll.Reading + 20;
-    }
-//--------------------------------------------------EEPROM--------------------------------------------------
-    //compact way to store calibration values in eeprom
-    EEPROM.write(Throttle.EepromAddrMin, map(Throttle.Min, HallSensorMin, HallSensorMax, 0, 255));    //EEPROM.write(Address, Value(from 0 to 255));
-    EEPROM.write(Throttle.EepromAddrMax, map(Throttle.Max, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Throttle.EepromAddrTrim, map(Throttle.Trim, HallSensorMin, HallSensorMax, 0, 255));
-    
-    EEPROM.write(Yaw.EepromAddrMin, map(Yaw.Min, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Yaw.EepromAddrMax, map(Yaw.Max, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Yaw.EepromAddrTrim, map(Yaw.Trim, HallSensorMin, HallSensorMax, 0, 255));
-    
-    EEPROM.write(Pitch.EepromAddrMin, map(Pitch.Min, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Pitch.EepromAddrMax, map(Pitch.Max, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Pitch.EepromAddrTrim, map(Pitch.Trim, HallSensorMin, HallSensorMax, 0, 255));
-    
-    EEPROM.write(Roll.EepromAddrMin, map(Roll.Min, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.write(Roll.EepromAddrMax, map(Roll.Max, HallSensorMin, HallSensorMax, 0, 255)); 
-    EEPROM.write(Roll.EepromAddrTrim, map(Roll.Trim, HallSensorMin, HallSensorMax, 0, 255));
-    EEPROM.commit();
-  } //END Calibration
-  
-  //Serial.print("Calibration State:");
-  //Serial.println(calibrate);
-}
-else 
-  calibrate = 0;
-
-}
-
-
-void ComputeRC(){
-  if (Throttle.Reading <= Throttle.Trim) {    //------------------------------Throttle
-    Throttle.Output = map(Throttle.Reading, Throttle.Min, Throttle.Trim, -100, 0);
-  }
-  else if (Throttle.Reading > Throttle.Trim) {
-    Throttle.Output = map(Throttle.Reading, Throttle.Trim, Throttle.Max, 0, 100);
-  }
-
-  if (Yaw.Reading <= Yaw.Trim) {    //------------------------------yaw
-    Yaw.Output = map(Yaw.Reading, Yaw.Min, Yaw.Trim, -100, 0);
-  }
-  else if (Yaw.Reading > Yaw.Trim) {
-    Yaw.Output = map(Yaw.Reading, Yaw.Trim, Yaw.Max, 0, 100);
-  }
-  Yaw.Output = - Yaw.Output; //reverse yaw output
-
-  if (Pitch.Reading <= Pitch.Trim) {    //------------------------------pitch
-   Pitch.Output = map(Pitch.Reading, Pitch.Min, Pitch.Trim, -100, 0);
-  }
-  else if (Pitch.Reading > Pitch.Trim) {
-    Pitch.Output = map(Pitch.Reading, Pitch.Trim, Pitch.Max, 0, 100);
-  }
-
-  if (Roll.Reading <= Roll.Trim) {    //------------------------------roll
-    Roll.Output = map(Roll.Reading, Roll.Min, Roll.Trim, -100, 0);
-  }
-  else if (Roll.Reading > Roll.Trim) {
-    Roll.Output = map(Roll.Reading, Roll.Trim, Roll.Max, 0, 100);
-  }
-    Roll.Output = - Roll.Output; //reverse roll output
-
-  Throttle.Output = constrain(Throttle.Output, -100, 100);
-  Yaw.Output = constrain(Yaw.Output, -100, 100);
-  Pitch.Output = constrain(Pitch.Output, -100, 100);
-  Roll.Output = constrain(Roll.Output, -100, 100);
-
-}
-
-
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------VOID-DRAW-PAGE---------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
- 
-void DrawScreen(void) {
-  u8g2.setFont(u8g2_font_5x7_tr);
-  u8g2.setCursor(123, 57);
-  u8g2.print(page);
-
-
-if (page == 0){ //--------------------------------------------------Page-0--------------------------------------------------
-  u8g2.drawXBMP( 0, 0, 60, 64, Puma);
-  
-  u8g2.setFont(u8g2_font_fub17_tr);
-  u8g2.setCursor(63, 27);
-  u8g2.print("Puma");
-  u8g2.setFont(u8g2_font_fub25_tr);
-  u8g2.setCursor(64, 54);
-  u8g2.print("TX");
-  
-}
-
-if (page == 1){ //--------------------------------------------------Page-1--------------------------------------------------
-  
-  //Throttle
-  u8g2.setCursor(0, 8); 
-  u8g2.print("Throttle:");
-  u8g2.setCursor(0, 16);
-  u8g2.print(Throttle.Reading);
-  u8g2.setCursor(0, 24);
-  u8g2.print(Throttle.Output);
-  
-  //Yaw
-  u8g2.setCursor(0, 32); 
-  u8g2.print("Yaw:");
-  u8g2.setCursor(0, 40);
-  u8g2.print(Yaw.Reading);
-  u8g2.setCursor(0, 48);
-  u8g2.print(Yaw.Output);
-  
-  //Pitch
-  u8g2.setCursor(64, 8); 
-  u8g2.print("Pitch:");
-  u8g2.setCursor(64, 16);
-  u8g2.print(Pitch.Reading);
-  u8g2.setCursor(64, 24);
-  u8g2.print(Pitch.Output);
-  
-  //Roll
-  u8g2.setCursor(64, 32); 
-  u8g2.print("Roll:");
-  u8g2.setCursor(64, 40);
-  u8g2.print(Roll.Reading);
-  u8g2.setCursor(64, 48);
-  u8g2.print(Roll.Output);
-
-  u8g2.setCursor(0, 56); 
-  u8g2.print(LeftPot.Output);
-  u8g2.setCursor(0, 64);
-  //u8g2.print(Arm.Output);
-  u8g2.print(Arm.Output);
-
-  u8g2.setCursor(64, 56); 
-  u8g2.print(RightPot.Output);
-  u8g2.setCursor(64, 64);
-  u8g2.print(Pre.Output);  
-
-}
-
-if (page == 2){ //--------------------------------------------------Page-2--------------------------------------------------
-
-  //Draw Left Joystick
-  LeftJoy.x = map(Yaw.Output, -100, 100, 8, 56);   
-  LeftJoy.y = map(Throttle.Output, 100, -100, 8, 56);
-  u8g2.drawCircle(32, 32, 20);
-  u8g2.drawCircle(LeftJoy.x, LeftJoy.y, 2);
-  u8g2.drawLine(32, 32, LeftJoy.x, LeftJoy.y);
-  
-  //Draw Right Joystick
-  RightJoy.x = map(Roll.Output, -100, 100, 72, 120);  
-  RightJoy.y = map(Pitch.Output, 100, -100, 8, 56);
-  u8g2.drawCircle(96, 32, 20);
-  u8g2.drawCircle(RightJoy.x, RightJoy.y, 2);
-  u8g2.drawLine(96, 32, RightJoy.x, RightJoy.y);
-
-  //Serial.print(xgraph1);
-  //Serial.print(" ");
-  //Serial.print(ygraph1);
-  //Serial.print(" ");
-  //Serial.print(xgraph2);
-  //Serial.print(" ");
-  //Serial.println(ygraph2);
-   
-  
-}
-
-
-if (page == 3){ //--------------------------------------------------Page-3--------------------------------------------------
-
-  u8g2.setFont(u8g_font_unifont);
-  u8g2.setCursor(0, 11);
-  u8g2.print("Setup");
-  u8g2.setFont(u8g_font_5x7);
-  u8g2.setCursor(0, 20);
-  u8g2.print(Firmware);
-  
-  //Voltage
-  u8g2.setFont(u8g_font_5x7);
-  u8g2.setCursor(0, 50);
-  u8g2.print("Voltage:");
-  u8g2.setCursor(0, 57);
-  u8g2.print(Voltage.State);
-
-  }
-
-
-if (page == 4){ //--------------------------------------------------Page-4-------------------------------------------------- 
-  u8g2.setFont(u8g_font_unifont);
-  u8g2.setCursor(0, 11);
-  u8g2.print("Config");
-  u8g2.setFont(u8g_font_5x7);
-  u8g2.setCursor(0, 20);
-  u8g2.print("OTA:");
-  u8g2.setCursor(25, 20);
-  u8g2.print("OTA.State");
-  u8g2.setCursor(0, 27);
-  u8g2.print("");
- 
-  
-  }
-if (page == 5){ //--------------------------------------------------Page-5--------------------------------------------------
-  u8g2.clear();
-  esp_deep_sleep_start();
-  }
-}
-
-//===============================================================================================================================================================================================================
-//----------------------------------------------------------------------------------------------------VOID-END-SCREEN--------------------------------------------------------------------------------------------
-//==============================================================================================================================================================================================================
-
-
-
-
-//===============================================================================================================================================================================================================
-//---------------------------------------------------------------------------------------------------VOID-SBUS---------------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
-void sbusPreparePacket(uint8_t packet[], int channels[], bool isSignalLoss, bool isFailsafe){
-
-    static int output[SBUS_CHANNEL_NUMBER] = {0};
-
-    
-     //Map 1000-2000 with middle at 1500 chanel values to
-     //173-1811 with middle at 992 S.BUS protocol requires
-     
-    for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
-        output[i] = map(channels[i], RC_CHANNEL_MIN, RC_CHANNEL_MAX, SBUS_MIN_OFFSET, SBUS_MAX_OFFSET);
-    }
-
-    uint8_t stateByte = 0x00;
-    if (isSignalLoss) {
-        stateByte |= SBUS_STATE_SIGNALLOSS;
-    }
-    if (isFailsafe) {
-        stateByte |= SBUS_STATE_FAILSAFE;
-    }
-    packet[0] = SBUS_FRAME_HEADER; //Header
-
-    packet[1] = (uint8_t) (output[0] & 0x07FF);
-    packet[2] = (uint8_t) ((output[0] & 0x07FF)>>8 | (output[1] & 0x07FF)<<3);
-    packet[3] = (uint8_t) ((output[1] & 0x07FF)>>5 | (output[2] & 0x07FF)<<6);
-    packet[4] = (uint8_t) ((output[2] & 0x07FF)>>2);
-    packet[5] = (uint8_t) ((output[2] & 0x07FF)>>10 | (output[3] & 0x07FF)<<1);
-    packet[6] = (uint8_t) ((output[3] & 0x07FF)>>7 | (output[4] & 0x07FF)<<4);
-    packet[7] = (uint8_t) ((output[4] & 0x07FF)>>4 | (output[5] & 0x07FF)<<7);
-    packet[8] = (uint8_t) ((output[5] & 0x07FF)>>1);
-    packet[9] = (uint8_t) ((output[5] & 0x07FF)>>9 | (output[6] & 0x07FF)<<2);
-    packet[10] = (uint8_t) ((output[6] & 0x07FF)>>6 | (output[7] & 0x07FF)<<5);
-    packet[11] = (uint8_t) ((output[7] & 0x07FF)>>3);
-    packet[12] = (uint8_t) ((output[8] & 0x07FF));
-    packet[13] = (uint8_t) ((output[8] & 0x07FF)>>8 | (output[9] & 0x07FF)<<3);
-    packet[14] = (uint8_t) ((output[9] & 0x07FF)>>5 | (output[10] & 0x07FF)<<6);  
-    packet[15] = (uint8_t) ((output[10] & 0x07FF)>>2);
-    packet[16] = (uint8_t) ((output[10] & 0x07FF)>>10 | (output[11] & 0x07FF)<<1);
-    packet[17] = (uint8_t) ((output[11] & 0x07FF)>>7 | (output[12] & 0x07FF)<<4);
-    packet[18] = (uint8_t) ((output[12] & 0x07FF)>>4 | (output[13] & 0x07FF)<<7);
-    packet[19] = (uint8_t) ((output[13] & 0x07FF)>>1);
-    packet[20] = (uint8_t) ((output[13] & 0x07FF)>>9 | (output[14] & 0x07FF)<<2);
-    packet[21] = (uint8_t) ((output[14] & 0x07FF)>>6 | (output[15] & 0x07FF)<<5);
-    packet[22] = (uint8_t) ((output[15] & 0x07FF)>>3);
-
-    packet[23] = stateByte; //Flags byte
-    packet[24] = SBUS_FRAME_FOOTER; //Footer
-}
-
-
-//===============================================================================================================================================================================================================
-//---------------------------------------------------------------------------------------------------END-VOID-SBus-----------------------------------------------------------------------------------------------
-//===============================================================================================================================================================================================================
