@@ -1,0 +1,10 @@
+.project
+.cproject
+.settings/
+
+# IDEs
+.vs/
+.idea/
+
+# CMake
+cmake-build-debug/
