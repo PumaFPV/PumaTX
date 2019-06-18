@@ -1,11 +1,12 @@
+
 void SoftPower(){
 
   if(Pwr.Pin == 0 && Step == 0){
     Pwr.Time = millis();
     if(millis() - Pwr.Time > 300 && millis() - Pwr.Time < 700){
-      Step = 1
+      Step = 1;
     }
-    */
+    
   }
 
   if(Step == 1 && Pwr.Pin == 1){
@@ -22,7 +23,11 @@ void SoftPower(){
   }
 
   if(Step == 3 && Pwr.Pin == 1){
-    Power(); 
+    PowerProcedure = 1; 
   }
+  
+}
+
+void Power(){   //What should be done when power on/off protocol has been done
   
 }

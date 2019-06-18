@@ -1,35 +1,23 @@
+#include "Variables.h"
 
-void SBusInit(){
-  
-   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
-        rcChannels[i] = 1500;
-    }
-    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
-}
+#define RC_CHANNEL_MIN -100  
+#define RC_CHANNEL_MAX 100   
 
-void SBus(){
-  
-  rcChannels[0] = Throttle.Output;
-  rcChannels[1] = Pitch.Output;
-  rcChannels[2] = Roll.Output;
-  rcChannels[3] = Yaw.Output;
-  rcChannels[4] = Arm.Output;
-  rcChannels[5] = Pre.Output;    
-  rcChannels[6] = RightPot.Output;
-  rcChannels[7] = LeftPot.Output; 
-  rcChannels[8] = RTH.Output;
-  
-  uint32_t currentMillis = millis();
+#define SBUS_MIN_OFFSET 173
+#define SBUS_MID_OFFSET 992
+#define SBUS_MAX_OFFSET 1811
+#define SBUS_CHANNEL_NUMBER 16
+#define SBUS_PACKET_LENGTH 25
+#define SBUS_FRAME_HEADER 0x0f
+#define SBUS_FRAME_FOOTER 0x00
+#define SBUS_FRAME_FOOTER_V2 0x04
+#define SBUS_STATE_FAILSAFE 0x08
+#define SBUS_STATE_SIGNALLOSS 0x04
+#define SBUS_UPDATE_RATE 15 //ms  
 
-    if (currentMillis > sbusTime) {
-      
-        sbusPreparePacket(sbusPacket, rcChannels, false, false);
-        Serial2.write(sbusPacket, SBUS_PACKET_LENGTH);
-
-        sbusTime = currentMillis + SBUS_UPDATE_RATE;
-    }
-    
-}
+uint8_t sbusPacket[SBUS_PACKET_LENGTH];
+int rcChannels[SBUS_CHANNEL_NUMBER];
+uint32_t sbusTime = 0;
 
 void sbusPreparePacket(uint8_t packet[], int channels[], bool isSignalLoss, bool isFailsafe){
 
@@ -77,4 +65,36 @@ void sbusPreparePacket(uint8_t packet[], int channels[], bool isSignalLoss, bool
 
     packet[23] = stateByte; //Flags byte
     packet[24] = SBUS_FRAME_FOOTER; //Footer
+}
+
+void SBusInit(){
+  
+   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
+        rcChannels[i] = 1500;
+    }
+    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
+}
+
+void SBus(){
+  
+  rcChannels[0] = Throttle.Output;
+  rcChannels[1] = Pitch.Output;
+  rcChannels[2] = Roll.Output;
+  rcChannels[3] = Yaw.Output;
+  rcChannels[4] = Arm.Output;
+  rcChannels[5] = Pre.Output;    
+  rcChannels[6] = RightPot.Output;
+  rcChannels[7] = LeftPot.Output; 
+  rcChannels[8] = RTH.Output;
+  
+  uint32_t currentMillis = millis();
+
+    if (currentMillis > sbusTime) {
+      
+        sbusPreparePacket(sbusPacket, rcChannels, false, false);
+        Serial2.write(sbusPacket, SBUS_PACKET_LENGTH);
+
+        sbusTime = currentMillis + SBUS_UPDATE_RATE;
+    }
+    
 }

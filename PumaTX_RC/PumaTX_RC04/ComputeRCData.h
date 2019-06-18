@@ -1,3 +1,12 @@
+void GetMLXData(){
+  
+  Throttle.Reading = mlx.getThrottle();
+  Yaw.Reading = mlx.getYaw();
+  Pitch.Reading = mlx.getPitch();
+  Roll.Reading = mlx.getRoll();
+  
+}
+
 void ComputeRC2(){
   
   if(Throttle.Reading < 35){

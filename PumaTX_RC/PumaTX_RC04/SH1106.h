@@ -1,29 +1,10 @@
+#ifndef SH1106_h
+#define SH1106_h
 
-void OptimizeScreenUsage(){
-  if (ScreenPwr == 1 && page == 0){
-    delay(500);
-    ScreenPwr = 0;
-    //Serial.println(ScreenPwr);
-  }
+#include "XBMP.h"
 
-  if (page == 1 && ScreenPwr == 0){
-    ScreenPwr = 1;
-  }
 
-  if (ScreenPwr == 1){
-    Screen();
-  }
-  
-}
 
-void Screen(){
-  
-    u8g2.firstPage();  
-    do {
-      DrawScreen();
-    } while ( u8g2.nextPage() );
-    
-}
 
 void DrawScreen(void) {
   u8g2.setFont(u8g2_font_5x7_tr);
@@ -156,3 +137,31 @@ if (page == 5){ //--------------------------------------------------Page-5------
   esp_deep_sleep_start();
   }
 }
+
+void Screen(){
+  
+    u8g2.firstPage();  
+    do {
+      DrawScreen();
+    } while ( u8g2.nextPage() );
+    
+}
+
+void OptimizeScreenUsage(){
+  if (ScreenPwr == 1 && page == 0){
+    delay(500);
+    ScreenPwr = 0;
+    //Serial.println(ScreenPwr);
+  }
+
+  if (page == 1 && ScreenPwr == 0){
+    ScreenPwr = 1;
+  }
+
+  if (ScreenPwr == 1){
+    Screen();
+  }
+  
+}
+
+#endif
