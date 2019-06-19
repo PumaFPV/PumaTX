@@ -5,6 +5,10 @@
  * Make navigation easier
  * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
  */
+#define RC 1 //SBus
+//#define RC 2 //Mavlink //Need some work to add rc link & telemetry
+
+
 
 #include <Arduino.h>
 #include <U8g2lib.h>
@@ -27,14 +31,19 @@ U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 #include "Buttons.h"
 #include "ComputeRCData.h"
 #include "EEPROM.h"
-//#include "FrSkyX.h" //Need some work to add bind and rx num functionnality
-#include "Mavlink2.h" //Need some work to add rc link & telemetry
 #include "Navigation.h" //Need some work to add highlights
-#include "SBus.h"
 #include "SH1106.h"
 #include "ShowSketchName.h"
 #include "SoftPower.h"  //Need some work 
 #include "XBMP.h"
+
+#if (RC == 1)
+#include "SBus.h"
+//#include "FrSkyX.h" //Need some work to add bind and rx num functionnality
+#endif
+#if (RC == 2)
+#include "Mavlink2.h"
+#endif
 
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------SETUP------------------------------------------------------------------------------------------------------
@@ -71,8 +80,9 @@ void loop(void){
   SBus();
   Navigation();
   //OptimizeScreenUsage();
-  Screen();
   ReadVoltage();
+  Screen();
+
   Serial.println(Pwr.State);
 
 }

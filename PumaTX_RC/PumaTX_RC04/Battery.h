@@ -14,7 +14,6 @@ int getBatteryVoltage(){
 
 
 
-
 int getBatteryPercentage(){
 
   if(Voltage.State > 4.2){
