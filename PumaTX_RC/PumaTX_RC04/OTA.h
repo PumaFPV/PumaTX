@@ -1,5 +1,5 @@
- const char* ssid = "NICOLASDG";
- const char* password = "Nico1809";
+ const char* ssid = "HP-Nico";
+ const char* password = "nico1809";
 
 
 
