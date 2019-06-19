@@ -23,6 +23,5 @@ void ProcessButtons(){
   Pre.State = digitalRead(Pre.Pin);
   RTH.State = digitalRead(RTH.Pin);
   Pwr.State = digitalRead(Pwr.Pin);
-  digitalWrite(LED.Pin, Arm.State);
   
 }

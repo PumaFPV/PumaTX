@@ -5,6 +5,10 @@
  * Make navigation easier
  * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
  */
+const char* ssid = "HP-Nico";
+const char* password = "nico1809";
+
+
 #define RC 1 //SBus
 //#define RC 2 //Mavlink //Need some work to add rc link & telemetry
 
@@ -33,7 +37,6 @@ U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 #include "EEPROM.h"
 #include "Navigation.h" //Need some work to add highlights
 #include "SH1106.h"
-#include "ShowSketchName.h"
 #include "SoftPower.h"  //Need some work 
 #include "XBMP.h"
 
@@ -48,6 +51,17 @@ U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------SETUP------------------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
+void GetSketchName(){
+  
+    String path = __FILE__;
+    int slash = path.lastIndexOf('\x5C');
+    String the_cpp_name = path.substring(slash+1);
+    int dot_loc = the_cpp_name.lastIndexOf('.');
+    Firmware = the_cpp_name.substring(0, dot_loc);
+    //Serial.println(Firmware);
+    
+}
+
 void setup(void){
   
   Wire.begin();   // Initialise I2C communication as MASTER
@@ -57,11 +71,11 @@ void setup(void){
   mlx.begin();  //Initialise MLX
 
   FirstBoot();
-  ShowSketchName(); 
   OTASetup();
   PinModeDef();
   ReadEEPROM();  
   SBusInit();
+  GetSketchName();
 
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
   
@@ -82,7 +96,7 @@ void loop(void){
   //OptimizeScreenUsage();
   ReadVoltage();
   Screen();
-
-  Serial.println(Pwr.State);
+  SoftPower();
+  Serial.println(Step);
 
 }
