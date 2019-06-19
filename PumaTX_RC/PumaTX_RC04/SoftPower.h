@@ -1,4 +1,3 @@
-
 void SoftPower(){
 
   if(Pwr.Pin == 0 && Step == 0){
@@ -27,6 +26,8 @@ void SoftPower(){
   }
   
 }
+
+
 
 void Power(){   //What should be done when power on/off protocol has been done
   

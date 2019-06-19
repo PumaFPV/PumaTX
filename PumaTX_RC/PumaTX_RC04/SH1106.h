@@ -147,6 +147,8 @@ void Screen(){
     
 }
 
+
+
 void OptimizeScreenUsage(){
   if (ScreenPwr == 1 && page == 0){
     delay(500);

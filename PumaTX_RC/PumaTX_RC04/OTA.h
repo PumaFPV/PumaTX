@@ -1,7 +1,7 @@
-
-
  const char* ssid = "NICOLASDG";
  const char* password = "Nico1809";
+
+
 
 void OTASetup(){
   

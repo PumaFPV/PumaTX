@@ -1,29 +1,21 @@
-
 void ReadVoltage(){
   
   Voltage.State = analogRead(Voltage.Pin) * ( 5.00 / 1023.00) / 0.4443;
   
 }
 
-void ShowBatteryVoltage(void){
-  u8g2.setFont(u8g_font_5x7);
-  u8g2.setCursor(0, 50);
-  u8g2.print("Voltage:");
-  u8g2.setCursor(0, 57);
-  u8g2.print(Voltage.State);
 
-  int BatteryPercentage = 0;
-  float lipo100 = 4.2;
-  float lipo90 = 4.13;
-  float lipo80 = 4.06;
-  float lipo70 = 3.99;
-  float lipo60 = 3.92;
-  float lipo50 = 3.85;
-  float lipo40 = 3.78;
-  float lipo30 = 3.71;
-  float lipo20 = 3.64;
-  float lipo10 = 3.57;
-  float lipo0 = 3.5;
+
+int getBatteryVoltage(){
+  
+  return Voltage.State;
+
+}
+
+
+
+
+int getBatteryPercentage(){
 
   if(Voltage.State > 4.2){
     BatteryPercentage = 100;
@@ -70,11 +62,6 @@ void ShowBatteryVoltage(void){
     }
   else BatteryPercentage = 0;
   
-  u8g2.setFont(u8g_font_5x7);
-  u8g2.setCursor(0, 50);
-  u8g2.print("Voltage:");
-  u8g2.setCursor(0, 57);
-  u8g2.print(Voltage.State);
-
+return BatteryPercentage;
   
 }

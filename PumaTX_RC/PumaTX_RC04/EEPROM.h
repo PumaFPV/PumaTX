@@ -21,6 +21,7 @@ void FirstBoot(){
 }
 
 
+
 void ReadEEPROM(){
   
   Throttle.Min = map(EEPROM.read(Throttle.EepromAddrMin), 0, 255, HallSensorMin, HallSensorMax);

@@ -15,22 +15,25 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "MLX.h"
+#include "mavlink2\common\mavlink.h"
 
 MLX mlx(0x0C, 0x0D);  //Left, Right
 U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
 #include "Variables.h"
 
-#include "OTA.h"
+#include "OTA.h"  //Need some work to add timeout
 #include "Battery.h"
 #include "Buttons.h"
 #include "ComputeRCData.h"
 #include "EEPROM.h"
-#include "Navigation.h"
+//#include "FrSkyX.h" //Need some work to add bind and rx num functionnality
+#include "Mavlink2.h" //Need some work to add rc link & telemetry
+#include "Navigation.h" //Need some work to add highlights
 #include "SBus.h"
 #include "SH1106.h"
 #include "ShowSketchName.h"
-#include "SoftPower.h"
+#include "SoftPower.h"  //Need some work 
 #include "XBMP.h"
 
 //===============================================================================================================================================================================================================

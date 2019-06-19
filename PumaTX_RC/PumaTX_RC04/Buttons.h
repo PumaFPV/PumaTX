@@ -1,4 +1,3 @@
-
 void PinModeDef(){
   
   pinMode(Right.Pin, INPUT_PULLUP);
@@ -13,6 +12,7 @@ void PinModeDef(){
   pinMode(LED.Pin, OUTPUT);
   
 }
+
 
 
 void ProcessButtons(){

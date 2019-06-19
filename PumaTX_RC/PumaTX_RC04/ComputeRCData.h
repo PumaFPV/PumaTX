@@ -7,6 +7,8 @@ void GetMLXData(){
   
 }
 
+
+
 void ComputeRC2(){
   
   if(Throttle.Reading < 35){
@@ -64,6 +66,8 @@ void ComputeRC2(){
   Pre.Output = map(Pre.State, 0, 1, 100, -100);
   
 }
+
+
 
 void Calibrate(){
   if (page == 1){   //Calibrate procedure begin
@@ -140,6 +144,7 @@ else
   calibrate = 0;
 
 }
+
 
 
 void ComputeRC(){

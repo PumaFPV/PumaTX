@@ -1,4 +1,3 @@
-#include "Variables.h"
 
 #define RC_CHANNEL_MIN -100  
 #define RC_CHANNEL_MAX 100   
@@ -19,12 +18,24 @@ uint8_t sbusPacket[SBUS_PACKET_LENGTH];
 int rcChannels[SBUS_CHANNEL_NUMBER];
 uint32_t sbusTime = 0;
 
+
+
+void SBusInit(){
+  
+   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
+        rcChannels[i] = 1500;
+    }
+    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
+}
+
+
+
 void sbusPreparePacket(uint8_t packet[], int channels[], bool isSignalLoss, bool isFailsafe){
 
     static int output[SBUS_CHANNEL_NUMBER] = {0};
 
     
-     //Map 1000-2000 with middle at 1500 chanel values to
+     //Map -100 100 with middle at 0 channel values to
      //173-1811 with middle at 992 S.BUS protocol requires
      
     for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
@@ -67,13 +78,7 @@ void sbusPreparePacket(uint8_t packet[], int channels[], bool isSignalLoss, bool
     packet[24] = SBUS_FRAME_FOOTER; //Footer
 }
 
-void SBusInit(){
-  
-   for (uint8_t i = 0; i < SBUS_CHANNEL_NUMBER; i++) {
-        rcChannels[i] = 1500;
-    }
-    Serial2.begin(100000, SERIAL_8E2);  //SERIAL SBUS 
-}
+
 
 void SBus(){
   

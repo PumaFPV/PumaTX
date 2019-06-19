@@ -1,5 +1,3 @@
-
-
 void Navigation(){
   
     Ok.State = digitalRead(Ok.Pin);

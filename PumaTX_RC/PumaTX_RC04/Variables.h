@@ -96,5 +96,18 @@ String Firmware;
 int Step = 0;
 int PowerProcedure = 0;
 
+int BatteryPercentage = 0;
+
+float lipo100 = 4.2;
+float lipo90 = 4.13;
+float lipo80 = 4.06;
+float lipo70 = 3.99;
+float lipo60 = 3.92;
+float lipo50 = 3.85;
+float lipo40 = 3.78;
+float lipo30 = 3.71;
+float lipo20 = 3.64;
+float lipo10 = 3.57;
+float lipo0 = 3.5;
 
 #endif
