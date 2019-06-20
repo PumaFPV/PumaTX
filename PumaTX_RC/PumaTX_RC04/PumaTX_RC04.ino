@@ -25,8 +25,6 @@ const char* password = "nico1809";
 #include "MLX.h"
 #include "mavlink2\common\mavlink.h"
 
-MLX mlx(0x0C, 0x0D);  //Left, Right
-U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
 #include "Variables.h"
 
