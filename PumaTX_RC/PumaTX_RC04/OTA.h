@@ -1,3 +1,8 @@
+ const char* ssid = "HP-Nico";
+ const char* password = "nico1809";
+
+
+
 void OTASetup(){
   
   WiFi.mode(WIFI_STA);
