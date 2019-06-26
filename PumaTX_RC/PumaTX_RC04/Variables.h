@@ -17,7 +17,7 @@ U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
  
 //--------------------------------------------------struct--------------------------------------------------
-typedef struct Channel {    
+struct Channel {    
   int Reading;  //from -10000 to 10000
   int Min;  //MLX Scale
   int Max;  //MLX Scale
@@ -33,7 +33,7 @@ typedef struct Channel {
   bool reverse;
 };
 
-typedef struct Button {
+struct Button {
   uint8_t Pin;
   int State;
   int Output;
@@ -41,13 +41,13 @@ typedef struct Button {
   uint32_t Time;
 };
 
-typedef struct ADC {
+struct ADC {
   uint8_t Pin;
   float State;
   int Output;
 };
 
-typedef struct Graph {
+struct Graph {
   int x;
   int y;
 };
@@ -113,5 +113,8 @@ float lipo30 = 3.71;
 float lipo20 = 3.64;
 float lipo10 = 3.57;
 float lipo0 = 3.5;
+
+int ok;
+int Power;
 
 #endif

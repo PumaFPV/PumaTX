@@ -1,5 +1,4 @@
-const char* ssid = "HPNico";
-const char* password = "nico1809";
+
 
 
 

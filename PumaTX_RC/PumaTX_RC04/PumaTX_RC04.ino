@@ -61,7 +61,7 @@ void GetSketchName(){
 }
 
 void setup(void){
-  
+  Power = 1;
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  //Initialise Serial 1
   EEPROM.begin(12); //Initialise EEPROM and Ask for 12 addresses
@@ -74,6 +74,7 @@ void setup(void){
   ReadEEPROM();  
   SBusInit();
   GetSketchName();
+  SoftPowerInit();
 
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
   
@@ -94,7 +95,11 @@ void loop(void){
   //OptimizeScreenUsage();
   ReadVoltage();
   Screen();
-  SoftPower();
-  Serial.println(Step);
+  SoftPower0();
+  Serial.print((String)"State:" + Pause.State);
+  Serial.print("    ");
+  Serial.print((String)"Step:" + Step);
+  Serial.print("     ");
+  Serial.println((String)"Time:" + (millis() - Pwr.Time));  
 
 }
