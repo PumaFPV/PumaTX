@@ -8,9 +8,13 @@
 const char* ssid = "HP-Nico";
 const char* password = "nico1809";
 
+//#include "BluetoothSerial.h"
+//BluetoothSerial SerialBT;
+
 
 #define RC 1 //SBus
 //#define RC 2 //Mavlink //Need some work to add rc link & telemetry
+
 
 
 
@@ -23,7 +27,8 @@ const char* password = "nico1809";
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "MLX.h"
-#include "mavlink2\common\mavlink.h"
+#include "Libraries\mavlink2\common\mavlink.h"
+
 
 
 #include "Variables.h"
@@ -34,7 +39,7 @@ const char* password = "nico1809";
 #include "ComputeRCData.h"
 #include "EEPROM.h"
 #include "Navigation.h" //Need some work to add highlights
-#include "SH1106.h"
+#include "Screen.h"
 #include "SoftPower.h"  //Need some work 
 #include "XBMP.h"
 
@@ -61,6 +66,9 @@ void GetSketchName(){
 }
 
 void setup(void){
+  //SerialBT.begin("PumaTX"); //Bluetooth device name
+
+  
   Power = 1;
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  //Initialise Serial 1
@@ -94,12 +102,12 @@ void loop(void){
   Navigation();
   //OptimizeScreenUsage();
   ReadVoltage();
-  Screen();
+  ScreenLoop();
   SoftPower0();
-  Serial.print((String)"State:" + Pause.State);
-  Serial.print("    ");
-  Serial.print((String)"Step:" + Step);
-  Serial.print("     ");
-  Serial.println((String)"Time:" + (millis() - Pwr.Time));  
-
+/*  SerialBT.print((String)"State:" + Pause.State);
+  SerialBT.print("    ");
+  SerialBT.print((String)"Step:" + Step);
+  SerialBT.print("     ");
+  SerialBT.println((String)"Time:" + (millis() - Pwr.Time));  
+*/ 
 }

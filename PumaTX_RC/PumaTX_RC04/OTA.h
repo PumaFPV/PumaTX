@@ -1,7 +1,3 @@
-
-
-
-
 void OTASetup(){
   
   WiFi.mode(WIFI_STA);
