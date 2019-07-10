@@ -6,6 +6,57 @@ I want to make an alternative to OpenTX (it won't be as versatile of course) bas
 
 Which is supposed to be cheaper than conventional controllers such as a Taranis (less than 50€ is my goal but actual controller is more expensive so I'll have to try 3D print it)
 
+# Release Candidates:
+
+RC04: 
+	Software:
+		SBus
+		Hall Effect
+		Pots reading
+		Arm reading
+		Pre reading
+		Power on / off via sport switch
+		basic screen use + vbat + splash screen
+		
+	Hardware:
+		Micro USB (from controller)
+		2S LiPo
+		external RF (R9M)
+		
+RC05:
+	Software:
+		Interupts for buttons (so code can run faster)
+		MavLink (only rc, no telemetry) & choice between SBus and MavLink when compiling
+		SoftPower
+		LED for power
+		
+	Hardware:
+		1S battery + USB charger + boost converter
+		MavLink module
+		
+RC06:
+	Software:
+		Menu Navigation
+		
+	Hardware:
+		Turn on / off stuff (transistor & MOSFET)
+		Fan
+		Haptic
+		
+RC07:
+	Software:
+		Bluetooth HID
+		
+RC08:
+
+RC09:
+
+RC10:
+	Hardware:
+		Homemade PCB
+		
+		
+
 # Required specs:
 -Read data from the hall effect MLX sensors from the controller
 
