@@ -12,9 +12,10 @@ RC04:
 	Software:
 		SBus
 		Hall Effect
-		Pots reading
+		Pots reading (Left pot mode switch left = down ; Riight = up ; RTH = overwrite)
 		Arm reading
 		Pre reading
+		RTH reading
 		Power on / off via sport switch
 		basic screen use + vbat + splash screen
 		
@@ -22,11 +23,15 @@ RC04:
 		Micro USB (from controller)
 		2S LiPo
 		external RF (R9M)
+		USB 2.0 (or 3.0 if I find one,) to plug in module (gnd, 5v, VBat, Tx)
+		Support for JR module in phone holder
 		
 RC05:
 	Software:
 		Interupts for buttons (so code can run faster)
-		MavLink (only rc, no telemetry) & choice between SBus and MavLink when compiling
+		MavLink (only rc, no telemetry) 
+		MavLink Bluetooth Passthrough
+		Choice between SBus and MavLink when compiling
 		SoftPower
 		LED for power
 		
@@ -48,13 +53,21 @@ RC07:
 		Bluetooth HID
 		
 RC08:
+	Software:
+		MavLink telemetry screen
 
 RC09:
-
+	Software:
+		CVBS Screen
+		
+	Hardware:
+		USB 3.0 (5v, gnd, tx, rx, vid, 1, 2, 3)
+	
 RC10:
 	Hardware:
 		Homemade PCB
-		
+		C1, C2
+		Haptic
 		
 
 # Required specs:

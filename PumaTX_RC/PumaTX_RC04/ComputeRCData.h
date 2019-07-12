@@ -38,8 +38,18 @@ void ComputeRC2(){
   RightPot.Output = map(RightPot.State, 0, 4095, 100, -100);
   constrain(RightPot.Output, -100, 100);
 
+/*
   LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
   constrain(LeftPot.Output, -100, 100);
+*/
+  LeftPot.Process = map(LeftPot.State, 3570, 440, -100, 100);
+
+  if (LeftPot.Process > 75 && millis() - currenttime > debouncedelay) {
+    LeftPot.Output += 40;
+  }
+  if (LeftPot.Process > -75 && millis() - currenttime > debouncedelay) {
+    LeftPot.Output -= 40;
+  }
 
   if (Arm.State == 0 && Arm.Prev == 1 && millis() - currenttime > debouncedelay) {
     if (Arm.Output == -100)
@@ -61,7 +71,7 @@ void ComputeRC2(){
     currenttime = millis();    
   }
 
-  Arm.Prev = Arm.State;
+  RTH.Prev = RTH.State;
 
   Pre.Output = map(Pre.State, 0, 1, 100, -100);
   

@@ -1,10 +1,3 @@
- /*TO-DO
- * 1- Make OTA timeout if no wifi instead of rebooting the ESP32 (OTA is now turned off)
- * 2- Soft Power
- * Turn off OTA via menu
- * Make navigation easier
- * Make calibration easier (Menu-> Calibrate -> press once, calibrate, press to stop calibration)
- */
 const char* ssid = "HP-Nico";
 const char* password = "nico1809";
 
@@ -27,7 +20,7 @@ const char* password = "nico1809";
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "MLX.h"
-#include "Libraries\mavlink2\common\mavlink.h"
+//#include "Libraries\mavlink2\common\mavlink.h"
 
 
 
@@ -100,8 +93,8 @@ void loop(void){
   ProcessButtons();
   SBus();
   Navigation();
-  //OptimizeScreenUsage();
-  ReadVoltage();
+  OptimizeScreenUsage();
+  getBatteryVoltage();
   ScreenLoop();
   SoftPower0();
 /*  SerialBT.print((String)"State:" + Pause.State);

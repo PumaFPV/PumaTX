@@ -1,13 +1,6 @@
-void ReadVoltage(){
-  
-  Voltage.State = analogRead(Voltage.Pin) * ( 5.00 / 1023.00) / 0.4443;
-  
-}
-
-
-
 int getBatteryVoltage(){
   
+  Voltage.State = analogRead(Voltage.Pin) * ( 5.00 / 1023.00) / 0.4443;
   return Voltage.State;
 
 }

@@ -1,6 +1,4 @@
 void Navigation(){
-  
-
     
   if (Right.State == 0 && page < MaxPage) { //menu right -> page+
     ++page;

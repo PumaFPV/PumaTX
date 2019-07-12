@@ -44,6 +44,7 @@ struct Button {
 struct ADC {
   uint8_t Pin;
   float State;
+  int Process;
   int Output;
 };
 
@@ -71,9 +72,9 @@ Button LED = {2, 1, 1, 1, 0};
 //Button C1 = {pin, 1, 1, 1, 0};
 //Button C2 = {pin, 1, 1, 1, 0};
 
-ADC Voltage = {A7, 0.00, 0}; //GPIO35
-ADC LeftPot = {A6, 0.0, 0};  //GPIO34
-ADC RightPot = {A3, 0.0, 0}; //GPIO39
+ADC Voltage = {A7, 0.00, 0, 0}; //GPIO35
+ADC LeftPot = {A6, 0.0, 0, 0};  //GPIO34
+ADC RightPot = {A3, 0.0, 0, 0}; //GPIO39
 
 Graph LeftJoy = {0, 0};
 Graph RightJoy = {0, 0};
