@@ -77,7 +77,7 @@ void setup(void){
   GetSketchName();
   SoftPowerInit();
 
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
+  //esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
   
 }
 
@@ -96,8 +96,8 @@ void loop(void){
   OptimizeScreenUsage();
   getBatteryVoltage();
   ScreenLoop();
-  SoftPower0();
-/*  SerialBT.print((String)"State:" + Pause.State);
+  
+  /*  SerialBT.print((String)"State:" + Pause.State);
   SerialBT.print("    ");
   SerialBT.print((String)"Step:" + Step);
   SerialBT.print("     ");

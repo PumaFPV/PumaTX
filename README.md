@@ -12,7 +12,7 @@ RC04:
 	Software:
 		SBus
 		Hall Effect
-		Pots reading (Left pot mode switch left = down ; Riight = up ; RTH = overwrite)
+		Pots reading (Left pot mode switch left = down ; Right = up ; RTH = overwrite)
 		Arm reading
 		Pre reading
 		RTH reading
@@ -30,7 +30,7 @@ RC05:
 	Software:
 		Interupts for buttons (so code can run faster)
 		MavLink (only rc, no telemetry) 
-		MavLink Bluetooth Passthrough
+		MavLink Bluetooth Passthrough (Uses to much memory, will have to sort it out for another release)
 		Choice between SBus and MavLink when compiling
 		SoftPower
 		LED for power
