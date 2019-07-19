@@ -1,5 +1,13 @@
-#include "mavlink2\common\mavlink.h"
+#include <string.h>
+#include <Arduino.h>
+#include <mavlink.h>
 
+//#include "Libraries\mavlink2\common\mavlink.h"
+
+int len;
+
+//Reflects connection with the ESP32
+static const String PINGING = "PINGING";
 //Reflects connection with the drone
 static const String HEARTBEATING = "HEARTBEATING";
 //Set of the drone's state commands
@@ -74,46 +82,106 @@ void MavlinkSetup(){
   
 }
 
+void mav_rc_process(){
+  Throttle.PPM = map(Throttle.Output, -100, 100, 1000, 2000);
+  Yaw.PPM = map(Yaw.Output, -100, 100, 1000, 2000);
+  Pitch.PPM = map(Pitch.Output, -100, 100, 1000, 2000);
+  Roll.PPM = map(Roll.Output, -100, 100, 1000, 2000);
+  
+  switch(LeftPot.Output){
+    case -100:  current_mode = STABILIZE;
+      break;
+    case -60: current_mode = ALTHOLD;
+      break;
+    case -20: current_mode = AUTO;
+      break;
+    case 20:  current_mode = LOITER;
+      break;
+    case 60:  current_mode = CIRCLE;
+      break;
+    case 100: current_mode = STABILIZE;
+      break;
+  }
+  
+  switch(Arm.Output){
+    case -100: current_arm = false;
+      break;
+    case 100: current_arm = true;
+      break;
+  }
+}
 
-void MavlinkLoop(){
-  // Initialize the required buffers
-  mavlink_rc_channels_override_t sp;
+
+void mav_heartbeat_pack() {
+  mavlink_message_t msg;
+  uint8_t buf[MAVLINK_MAX_PACKET_LEN];
+  
+  // Pack the message
+  mavlink_msg_heartbeat_pack(255,0, &msg, type, autopilot_type, system_mode, custom_mode, system_state);
+  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
+  SerialMAV.write(buf, len);
+}
+
+void mav_arm_pack(boolean state) {
   mavlink_message_t msg;
   uint8_t buf[MAVLINK_MAX_PACKET_LEN];
 
-  //We have to send the heartbeats to indicate side by side connection
-  mav_heartbeat_pack();
+  //Arm the drone
+  //400 stands for MAV_CMD_COMPONENT_ARM_DISARM
+  // 1 an 8'th argument is for ARM (0 for DISARM)
+  if(state) {
+    //ARM
+    mavlink_msg_command_long_pack(0xFF, 0xBE, &msg, 1, 1, 400, 1,1.0,0,0,0,0,0,0);
+  }else {
+    //DISARM
+    mavlink_msg_command_long_pack(0xFF, 0xBE, &msg, 1, 1, 400, 1,0.0,0,0,0,0,0,0);
+  }
+  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
+  SerialMAV.write(buf, len);
+}
 
-  mav_set_mode(current_mode);
+void mav_set_mode(String value) {
+  mavlink_message_t msg;
+  uint8_t buf[MAVLINK_MAX_PACKET_LEN];
 
-  mav_arm_pack(current_arm);
+  value.trim();
 
-  // ROLL, PITCH, THROTTLE, YAW
-  mav_override_rc(current_roll, current_pitch, current_throttle, current_yaw);
-
-  // Send the message with the standard UART send function
-  // uart0_send might be named differently depending on
-  // the individual microcontroller / library in use.
-  unsigned long currentMillisMAVLink = millis();
-  if (currentMillisMAVLink - previousMillisMAVLink >= next_interval_MAVLink) {
-    // Timing variables
-    previousMillisMAVLink = currentMillisMAVLink;
-
-    SerialMAV.write(buf, len);
-
-    //Mav_Request_Data();
-    num_hbs_past++;
-    if(num_hbs_past>=num_hbs) {
-      // Request streams from APM
-      Mav_Request_Data();
-      num_hbs_past=0;
-    }
+  //SET_MODE
+  //Works with 1 at 4'th parameter
+  if (value == STABILIZE){
+    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 0);
   }
 
-  // Check reception buffer
-  comm_receive();
+  if (value == ALTHOLD){
+    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 2);
+  }
+
+  if (value == LOITER){
+    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 5);
+  }
+
+  if (value == AUTO){
+    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 3);
+  }
+
+  if (value == CIRCLE){
+    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 7);
+  }
   
+  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
+  SerialMAV.write(buf, len);  
 }
+
+void mav_override_rc(int roll, int pitch, int throttle, int yaw) {
+  mavlink_message_t msg;
+  uint8_t buf[MAVLINK_MAX_PACKET_LEN];
+
+  mavlink_msg_rc_channels_override_pack(0xFF, 0xBE, &msg, 1, 1, roll, pitch, throttle, yaw, 0, 0, 0, 0);
+  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
+  SerialMAV.write(buf, len);
+}
+
+
 
 void comm_receive() {
   mavlink_message_t msg;
@@ -122,7 +190,7 @@ void comm_receive() {
   while(SerialMAV.available()) {
     uint8_t c = SerialMAV.read();
     //Indicates data receive frequency
-    digitalWrite(LED_BUILTIN, HIGH);
+    //digitalWrite(LED_BUILTIN, HIGH);
         
     // Try to get a new message
     if(mavlink_parse_char(MAVLINK_COMM_0, c, &msg, &status)) {
@@ -312,71 +380,43 @@ void Mav_Request_Data(){
   }
 }
 
-void mav_heartbeat_pack() {
+void MavlinkLoop(){
+  mav_rc_process();
+  // Initialize the required buffers
+  mavlink_rc_channels_override_t sp;
   mavlink_message_t msg;
   uint8_t buf[MAVLINK_MAX_PACKET_LEN];
+
+  //We have to send the heartbeats to indicate side by side connection
+  mav_heartbeat_pack();
+
+  mav_set_mode(current_mode);
+
+  mav_arm_pack(current_arm);
+
+  // ROLL, PITCH, THROTTLE, YAW
+  mav_override_rc(Roll.PPM, Pitch.PPM, Throttle.PPM, Yaw.PPM);
+
+  // Send the message with the standard UART send function
+  // uart0_send might be named differently depending on
+  // the individual microcontroller / library in use.
+  unsigned long currentMillisMAVLink = millis();
+  if (currentMillisMAVLink - previousMillisMAVLink >= next_interval_MAVLink) {
+    // Timing variables
+    previousMillisMAVLink = currentMillisMAVLink;
+
+    SerialMAV.write(buf, len);
+
+    //Mav_Request_Data();
+    num_hbs_past++;
+    if(num_hbs_past>=num_hbs) {
+      // Request streams from APM
+      Mav_Request_Data();
+      num_hbs_past=0;
+    }
+  }
+
+  // Check reception buffer
+  comm_receive();
   
-  // Pack the message
-  mavlink_msg_heartbeat_pack(255,0, &msg, type, autopilot_type, system_mode, custom_mode, system_state);
-  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
-  SerialMAV.write(buf, len);
-}
-
-void mav_arm_pack(boolean state) {
-  mavlink_message_t msg;
-  uint8_t buf[MAVLINK_MAX_PACKET_LEN];
-
-  //Arm the drone
-  //400 stands for MAV_CMD_COMPONENT_ARM_DISARM
-  // 1 an 8'th argument is for ARM (0 for DISARM)
-  if(state) {
-    //ARM
-    mavlink_msg_command_long_pack(0xFF, 0xBE, &msg, 1, 1, 400, 1,1.0,0,0,0,0,0,0);
-  }else {
-    //DISARM
-    mavlink_msg_command_long_pack(0xFF, 0xBE, &msg, 1, 1, 400, 1,0.0,0,0,0,0,0,0);
-  }
-  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
-  SerialMAV.write(buf, len);
-}
-
-void mav_set_mode(String value) {
-  mavlink_message_t msg;
-  uint8_t buf[MAVLINK_MAX_PACKET_LEN];
-
-  value.trim();
-
-  //SET_MODE
-  //Works with 1 at 4'th parameter
-  if (value == STABILIZE){
-    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 0);
-  }
-
-  if (value == ALTHOLD){
-    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 2);
-  }
-
-  if (value == LOITER){
-    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 5);
-  }
-
-  if (value == AUTO){
-    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 3);
-  }
-
-  if (value == CIRCLE){
-    mavlink_msg_set_mode_pack(0xFF, 0xBE, &msg, 1, 209, 7);
-  }
-  
-  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
-  SerialMAV.write(buf, len);  
-}
-
-void mav_override_rc(int roll, int pitch, int throttle, int yaw) {
-  mavlink_message_t msg;
-  uint8_t buf[MAVLINK_MAX_PACKET_LEN];
-
-  mavlink_msg_rc_channels_override_pack(0xFF, 0xBE, &msg, 1, 1, roll, pitch, throttle, yaw, 0, 0, 0, 0);
-  uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
-  SerialMAV.write(buf, len);
 }

@@ -1,12 +1,12 @@
 const char* ssid = "HP-Nico";
-const char* password = "nico1809";
+const char* password = "Nico1809";
 
-//#include "BluetoothSerial.h"
-//BluetoothSerial SerialBT;
+/*#include "BluetoothSerial.h"
+BluetoothSerial SerialBT; */
 
 
-#define RC 1 //SBus
-//#define RC 2 //Mavlink //Need some work to add rc link & telemetry
+//#define RC 1 //SBus
+#define RC 2 //Mavlink //Need some work to add rc link & telemetry
 
 
 
@@ -20,7 +20,6 @@ const char* password = "nico1809";
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "MLX.h"
-//#include "Libraries\mavlink2\common\mavlink.h"
 
 
 
@@ -41,6 +40,7 @@ const char* password = "nico1809";
 //#include "FrSkyX.h" //Need some work to add bind and rx num functionnality
 #endif
 #if (RC == 2)
+//#include "Libraries\mavlink2\common\mavlink.h"
 #include "Mavlink2.h"
 #endif
 
@@ -75,9 +75,13 @@ void setup(void){
   OTASetup();
   PinModeDef();
   ReadEEPROM();  
-  SBusInit();
   GetSketchName();
-  
+  if (RC == 1){
+     // SBusInit();
+  }
+  if (RC == 2){
+    MavlinkSetup();
+  }
 }
 
 
@@ -90,7 +94,9 @@ void loop(void){
   //ComputeRC();
   ComputeRC2();
   ProcessButtons();
-  SBus();
+  if (RC == 1){
+     // SBus();
+  }
   Navigation();
   ScreenLoop();
   

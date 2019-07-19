@@ -16,28 +16,28 @@ RC04:
 		Arm reading
 		Pre reading
 		RTH reading
-		Power on / off via sport switch
-		basic screen use + vbat + splash screen
+§		Power on / off via sport switch
+§		basic screen use + vbat + splash screen
 		
 	Hardware:
-		Micro USB (from controller)
-		2S LiPo
-		external RF (R9M)
-		USB 2.0 (or 3.0 if I find one,) to plug in module (gnd, 5v, VBat, Tx)
-		Support for JR module in phone holder
+§		Micro USB (from controller)
+§		2S LiPo
+§		external RF (R9M)
+§		USB 2.0 (or 3.0 if I find one,) to plug in module (gnd, 5v, VBat, Tx)
+§		Support for JR module in phone holder
 		
 RC05:
 	Software:
 		Interupts for buttons (so code can run faster)
-		MavLink (only rc, no telemetry) 
-		MavLink Bluetooth Passthrough (Uses to much memory, will have to sort it out for another release)
-		Choice between SBus and MavLink when compiling
+§		MavLink (only rc, no telemetry) 
+§		MavLink Bluetooth Passthrough (Uses to much memory, will have to sort it out for another release)
+§		Choice between SBus and MavLink when compiling
 		SoftPower
-		LED for power
+§		LED for power
 		
 	Hardware:
-		1S battery + USB charger + boost converter
-		MavLink module
+§		1S battery + USB charger + boost converter
+§		MavLink module
 		
 RC06:
 	Software:

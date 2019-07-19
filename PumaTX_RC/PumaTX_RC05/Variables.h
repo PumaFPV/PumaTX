@@ -23,7 +23,7 @@ struct Channel {
   int Max;  //MLX Scale
   int Trim; //MLX Scale
   int Output; //-100 to 100
-  int SBus;
+  int PPM;
   const uint8_t EepromAddrMin;
   const uint8_t EepromAddrMax;
   const uint8_t EepromAddrTrim;
