@@ -59,10 +59,6 @@ void GetSketchName(){
 }
 
 void setup(void){
-
-  attachInterrupt(Pwr.Pin, SoftPower, FALLING);
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_4, 0);
-
   //SerialBT.begin("PumaTX"); //Bluetooth device name
 
   Wire.begin();   // Initialise I2C communication as MASTER
@@ -71,6 +67,7 @@ void setup(void){
   u8g2.begin(); //Initialise SH1106
   mlx.begin();  //Initialise MLX
 
+  SoftPowerInit();
   FirstBoot();
   OTASetup();
   PinModeDef();
