@@ -11,14 +11,16 @@
 #include "Pages\Page5.h"
 
 
+
 void ScreenGoodBye(){
-  u8g2.clear();
+	//DisplayBattery(false);
+	u8g2.clear();
 }
 
 void DrawScreen(void){
-  u8g2.setFont(u8g2_font_5x7_tr);
-  u8g2.setCursor(123, 57);
-  u8g2.print(page);
+	u8g2.setFont(u8g2_font_5x7_tr);
+	u8g2.setCursor(123, 57);
+	u8g2.print(page);
 
 
   if (page == 0){ //--------------------------------------------------Page-0--------------------------------------------------

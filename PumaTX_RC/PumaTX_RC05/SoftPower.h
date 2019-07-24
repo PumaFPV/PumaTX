@@ -8,6 +8,7 @@ void PowerON(){
 
 
 void PowerOFF(){
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_4, 0);
   digitalWrite(LED.Pin, LOW);
   ScreenGoodBye();
   delay(1000);
@@ -17,16 +18,53 @@ void PowerOFF(){
 
 void Power(){   //What should be done when power on/off protocol has been done
   Serial.println("Power procedure");  
-  if (Pwr.Output = 1){
+  if (Pwr.Output == 1){
     PowerOFF();
   }
-  else if (Pwr.Output = 0){
+  else if (Pwr.Output == 0){
     PowerON();
   }
 }
 
+void SP3(){
+  Pwr.FirstPress = millis();
+  while(Pwr.State == LOW){
+    Pwr.PressedTime = millis() - Pwr.FirstPress; 
+    if(1700 < millis() - Pwr.Time && millis() - Pwr.Time < 2300){
+      Power();
+    }
+    else if(2300 < millis() - Pwr.Time){
+      PowerOFF();
+    }
+  }
+}
 
-void IRAM_ATTR SoftPower(){
+void SP2(){
+  Pwr.FirstPress = millis();
+  while(Pwr.State == HIGH){
+	Pwr.PressedTime = millis() - Pwr.FirstPress;
+    if(850 < (millis() - Pwr.Time) && (millis() - Pwr.Time) < 1150){
+      SP3();
+    }
+    else if(1200 < millis() - Pwr.Time){
+		PowerOFF();
+    }
+  }
+}
+
+void IRAM_ATTR SP1(){
+  Pwr.FirstPress = millis();
+  detachInterrupt(Pwr.Pin);
+  while(Pwr.State == LOW){
+    //DisplayBattery(true);
+	Pwr.PressedTime = millis() - Pwr.FirstPress;
+    if(350 < Pwr.PressedTime && Pwr.PressedTime < 650){
+      SP2();
+    }
+  }
+}
+
+void IRAM_ATTR SoftPower(){ //uses steps 
  
   while(Step == 0 && Pwr.State == 0){ 
     Pwr.Time = millis();
@@ -63,6 +101,9 @@ void IRAM_ATTR SoftPower(){
     }
   
 }
+
+
+
 void IRAM_ATTR SoftPowerTimeout(){
  
   while(Step == 0 && Pwr.State == 0){ 
@@ -138,8 +179,10 @@ void SoftPower1(){
   }
 
 }
+
+
   
 void SoftPowerInit(){
-  attachInterrupt(Pwr.Pin, SoftPower, FALLING);
+  attachInterrupt(Pwr.Pin, SoftPower/* or SP1*/, FALLING);
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_4, 0);
 }

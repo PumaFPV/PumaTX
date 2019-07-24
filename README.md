@@ -29,10 +29,10 @@ RC04:
 RC05:
 	Software:
 		Interupts for buttons (so code can run faster)
-§		MavLink (only rc, no telemetry) 
+		MavLink (only rc, no telemetry) 
 §		MavLink Bluetooth Passthrough (Uses to much memory, will have to sort it out for another release)
 §		Choice between SBus and MavLink when compiling
-		SoftPower
+		SoftPower use only interrupt
 §		LED for power
 		
 	Hardware:
@@ -61,7 +61,7 @@ RC09:
 		CVBS Screen
 		
 	Hardware:
-		USB 3.0 (5v, gnd, tx, rx, vid, 1, 2, 3)
+		USB 3.0 (5v, gnd, tx, rx, vid, 1, 2, VBat)
 	
 RC10:
 	Hardware:

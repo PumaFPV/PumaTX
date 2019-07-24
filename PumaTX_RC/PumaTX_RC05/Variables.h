@@ -39,6 +39,8 @@ struct Button {
   int Output;
   int Prev;
   uint32_t Time;
+  uint32_t FirstPress;
+  uint32_t PressedTime;
 };
 
 struct ADC {
