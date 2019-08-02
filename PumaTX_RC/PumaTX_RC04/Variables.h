@@ -116,6 +116,6 @@ float lipo10 = 3.57;
 float lipo0 = 3.5;
 
 int ok;
-int Power;
+
 
 #endif

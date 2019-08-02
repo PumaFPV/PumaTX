@@ -69,7 +69,15 @@ RC10:
 		C1, C2
 		Haptic
 		
-
+Other ideas:
+	SPort
+	FrSky X for bind / Rx num
+	Sound output
+	External bluetooth joystick
+	Fix the calibration issue
+	Remove screen loop
+	eepron save
+	
 # Required specs:
 -Read data from the hall effect MLX sensors from the controller
 

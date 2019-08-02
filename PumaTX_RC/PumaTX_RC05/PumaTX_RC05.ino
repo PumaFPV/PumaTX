@@ -1,31 +1,34 @@
 const char* ssid = "HP-Nico";
 const char* password = "Nico1809";
 
-/*#include "BluetoothSerial.h"
-BluetoothSerial SerialBT; */
-
-
 //#define RC 1 //SBus
 #define RC 2 //Mavlink //Need some work to add rc link & telemetry
 
-
+//#define LINK 1  //OTA
+#define LINK 2  //Bluetooth Serial
 
 
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include <Wire.h>
 #include <EEPROM.h>
+#include "MLX.h"
+
+#if (LINK == 1)
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
-#include "MLX.h"
-
+#include "OTA.h"  //Need some work to add timeout
+#endif
+#if (LINK == 2)
+#include "BluetoothSerial.h"
+BluetoothSerial SerialBT; 
+#endif
 
 
 #include "Variables.h"
 
-#include "OTA.h"  //Need some work to add timeout
 #include "Battery.h"
 #include "Buttons.h"
 #include "ComputeRCData.h"
@@ -59,7 +62,9 @@ void GetSketchName(){
 }
 
 void setup(void){
-  //SerialBT.begin("PumaTX"); //Bluetooth device name
+  if(LINK == 2){
+    SerialBT.begin("PumaTX"); //Bluetooth device name
+  }
 
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  //Initialise Serial 1
@@ -69,31 +74,41 @@ void setup(void){
 
   SoftPowerInit();
   FirstBoot();
-  OTASetup();
+  
+  if(LINK == 1){
+    OTASetup();
+  }
+  
   PinModeDef();
   ReadEEPROM();  
   GetSketchName();
+  
   if (RC == 1){
-     // SBusInit();
+    SBusInit();
   }
   if (RC == 2){
     MavlinkSetup();
   }
+  
 }
 
 
 void loop(void){
   
-  ArduinoOTA.handle();
+  if(LINK == 1){
+    ArduinoOTA.handle();
+  }
   mlx.process();
   GetMLXData();
   Calibrate();
   //ComputeRC();
   ComputeRC2();
   ProcessButtons();
+  
   if (RC == 1){
-     // SBus();
+    SBus();
   }
+  
   Navigation();
   ScreenLoop();
   

@@ -10,6 +10,8 @@
 
 void SoftPowerInit(){
   Pwr.Time = 0; 
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
+
 }
 
 void SoftPower(){
@@ -88,5 +90,3 @@ void SoftPower1(){
 void DeepSleep(){
     esp_deep_sleep_start();
 }
-
-

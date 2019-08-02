@@ -36,7 +36,7 @@ void Page1(){
   u8g2.print(LeftPot.Output);
   u8g2.setCursor(0, 64);
   //u8g2.print(Arm.Output);
-  u8g2.print(Arm.Output);
+  u8g2.print(Arm.State);
 
   u8g2.setCursor(64, 56); 
   u8g2.print(RightPot.Output);

@@ -4,12 +4,8 @@ const char* password = "nico1809";
 //#include "BluetoothSerial.h"
 //BluetoothSerial SerialBT;
 
-
 #define RC 1 //SBus
 //#define RC 2 //Mavlink //Need some work to add rc link & telemetry
-
-
-
 
 #include <Arduino.h>
 #include <U8g2lib.h>
@@ -54,53 +50,45 @@ void GetSketchName(){
     String the_cpp_name = path.substring(slash+1);
     int dot_loc = the_cpp_name.lastIndexOf('.');
     Firmware = the_cpp_name.substring(0, dot_loc);
-    //Serial.println(Firmware);
+    Serial.println(Firmware);
     
 }
 
 void setup(void){
   //SerialBT.begin("PumaTX"); //Bluetooth device name
 
-  
-  Power = 1;
+
   Wire.begin();   // Initialise I2C communication as MASTER
-  Serial.begin(115200);  //Initialise Serial 1
-  EEPROM.begin(12); //Initialise EEPROM and Ask for 12 addresses
-  u8g2.begin(); //Initialise SH1106
+  //Serial.begin(115200);  //Initialise Serial 1
+  //EEPROM.begin(12); //Initialise EEPROM and Ask for 12 addresses
+  //u8g2.begin(); //Initialise SH1106
   mlx.begin();  //Initialise MLX
 
-  FirstBoot();
-  OTASetup();
-  PinModeDef();
-  ReadEEPROM();  
+  //FirstBoot();
+  //OTASetup();
+  //PinModeDef();
+  //ReadEEPROM();  
   SBusInit();
   GetSketchName();
-  SoftPowerInit();
+  //SoftPowerInit();
 
-  //esp_sleep_enable_ext0_wakeup(GPIO_NUM_15, 0);
   
 }
 
 
 void loop(void){
   
-  ArduinoOTA.handle();
+  //ArduinoOTA.handle();
   mlx.process();
   GetMLXData();
-  Calibrate();
+  //Calibrate();
   //ComputeRC();
   ComputeRC2();
-  ProcessButtons();
+  //ProcessButtons();
   SBus();
   Navigation();
-  OptimizeScreenUsage();
-  getBatteryVoltage();
-  ScreenLoop();
+  //OptimizeScreenUsage();
+  //getBatteryVoltage();
+  //ScreenLoop();
   
-  /*  SerialBT.print((String)"State:" + Pause.State);
-  SerialBT.print("    ");
-  SerialBT.print((String)"Step:" + Step);
-  SerialBT.print("     ");
-  SerialBT.println((String)"Time:" + (millis() - Pwr.Time));  
-*/ 
 }
