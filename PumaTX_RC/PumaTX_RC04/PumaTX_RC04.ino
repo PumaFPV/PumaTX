@@ -1,11 +1,4 @@
-const char* ssid = "HP-Nico";
-const char* password = "nico1809";
-
-//#include "BluetoothSerial.h"
-//BluetoothSerial SerialBT;
-
 #define RC 1 //SBus
-//#define RC 2 //Mavlink //Need some work to add rc link & telemetry
 
 #include <Arduino.h>
 #include <U8g2lib.h>
@@ -16,8 +9,6 @@ const char* password = "nico1809";
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "MLX.h"
-//#include "Libraries\mavlink2\common\mavlink.h"
-
 
 
 #include "Variables.h"
@@ -35,10 +26,7 @@ const char* password = "nico1809";
 #if (RC == 1)
 #include "SBus.h"
 //#include "FrSkyX.h" //Need some work to add bind and rx num functionnality
-#endif
-#if (RC == 2)
-#include "Mavlink2.h"
-#endif
+  #endif
 
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------SETUP------------------------------------------------------------------------------------------------------
@@ -50,28 +38,24 @@ void GetSketchName(){
     String the_cpp_name = path.substring(slash+1);
     int dot_loc = the_cpp_name.lastIndexOf('.');
     Firmware = the_cpp_name.substring(0, dot_loc);
-    Serial.println(Firmware);
+    //Serial.println(Firmware);
     
 }
 
 void setup(void){
-  //SerialBT.begin("PumaTX"); //Bluetooth device name
-
 
   Wire.begin();   // Initialise I2C communication as MASTER
-  //Serial.begin(115200);  //Initialise Serial 1
+  Serial.begin(115200);  //Initialise Serial 1
   //EEPROM.begin(12); //Initialise EEPROM and Ask for 12 addresses
-  //u8g2.begin(); //Initialise SH1106
+  u8g2.begin(); //Initialise SH1106
   mlx.begin();  //Initialise MLX
 
   //FirstBoot();
   //OTASetup();
-  //PinModeDef();
+  PinModeDef();
   //ReadEEPROM();  
   SBusInit();
   GetSketchName();
-  //SoftPowerInit();
-
   
 }
 

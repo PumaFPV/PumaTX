@@ -22,6 +22,7 @@ struct Channel {
   int Min;  //MLX Scale
   int Max;  //MLX Scale
   int Trim; //MLX Scale
+  int Inter;
   int Output; //-100 to 100
   int SBus;
   const uint8_t EepromAddrMin;
@@ -53,10 +54,10 @@ struct Graph {
   int y;
 };
 
-Channel Throttle = {0, 0, 0, 0, 0, 992, 1, 2, 3, 0, 0, 0, 0};
-Channel Yaw = {0, 0, 0, 0, 0, 992, 4, 5, 6, 0, 0, 0, 0};
-Channel Pitch = {0, 0, 0, 0, 0, 992, 7, 8, 9, 0, 0, 0, 0};
-Channel Roll = {0, 0, 0, 0, 0, 992, 10, 11, 12, 0, 0, 0, 0};
+Channel Throttle = {0, 0, 0, 0, 0, 0, 992, 1, 2, 3, 0, 0, 0, 0};
+Channel Yaw =      {0, 0, 0, 0, 0, 0, 992, 4, 5, 6, 0, 0, 0, 0};
+Channel Pitch =    {0, 0, 0, 0, 0, 0, 992, 7, 8, 9, 0, 0, 0, 0};
+Channel Roll =     {0, 0, 0, 0, 0, 0, 992, 10, 11, 12, 0, 0, 0, 0};
 
 Button Right = {32, 1, 1, 1, 0};
 Button Left = {33, 1, 1, 1, 0};

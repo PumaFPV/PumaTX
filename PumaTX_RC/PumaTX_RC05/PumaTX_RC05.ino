@@ -1,11 +1,11 @@
 const char* ssid = "HP-Nico";
 const char* password = "Nico1809";
 
-//#define RC 1 //SBus
-#define RC 2 //Mavlink //Need some work to add rc link & telemetry
+#define RC 1 //SBus
+//#define RC 2 //Mavlink //Need some work to add rc link & telemetry
 
 //#define LINK 1  //OTA
-#define LINK 2  //Bluetooth Serial
+#define LINK 0  //Bluetooth Serial
 
 
 #include <Arduino.h>
@@ -63,7 +63,7 @@ void GetSketchName(){
 
 void setup(void){
   if(LINK == 2){
-    SerialBT.begin("PumaTX"); //Bluetooth device name
+    //SerialBT.begin("PumaTX"); //Bluetooth device name
   }
 
   Wire.begin();   // Initialise I2C communication as MASTER
@@ -76,7 +76,7 @@ void setup(void){
   FirstBoot();
   
   if(LINK == 1){
-    OTASetup();
+    //OTASetup();
   }
   
   PinModeDef();
@@ -87,7 +87,7 @@ void setup(void){
     SBusInit();
   }
   if (RC == 2){
-    MavlinkSetup();
+    //MavlinkSetup();
   }
   
 }
@@ -96,7 +96,7 @@ void setup(void){
 void loop(void){
   
   if(LINK == 1){
-    ArduinoOTA.handle();
+    //ArduinoOTA.handle();
   }
   mlx.process();
   GetMLXData();
