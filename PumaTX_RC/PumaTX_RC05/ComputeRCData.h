@@ -8,6 +8,78 @@
 }
 
 
+void ComputeRC3(){
+  
+if (Throttle.Reading > 50000){
+  Throttle.Inter = Throttle.Reading - 65535;
+}
+else Throttle.Inter = Throttle.Reading;
+Throttle.Output = map(Throttle.Inter, Throttle.Min, Throttle.Max, -100, 100);
+
+
+if (Yaw.Reading > 50000){
+  Yaw.Inter = Yaw.Reading - 65535;
+}
+else Yaw.Inter = Yaw.Reading;
+Yaw.Output = map(Yaw.Inter, Yaw.Min, Yaw.Max, -100, 100);
+
+if (Pitch.Reading > 50000){
+  Pitch.Inter = Pitch.Reading - 65535;
+}
+else Pitch.Inter = Pitch.Reading;
+Pitch.Output = map(Pitch.Inter, Pitch.Min, Pitch.Max, -100, 100);
+
+if( Roll.Reading > 50000){
+  Roll.Inter = Roll.Reading - 65535;
+}
+else Roll.Inter = Roll.Reading;
+Roll.Output = map(Roll.Inter, Roll.Min, Roll.Max, -100, 100);
+
+
+  RightPot.Output = map(RightPot.State, 0, 4095, 100, -100);
+  RightPot.Output = constrain(RightPot.Output, -100, 100);
+
+
+  LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
+  LeftPot.Output =  constrain(LeftPot.Output, -100, 100);
+
+/*
+  LeftPot.Process = map(LeftPot.State, 3570, 440, -100, 100);
+  currenttime = millis();
+  if (LeftPot.Process > 75 && millis() - currenttime > debouncedelay && LeftPot.Output < 80){
+    LeftPot.Output += 40;
+  }
+  currenttime = millis();
+  if (LeftPot.Process > -75 && millis() - currenttime > debouncedelay && LeftPot.Output > -80){
+    LeftPot.Output -= 40;
+  }
+*/
+  if (Arm.State == 0 && Arm.Prev == 1 && millis() - currenttime > debouncedelay) {
+    if (Arm.Output == -100)
+      Arm.Output = 100;
+    else  
+      Arm.Output = -100;
+
+    currenttime = millis();    
+  }
+
+  Arm.Prev = Arm.State;
+
+  if (RTH.State == 0 && RTH.Prev == 1 && millis() - currenttime > debouncedelay) {
+    if (RTH.Output == -100)
+      RTH.Output = 100;
+    else
+      RTH.Output = -100;
+
+    currenttime = millis();    
+  }
+
+  RTH.Prev = RTH.State;
+
+  Pre.Output = map(Pre.State, 0, 1, 100, -100);
+  
+}
+
 
 void ComputeRC2(){
   
@@ -36,12 +108,13 @@ void ComputeRC2(){
   Roll.Output = map(Roll.Reading, 255, 221, 1, 100);
 
   RightPot.Output = map(RightPot.State, 0, 4095, 100, -100);
-  constrain(RightPot.Output, -100, 100);
+  RightPot.Output = constrain(RightPot.Output, -100, 100);
+
+
+  LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
+  LeftPot.Output =  constrain(LeftPot.Output, -100, 100);
 
 /*
-  LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
-  constrain(LeftPot.Output, -100, 100);
-*/
   LeftPot.Process = map(LeftPot.State, 3570, 440, -100, 100);
   currenttime = millis();
   if (LeftPot.Process > 75 && millis() - currenttime > debouncedelay && LeftPot.Output < 80){
@@ -51,7 +124,7 @@ void ComputeRC2(){
   if (LeftPot.Process > -75 && millis() - currenttime > debouncedelay && LeftPot.Output > -80){
     LeftPot.Output -= 40;
   }
-
+*/
   if (Arm.State == 0 && Arm.Prev == 1 && millis() - currenttime > debouncedelay) {
     if (Arm.Output == -100)
       Arm.Output = 100;

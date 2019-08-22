@@ -10,21 +10,22 @@ Which is supposed to be cheaper than conventional controllers such as a Taranis 
 
 RC04: 
 	Software:
+		PPM
 		SBus
 		Hall Effect
 		Pots reading (Left pot mode switch left = down ; Right = up ; RTH = overwrite)
 		Arm reading
 		Pre reading
 		RTH reading
-§		Power on / off via sport switch
-§		basic screen use + vbat + splash screen
+		Power on / off via sport switch
+		basic screen use + vbat + splash screen
 		
 	Hardware:
-§		Micro USB (from controller)
-§		2S LiPo
-§		external RF (R9M)
-§		USB 2.0 (or 3.0 if I find one,) to plug in module (gnd, 5v, VBat, Tx)
-§		Support for JR module in phone holder
+		Micro USB (from controller)
+		2S LiPo
+		external RF (R9M)
+		USB 2.0 (or 3.0 if I find one,) to plug in module (gnd, 5v, VBat, Tx)
+		Support for JR module in phone holder
 		
 RC05:
 	Software:

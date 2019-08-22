@@ -136,8 +136,8 @@ void MLX::processLeft(){
   }
  
 // Convert the data
-_ThrottleReading = data[1];// * 256 + data[2];
-_YawReading = data[3];// * 256 + data[4];
+_ThrottleReading = data[1] * 256 + data[2];
+_YawReading = data[3] * 256 + data[4];
 
 }
 void MLX::processRight(){
@@ -173,8 +173,8 @@ void MLX::processRight(){
   }
  
 // Convert the data
-_PitchReading = data[1];// * 256 + data[2];
-_RollReading = data[3];// * 256 + data[4];
+_PitchReading = data[1] * 256 + data[2];
+_RollReading = data[3] * 256 + data[4];
 
 }
 

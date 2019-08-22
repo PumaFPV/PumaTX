@@ -7,7 +7,7 @@
 #include<Wire.h>
  
 // MLX90393 I2C Address is 0x0C(12)
-#define Addr 0x0C
+#define Addr 0x0D
  
 int x, y = 0;  
 
@@ -64,8 +64,7 @@ unsigned int c = Wire.read();
 delay(300);
 }
  
-void loop()
-{
+void loop(){
 unsigned int Reading[7];
  
 // Start I2C Transmission
@@ -117,11 +116,6 @@ int yMag = Reading[3] * 256 + Reading[4];
 
 // Output Reading to serial monitor
 
-Serial.print("    ");
-Serial.print(xMag);
-Serial.print("    ");
-Serial.print(yMag);
-
 
 if (xMag > 50000){
   x = xMag - 65535;
@@ -137,13 +131,4 @@ Serial.print(x);
 Serial.print("    ");
 Serial.println(y);
 
-/*
-Serial.print(Reading[1]);
-Serial.print("    ");
-Serial.print(Reading[2]);
-Serial.print("    ");
-Serial.print(Reading[3]);
-Serial.print("    ");
-Serial.println(Reading[4]);
-*/
 }

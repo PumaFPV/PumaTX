@@ -4,29 +4,23 @@
 #include <U8g2lib.h>
 #include <Wire.h>
 #include <EEPROM.h>
-#include <WiFi.h>
-#include <ESPmDNS.h>
-#include <WiFiUdp.h>
-#include <ArduinoOTA.h>
 #include "MLX.h"
 
 
 #include "Variables.h"
 
-#include "OTA.h"  //Need some work to add timeout
 #include "Battery.h"
 #include "Buttons.h"
 #include "ComputeRCData.h"
 #include "EEPROM.h"
 #include "Navigation.h" //Need some work to add highlights
 #include "Screen.h"
-#include "SoftPower.h"  //Need some work 
 #include "XBMP.h"
 
 #if (RC == 1)
 #include "SBus.h"
 //#include "FrSkyX.h" //Need some work to add bind and rx num functionnality
-  #endif
+#endif
 
 //===============================================================================================================================================================================================================
 //----------------------------------------------------------------------------------------------------SETUP------------------------------------------------------------------------------------------------------
@@ -38,7 +32,7 @@ void GetSketchName(){
     String the_cpp_name = path.substring(slash+1);
     int dot_loc = the_cpp_name.lastIndexOf('.');
     Firmware = the_cpp_name.substring(0, dot_loc);
-    //Serial.println(Firmware);
+    Serial.println(Firmware);
     
 }
 
@@ -51,7 +45,6 @@ void setup(void){
   mlx.begin();  //Initialise MLX
 
   //FirstBoot();
-  //OTASetup();
   PinModeDef();
   //ReadEEPROM();  
   SBusInit();
@@ -62,17 +55,24 @@ void setup(void){
 
 void loop(void){
   
-  //ArduinoOTA.handle();
   mlx.process();
   GetMLXData();
   //Calibrate();
   //ComputeRC();
-  ComputeRC2();
+  ComputeRC3();
   //ProcessButtons();
   SBus();
   Navigation();
   //OptimizeScreenUsage();
   //getBatteryVoltage();
   //ScreenLoop();
+
+  Serial.print(Throttle.Inter);
+  Serial.print("  ");
+  Serial.print(Yaw.Inter);
+  Serial.print("  ");
+  Serial.print(Pitch.Inter);
+  Serial.print("  ");
+  Serial.println(Roll.Inter);
   
 }

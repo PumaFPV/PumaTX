@@ -102,7 +102,7 @@ void loop(void){
   GetMLXData();
   Calibrate();
   //ComputeRC();
-  ComputeRC2();
+  ComputeRC3();
   ProcessButtons();
   
   if (RC == 1){
