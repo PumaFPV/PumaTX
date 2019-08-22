@@ -13,33 +13,33 @@ if (Throttle.Reading > 50000){
   Throttle.Inter = Throttle.Reading - 65535;
 }
 else Throttle.Inter = Throttle.Reading;
-//Throttle.Output = map(Throttle.Inter, Throttle.Min, Throttle.Max, -100, 100);
+Throttle.Output = map(Throttle.Inter, -10000, 10000, -100, 100);
 
 
 if (Yaw.Reading > 50000){
   Yaw.Inter = Yaw.Reading - 65535;
 }
 else Yaw.Inter = Yaw.Reading;
-//Yaw.Output = map(Yaw.Inter, Yaw.Min, Yaw.Max, -100, 100);
+Yaw.Output = map(Yaw.Inter, -10000, 10000, -100, 100);
 
 if (Pitch.Reading > 50000){
   Pitch.Inter = Pitch.Reading - 65535;
 }
 else Pitch.Inter = Pitch.Reading;
-//Pitch.Output = map(Pitch.Inter, Pitch.Min, Pitch.Max, -100, 100);
+Pitch.Output = map(Pitch.Inter, -10000, 10000, -100, 100);
 
 if( Roll.Reading > 50000){
   Roll.Inter = Roll.Reading - 65535;
 }
 else Roll.Inter = Roll.Reading;
-//Roll.Output = map(Roll.Inter, Roll.Min, Roll.Max, -100, 100);
+Roll.Output = map(Roll.Inter, -10000, 10000, -100, 100);
 
 
   RightPot.Output = map(RightPot.State, 0, 4095, 100, -100);
   RightPot.Output = constrain(RightPot.Output, -100, 100);
 
   LeftPot.Output = map(LeftPot.State, 3570, 440, -100, 100);
-  constrain(LeftPot.Output, -100, 100);
+  LeftPot.Output = constrain(LeftPot.Output, -100, 100);
 
 /*
   LeftPot.Process = map(LeftPot.State, 3570, 440, -100, 100);

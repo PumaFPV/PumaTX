@@ -60,12 +60,12 @@ void loop(void){
   //Calibrate();
   //ComputeRC();
   ComputeRC3();
-  //ProcessButtons();
+  ProcessButtons();
   SBus();
   Navigation();
   //OptimizeScreenUsage();
   //getBatteryVoltage();
-  //ScreenLoop();
+  ScreenLoop();
 
   Serial.print(Throttle.Inter);
   Serial.print("  ");
