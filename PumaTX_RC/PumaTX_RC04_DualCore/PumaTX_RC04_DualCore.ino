@@ -37,7 +37,8 @@ void GetSketchName(){
 }
 
 void setup(void){
-
+  
+  GetSketchName();
   Wire.begin();   // Initialise I2C communication as MASTER
   Serial.begin(115200);  //Initialise Serial 1
   //EEPROM.begin(12); //Initialise EEPROM and Ask for 12 addresses
@@ -48,7 +49,7 @@ void setup(void){
   PinModeDef();
   //ReadEEPROM();  
   SBusInit();
-  GetSketchName();
+
 
   
 }
