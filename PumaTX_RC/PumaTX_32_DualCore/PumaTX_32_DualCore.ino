@@ -40,7 +40,8 @@ void loop() {
   delay(5);
   loop_right_mlx();
   //mlx.process();
-  process_buttons();
+  process_rc_buttons();
+  process_navD_buttons();
   compute_rc4();
   rc_data();
   loop_pxx();

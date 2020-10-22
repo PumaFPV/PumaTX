@@ -15,14 +15,7 @@ void pinMode_def(){
 }
 
 
-void process_buttons(){
-  
-  //Navigation joystick
-  Ok.State = digitalRead(Ok.Pin);
-  Right.State = digitalRead(Right.Pin);
-  Left.State = digitalRead(Left.Pin);
-  Up.State = digitalRead(Up.Pin);
-  Down.State = digitalRead(Down.Pin);
+void process_rc_buttons(){
 
   //Switches
   RightPot.State = analogRead(RightPot.Pin);
@@ -32,5 +25,16 @@ void process_buttons(){
   RTH.State = digitalRead(RTH.Pin);
   Pwr.State = digitalRead(Pwr.Pin);
   Pause.State = digitalRead(Pause.Pin);
+  
+}
+
+void process_nav_buttons(){
+  
+  //Navigation joystick
+  Ok.State = digitalRead(Ok.Pin);
+  Right.State = digitalRead(Right.Pin);
+  Left.State = digitalRead(Left.Pin);
+  Up.State = digitalRead(Up.Pin);
+  Down.State = digitalRead(Down.Pin);
   
 }
