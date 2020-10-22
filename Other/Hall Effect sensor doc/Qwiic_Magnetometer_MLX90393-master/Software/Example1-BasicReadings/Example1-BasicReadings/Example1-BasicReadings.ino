@@ -26,7 +26,7 @@ void setup()
 {
   Serial.begin(9600);
   Serial.println("MLX90393 Read Example");
-  Wire.begin();
+  Wire.begin(4, 13);
   mlx.begin(); //Assumes I2C jumpers are GND. No DRDY pin used.
   mlx.setOverSampling(0);
   mlx.setDigitalFiltering(0);

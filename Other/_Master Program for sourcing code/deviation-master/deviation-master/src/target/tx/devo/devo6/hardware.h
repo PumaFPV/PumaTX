@@ -1,0 +1,45 @@
+#ifndef _DEVO6_HARDWARE_H_
+#define _DEVO6_HARDWARE_H_
+
+#include "target/drivers/mcu/stm32/gpio.h"
+
+#define BUTTON_MATRIX { \
+/*          PE.2             PE.3             PE.4             PE.5             PE.6         */  \
+/*PB.6*/    BUT_LEFT,        BUT_RIGHT,       BUT_ENTER,       BUT_TRIM_RH_NEG, BUT_TRIM_RH_POS, \
+/*PB.7*/    BUT_DOWN,        BUT_UP,          BUT_EXIT,        BUT_TRIM_LH_POS, BUT_TRIM_LH_NEG, \
+/*PB.8*/    BUT_LAST,        BUT_TRIM_R_NEG,  BUT_TRIM_R_POS,  BUT_TRIM_L_POS,  BUT_TRIM_L_NEG,  \
+/*PB.9*/    BUT_TRIM_LV_NEG, BUT_TRIM_RV_POS, BUT_TRIM_LV_POS, BUT_LAST,        BUT_TRIM_RV_NEG, \
+    }
+#define BUTTON_MATRIX_ROW_OD ((struct mcu_pin){GPIOB, GPIO6 | GPIO7 | GPIO8 | GPIO9})
+#define BUTTON_MATRIX_COL_PU ((struct mcu_pin){GPIOE, GPIO2 | GPIO3 | GPIO4 | GPIO5 | GPIO6})
+#define EXTRA_SWITCH_COL_OD ((struct mcu_pin){GPIOE, GPIO2})
+
+// Analog inputs
+#define ADC_CHANNELS { \
+    ADC_CHAN(GPIOC, GPIO2, CHAN_NONINV),  /* ADC123_12 - INP_AIL */ \
+    ADC_CHAN(GPIOC, GPIO0, CHAN_NONINV),  /* ADC123_10 - INP_ELE */ \
+    ADC_CHAN(GPIOC, GPIO3, CHAN_INVERT),  /* ADC123_13 - INP_THR */ \
+    ADC_CHAN(GPIOC, GPIO1, CHAN_INVERT),  /* ADC123_11 - INP_RUD */ \
+    ADC_CHAN(0, 16, CHAN_NONINV),         /* TEMPERATURE */ \
+    ADC_CHAN(GPIOC, GPIO4, CHAN_NONINV),  /* ADC12_14  */ \
+    }
+
+#define SWITCHES \
+    TWO_WAY(INP_DR, (GPIOC, GPIO11), CHAN_INVERT) \
+    THREE_WAY(INP_FMOD, (GPIOC, GPIO13), (GPIOC, GPIO12), CHAN_INVERT) \
+    THREE_WAY(INP_MIX, (GPIOC, GPIO8), (GPIOC, GPIO6), CHAN_INVERT) \
+    TWO_WAY(INP_GEAR, (GPIOC, GPIO7), CHAN_INVERT)
+
+#define OPT_SWITCHES \
+    OPT_2WAY(INP_SWA, (GPIOC, GPIO9), CHAN_INVERT, SWITCH_2x2) \
+    OPT_2WAY(INP_SWB, (GPIOC, GPIO10), CHAN_INVERT, SWITCH_2x2) \
+    OPT_3WAY(INP_SWA, (GPIOC, GPIO9), (GPIOC, GPIO10), CHAN_INVERT, SWITCH_3x1)
+
+#define ADDON_SWITCH_CFG \
+    ADDON_SWITCH("2x2", SWITCH_2x2, 0) \
+    ADDON_SWITCH("3x1", SWITCH_3x1, 0)
+
+#define SWITCH_2x2  (1 << INP_SWA2)
+#define SWITCH_3x1  ((1 << INP_SWB0) | (1 << INP_SWB1))
+#define SWITCH_STOCK (~(SWITCH_2x2 | SWITCH_3x1))
+#endif  // _DEVO6_HARDWARE_H_

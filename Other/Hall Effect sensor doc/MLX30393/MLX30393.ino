@@ -14,9 +14,9 @@ int x, y = 0;
 void setup(){
 
 // Initialise I2C communication as MASTER
-Wire.begin();
+Wire.begin(4, 13);
 // Initialise serial communication, set baud rate = 9600
-Serial.begin(9600);
+Serial.begin(115200);
  
 // Start I2C Transmission
 Wire.beginTransmission(Addr);
@@ -82,7 +82,7 @@ if(Wire.available() == 1)
 {
 unsigned int c = Wire.read();
 }
-delay(100);
+delay(10);
  
 // Start I2C Transmission
 Wire.beginTransmission(Addr);
