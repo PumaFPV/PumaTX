@@ -31,16 +31,15 @@ Failsafe: Not found yet
 
 */
 
-#include <rom/crc.h>
 
 #define interval_PXX  9 //9ms between each packets
 unsigned long previous_millis_PXX = 0;    
    
-#define HEAD 0x7C
+#define HEAD 0x7E
 #define BIND 0x05
 #define RANGE 0x20
-#define EU_100_mw 0x48  // 0100 1000
-#define EU_10_mw 0x40   // 0100 0000
+#define EU_100_mw 0x48
+#define EU_10_mw 0x40
 
 
 
@@ -53,12 +52,12 @@ byte CRC_2 = 0x00;
 
 byte byte1, byte2, byte3, byte4, byte5, byte6, byte7, byte8, byte9, byte10, byte11, byte12 = 0;
 
-bool pulses[64];
+bool pulses[400];
 int length = 0;
 
 int pcm_one_count = 0;
 
-int pcm_crc = 0;
+int pcmCrc = 0;
 
 unsigned long interval_pxx = 8;
 unsigned long previous_millis_pxx = 0;
@@ -76,18 +75,12 @@ uint16_t CRCTable(uint8_t val)
 
 void crc( uint8_t data )
 {
-    pcm_crc = (pcm_crc<<8) ^ CRCTable((pcm_crc>>8)^data);
+    pcmCrc = (pcmCrc<<8) ^ CRCTable((pcmCrc>>8)^data);
 }
 
 
 void serial_bit(bool bit){
-  if(bit){
-    GPIO.out_w1ts = ((uint32_t)1 << 17);
-    delayMicroseconds(7);
-  }else{
-    GPIO.out_w1tc = ((uint32_t)1 << 17);
-    delayMicroseconds(7);    
-  }
+  pulses[length++] = bit;
 }
 
 void put_pcm_part(bool bit){
@@ -128,9 +121,29 @@ void put_pcm_byte(byte byte){
 }
 
 
-void prepare_PXX(){
+/*
+void send_PXX(){
+  for(int i = 0; i < length; i++){
+    unsigned long current_millis_pxx = millis();
 
-  
+    if(current_millis_pxx - previous_millis_pxx >= interval_pxx){
+
+      previous_millis_pxx = current_millis_pxx;
+    
+      if(1){
+        GPIO.out_w1ts = ((uint32_t)1 << 17);
+      }
+      else{
+        GPIO.out_w1tc = ((uint32_t)1 << 17);
+      }
+    }
+    delayMicroseconds(8);
+  }
+}
+*/
+
+
+void prepare_PXX(){
   
   int chan1 = map(channels[0], -100, 100, 256, 1792);
   int chan2 = map(channels[1], -100, 100, 256, 1792);
@@ -140,14 +153,9 @@ void prepare_PXX(){
   int chan6 = map(channels[5], -100, 100, 256, 1792);
   int chan7 = map(channels[6], -100, 100, 256, 1792);
   int chan8 = map(channels[7], -100, 100, 256, 1792);
-  
-  length = 0;
-  pcm_crc = 0;
-  int crc_byte = 0;
-  int pcmOnesCount = 0;
 
-
-
+  pcmCrc = 0;
+    
   byte1  = chan1 & 0xFF;
   byte2  = (chan1>>8)|((0x0F&chan2)<<4);
   byte3  = chan2>>4;
@@ -165,9 +173,9 @@ void prepare_PXX(){
   byte12 = chan8>>4;
 
   put_pcm_byte(HEAD);
-  put_pcm_byte(receiver_number);
   put_pcm_byte(flag1);
   put_pcm_byte(0x00);
+  
   
   put_pcm_byte(byte1);
   put_pcm_byte(byte2);
@@ -181,13 +189,6 @@ void prepare_PXX(){
   put_pcm_byte(byte10);
   put_pcm_byte(byte11);
   put_pcm_byte(byte12);
-
-  put_pcm_byte(power_zone);
-  crc_byte = pcm_crc;
-  put_pcm_byte(crc_byte>>8);
-  put_pcm_byte(crc_byte);
-  put_pcm_byte(HEAD);
-  
 
 }
 
@@ -205,6 +206,14 @@ void setup_PXX(byte rx, byte pwr){
 
 void loop_PXX(){
 
-  //prepare_PXX();  //receive channels data and prepare then for PXX
+  prepare_PXX();  //receive channels data and prepare then for PXX
   
+  unsigned long current_millis_PXX = millis();
+
+  if(current_millis_PXX - previous_millis_PXX >= interval_PXX) {
+    previous_millis_PXX = current_millis_PXX;
+    //send_PXX();
+    
+  }
+
 }

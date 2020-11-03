@@ -4,8 +4,11 @@
 
 #include "buttons.h"
 #include "computeRCdata.h"
-#include "R9M.h"
-#include "tasks.h"
+//#include "R9M.h"
+#include "PXX.h"
+
+int16_t rx_number = 18;
+bool prepare = true;
 
 void GetSketchName(){
   
@@ -20,7 +23,6 @@ void GetSketchName(){
 
 void setup() {
   GetSketchName();  //Outputs the firmware name used
-  setup_task();
   Serial.begin(115200); //Starts Serial connection
   Wire.begin(I2C_SDA, I2C_SCL); //Starts I2C connection
   //mlx.begin();  //Starts mlx communication 
@@ -28,28 +30,37 @@ void setup() {
   SetupRightMLX();
 
   PinModeDef(); //Defines every buttons
-
-  setup_PXX(0x12, EU_10_mw); //Rx number, power and zone
+    PXX.begin();
+//  setup_PXX(0x00, EU_100_mw); //Rx number, power and zone
 }
 
 void loop() {
 
   LoopLeftMLX();
   delay(5);
+  //delay(5);
   LoopRightMLX();
   //mlx.process();
   ProcessButtons();
   ComputeRC4();
   RCdata();
-  loop_PXX();
+    
+    if(prepare){
+        PXX.prepare(channels, rx_number, 0x00);    
+    }
+    else
+    {
+        PXX.send();
+    }
 
-  
-/*
-  for(int i = 0; i < 10; i++){
-    Serial2.write(channels[i]);
-  }
-  //Serial2.println();
-*/
+    prepare = !prepare;
+
+    delay(2);
+    
+
+
+
+
 
 /*
 Serial.print(Throttle.Output);

@@ -11,7 +11,6 @@ void PinModeDef(){
   pinMode(Pwr.Pin, INPUT_PULLUP);
   pinMode(Pause.Pin, INPUT_PULLUP);
   pinMode(LED.Pin, OUTPUT);
-  pinMode(17, OUTPUT);
   
 }
 
