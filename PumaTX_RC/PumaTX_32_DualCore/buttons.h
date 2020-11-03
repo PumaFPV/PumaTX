@@ -1,4 +1,4 @@
-void pinMode_def(){
+void PinModeDef(){
 
   pinMode(Right.Pin, INPUT_PULLUP);
   pinMode(Left.Pin, INPUT_PULLUP);
@@ -11,11 +11,19 @@ void pinMode_def(){
   pinMode(Pwr.Pin, INPUT_PULLUP);
   pinMode(Pause.Pin, INPUT_PULLUP);
   pinMode(LED.Pin, OUTPUT);
+  pinMode(17, OUTPUT);
   
 }
 
 
-void process_rc_buttons(){
+void ProcessButtons(){
+  
+  //Navigation joystick
+  Ok.State = digitalRead(Ok.Pin);
+  Right.State = digitalRead(Right.Pin);
+  Left.State = digitalRead(Left.Pin);
+  Up.State = digitalRead(Up.Pin);
+  Down.State = digitalRead(Down.Pin);
 
   //Switches
   RightPot.State = analogRead(RightPot.Pin);
@@ -25,16 +33,5 @@ void process_rc_buttons(){
   RTH.State = digitalRead(RTH.Pin);
   Pwr.State = digitalRead(Pwr.Pin);
   Pause.State = digitalRead(Pause.Pin);
-  
-}
-
-void process_nav_buttons(){
-  
-  //Navigation joystick
-  Ok.State = digitalRead(Ok.Pin);
-  Right.State = digitalRead(Right.Pin);
-  Left.State = digitalRead(Left.Pin);
-  Up.State = digitalRead(Up.Pin);
-  Down.State = digitalRead(Down.Pin);
   
 }

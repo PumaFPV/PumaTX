@@ -5,7 +5,6 @@
 #include "buttons.h"
 #include "computeRCdata.h"
 #include "R9M.h"
-#include "tasks.h"
 
 void GetSketchName(){
   
@@ -20,7 +19,6 @@ void GetSketchName(){
 
 void setup() {
   GetSketchName();  //Outputs the firmware name used
-  setup_task();
   Serial.begin(115200); //Starts Serial connection
   Wire.begin(I2C_SDA, I2C_SCL); //Starts I2C connection
   //mlx.begin();  //Starts mlx communication 
@@ -35,13 +33,14 @@ void setup() {
 void loop() {
 
   LoopLeftMLX();
-  delay(5);
-  LoopRightMLX();
+  
   //mlx.process();
   ProcessButtons();
   ComputeRC4();
   RCdata();
   loop_PXX();
+  LoopRightMLX();
+
 
   
 /*

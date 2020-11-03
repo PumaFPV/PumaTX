@@ -32,11 +32,8 @@ Failsafe: Not found yet
 */
 
 #include <rom/crc.h>
-
-#define interval_PXX  9 //9ms between each packets
-unsigned long previous_millis_PXX = 0;    
-   
-#define HEAD 0x7C
+  
+#define HEAD 0x7E //0x7C
 #define BIND 0x05
 #define RANGE 0x20
 #define EU_100_mw 0x48  // 0100 1000
@@ -60,7 +57,7 @@ int pcm_one_count = 0;
 
 int pcm_crc = 0;
 
-unsigned long interval_pxx = 8;
+unsigned long interval_pxx = 9;
 unsigned long previous_millis_pxx = 0;
 
 const uint16_t CRC_Short[] =
@@ -131,7 +128,7 @@ void put_pcm_byte(byte byte){
 void prepare_PXX(){
 
   
-  
+/*
   int chan1 = map(channels[0], -100, 100, 256, 1792);
   int chan2 = map(channels[1], -100, 100, 256, 1792);
   int chan3 = map(channels[2], -100, 100, 256, 1792);
@@ -140,6 +137,9 @@ void prepare_PXX(){
   int chan6 = map(channels[5], -100, 100, 256, 1792);
   int chan7 = map(channels[6], -100, 100, 256, 1792);
   int chan8 = map(channels[7], -100, 100, 256, 1792);
+*/
+
+  int chan1,chan2,chan3,chan4,chan5,chan6,chan7,chan8 = 2047;
   
   length = 0;
   pcm_crc = 0;
@@ -164,7 +164,17 @@ void prepare_PXX(){
   byte11 = (chan7>>8)|((0x0F&chan8)<<4);
   byte12 = chan8>>4;
 
-  put_pcm_byte(HEAD);
+  //put_pcm_byte(HEAD);
+
+  put_pcm_part(0);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(0);
+  
   put_pcm_byte(receiver_number);
   put_pcm_byte(flag1);
   put_pcm_byte(0x00);
@@ -186,7 +196,15 @@ void prepare_PXX(){
   crc_byte = pcm_crc;
   put_pcm_byte(crc_byte>>8);
   put_pcm_byte(crc_byte);
-  put_pcm_byte(HEAD);
+ 
+  put_pcm_part(0);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(1);
+  put_pcm_part(0);
   
 
 }
@@ -195,7 +213,6 @@ void prepare_PXX(){
 
 void setup_PXX(byte rx, byte pwr){
   
-  //Serial2.begin(125000, true);
   receiver_number = rx;
   power_zone = pwr;
   
@@ -204,7 +221,13 @@ void setup_PXX(byte rx, byte pwr){
 
 
 void loop_PXX(){
+  
+  unsigned long current_millis_pxx = millis();
 
-  //prepare_PXX();  //receive channels data and prepare then for PXX
+  if (current_millis_pxx - previous_millis_pxx >= interval_pxx) {
+    previous_millis_pxx = current_millis_pxx;
+
+    prepare_PXX();  //receive channels data and prepare then for PXX
+  }
   
 }
