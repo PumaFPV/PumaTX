@@ -150,153 +150,75 @@ void LoopRightMLX(){
 
 }
 
-void ComputeRC3(){
-//--------------------------------------------------Throttle
-    if (Throttle.Reading > 50000){
-        Throttle.Inter = Throttle.Reading - 65535;
-    }
-    else Throttle.Inter = Throttle.Reading;
-    Throttle.Output = map(Throttle.Inter, -10000, 10000, 0, 255);
-
-//--------------------------------------------------Yaw
-    if (Yaw.Reading > 50000){
-        Yaw.Inter = Yaw.Reading - 65535;
-    }
-    else Yaw.Inter = Yaw.Reading;
-    Yaw.Output = map(Yaw.Inter, -10000, 10000, 0, 255);
-//--------------------------------------------------Pitch
-    if (Pitch.Reading > 50000){
-        Pitch.Inter = Pitch.Reading - 65535;
-    }
-    else Pitch.Inter = Pitch.Reading;
-    Pitch.Output = map(Pitch.Inter, -10000, 10000, 0, 255);
-//--------------------------------------------------Roll
-    if( Roll.Reading > 50000){
-        Roll.Inter = Roll.Reading - 65535;
-    }
-    else Roll.Inter = Roll.Reading;
-    Roll.Output = map(Roll.Inter, -10000, 10000, 0, 255);
-
-//--------------------------------------------------Right Pot
-    RightPot.Output = map(RightPot.State, 0, 4095, 255, 0);
-    RightPot.Output = constrain(RightPot.Output, 0, 255);
-
-//--------------------------------------------------Left Pot
-    LeftPot.Output = map(LeftPot.State, 3570, 440, 0, 255);
-    LeftPot.Output = constrain(LeftPot.Output, 0, 255);
-
-    LeftPot.Process = map(LeftPot.State, 3570, 440, 0, 255);
-    currenttime = millis();
-    if (LeftPot.Process > 75 && millis() - currenttime > debouncedelay && LeftPot.Output < 80){
-        LeftPot.Output += 40;
-    }
-    currenttime = millis();
-    if (LeftPot.Process > -75 && millis() - currenttime > debouncedelay && LeftPot.Output > -80){
-        LeftPot.Output -= 40;
-    }
-    currenttime = millis();
-
-//--------------------------------------------------Arm
-    if (Arm.State == 0 && Arm.Prev == 1 && millis() - currenttime > debouncedelay) {
-        if (Arm.Output == 0){
-            Arm.Output = 255;
-        }
-        else Arm.Output = 0;
-    }
-
-    Arm.Prev = Arm.State;
-
-//--------------------------------------------------RTH
-    if (RTH.State == 0 && RTH.Prev == 1 && millis() - currenttime > debouncedelay) {
-        if (RTH.Output == 0){
-            RTH.Output = 255;
-        }
-        else RTH.Output = 0;
-    currenttime = millis();    
-    }
-    RTH.Prev = RTH.State;
-//--------------------------------------------------Pre
-    Pre.Output = map(Pre.State, 0, 1, 255, 0);
-
-//--------------------------------------------------Pause
-    if (Pause.State == 0 && Pause.Prev == 1 && millis() - currenttime > debouncedelay) {
-        if (Pause.Output == 0){
-            Pause.Output = 255;
-        }
-        else Pause.Output = 0;
-    currenttime = millis();    
-    }
-    Pause.Prev = Pause.State;
-}
 
 void ComputeRC4(){
 //--------------------------------------------------Throttle
 
-    Throttle.Output = constrain(map(Throttle.Reading, -7600, 8300, -100, 100), -100, 100);
+    Throttle.Output = constrain(map(Throttle.Reading, -7600, 8300, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------Yaw
 
-    Yaw.Output = constrain(map(Yaw.Reading, -7500, 9200, -100, 100), -100, 100);
+    Yaw.Output = constrain(map(Yaw.Reading, -7500, 9200, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------Pitch
 
-    Pitch.Output = constrain(map(Pitch.Reading, -7300, 8520, -100, 100), -100, 100);
+    Pitch.Output = constrain(map(Pitch.Reading, -7300, 8520, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------Roll
 
-    Roll.Output = constrain(map(Roll.Reading, -8300, 8400, -100, 100), -100, 100);
+    Roll.Output = constrain(map(Roll.Reading, -8300, 8400, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------Right Pot
-    LeftPot.Output = map(LeftPot.State, 440, 3600, 100, -100);
-    LeftPot.Output = constrain(LeftPot.Output, -100, 100);
+    RightPot.Output = constrain(map(RightPot.State, 440, 3600, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------Left Pot
-    RightPot.Output = map(RightPot.State, 3570, 440, -100, 100);
-    RightPot.Output = constrain(RightPot.Output, -100, 100);
 
-    RightPot.Process = map(RightPot.State, 3570, 440, -100, 100);
-    RightPot.current_time = millis();
-    if (RightPot.Process > 75 && millis() - RightPot.current_time > debouncedelay && RightPot.Output < 80){
-        RightPot.Output += 40;
+    LeftPot.Process = constrain(map(LeftPot.State, 3570, 440, -100, 100), -100, 100);
+    
+    if (LeftPot.Process > 75 && millis() - LeftPot.current_time > debouncedelay && LeftPot.intermediate <= 80){
+        LeftPot.intermediate += 40;
+        LeftPot.current_time = millis();
+
     }
-    RightPot.current_time = millis();
-    if (RightPot.Process > -75 && millis() - RightPot.current_time > debouncedelay && RightPot.Output > -80){
-        RightPot.Output -= 40;
+    //LeftPot.current_time = millis();
+    if (LeftPot.Process < -75 && millis() - LeftPot.current_time > debouncedelay && LeftPot.intermediate >= -80){
+        LeftPot.intermediate -= 40;
+        LeftPot.current_time = millis();
+
     }
 
-    RightPot.current_time = millis();
+    LeftPot.Output = map(constrain(LeftPot.intermediate, -100, 100), -100, 100, LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------Arm
     if (Arm.State == 0 && Arm.Prev == 1 && millis() - Arm.current_time > debouncedelay) {
-        if (Arm.Output == -100){
-            Arm.Output = 100;
+        if (Arm.Output == LOWER_CHAN){
+            Arm.Output = UPPER_CHAN;
         }
-        else Arm.Output = -100;
+        else Arm.Output = LOWER_CHAN;
         Arm.current_time = millis();
     }
 
     Arm.Prev = Arm.State;
 
 //--------------------------------------------------RTH
-    RTH.State = digitalRead(RTH.Pin);
     if (RTH.State == 0 && RTH.Prev == 1 && millis() - RTH.current_time > debouncedelay) {
-        if (RTH.Output == -100){
-            RTH.Output = 100;
+        if (RTH.Output == LOWER_CHAN){
+            RTH.Output = UPPER_CHAN;
         }
-        else RTH.Output = -100;
+        else RTH.Output = LOWER_CHAN;
     RTH.current_time = millis();    
     }
     RTH.Prev = RTH.State;
 
 //--------------------------------------------------Pre
-    Pre.Output = map(Pre.State, 0, 1, 100, -100);
+    Pre.Output = map(Pre.State, 0, 1, UPPER_CHAN, LOWER_CHAN);
 
 //--------------------------------------------------Pause
     if (Pause.State == 0 && Pause.Prev == 1 && millis() - Pause.current_time > debouncedelay) {
-        if (Pause.Output == -100){
-            Pause.Output = 100;
+        if (Pause.Output == LOWER_CHAN){
+            Pause.Output = UPPER_CHAN;
         }
-        else Pause.Output = -100;
+        else Pause.Output = LOWER_CHAN;
     Pause.current_time = millis();    
     }
     Pause.Prev = Pause.State;
@@ -304,17 +226,22 @@ void ComputeRC4(){
 
 
 
-void RCdata(){
+void rc_data(){
 
-    channels[0] = map(Throttle.Output, -100, 100, 0, 255);  //T
-    channels[1] = map(Pitch.Output, -100, 100, 0, 255);     //E
-    channels[2] = map(Roll.Output, -100, 100, 0, 255);      //A
-    channels[3] = map(Yaw.Output, -100, 100, 0, 255);       //R
-    channels[4] = map(RightPot.Output, -100, 100, 0, 255);  //mode
-    channels[5] = map(LeftPot.Output, -100, 100, 0, 255);   //pot
-    channels[6] = map(Arm.Output, -100, 100, 0, 255);       //Arm
-    channels[7] = map(Pre.Output, -100, 100, 0, 255);       //Pre
-    channels[8] = map(RTH.Output, -100, 100, 0, 255);       //RTH
-    channels[9] = map(Pause.Output, -100, 100, 0, 255);     //Pause    
-    
+    channels[0] = Throttle.Output;  //T
+    channels[1] = Pitch.Output;     //E
+    channels[2] = Roll.Output;      //A
+    channels[3] = Yaw.Output;       //R
+    channels[4] = Arm.Output;  //mode
+    channels[5] = RightPot.Output;   //pot
+    channels[6] = Pre.Output;       //Arm
+    channels[7] = RTH.Output;       //Pre
+    channels[8] = LeftPot.Output;       //RTH
+    channels[9] = Pre.Output;     //Pause    
+    channels[10]= 1024;
+    channels[11]= 1024;
+    channels[12]= 1024;
+    channels[13]= 1024;
+    channels[14]= 1024;
+    channels[15]= 1024;
 }

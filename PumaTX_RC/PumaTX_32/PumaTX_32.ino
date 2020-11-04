@@ -31,23 +31,48 @@ void setup() {
 }
 
 void loop() {
+  /*
+    unsigned long current_millis_mlx = millis();
 
-  LoopLeftMLX();
+  if (current_millis_mlx - previous_millis_mlx >= interval_mlx) {
+
+    previous_millis_mlx = current_millis_mlx;
+          LoopRightMLX();
+
+  }
+*/
+
   
   //mlx.process();
   ProcessButtons();
   ComputeRC4();
-  RCdata();
-  loop_PXX();
-  LoopRightMLX();
-
-
+  rc_data();
   
-/*
-  for(int i = 0; i < 10; i++){
-    Serial2.write(channels[i]);
+
+  unsigned long current_millis_pxx = millis();
+  
+  if (current_millis_pxx - previous_millis_pxx >= interval_pxx) {
+
+    previous_millis_pxx = current_millis_pxx;
+    prepare_pxx(channels, receiver_number, flag1);  //receive channels data and prepare then for PXX
+    
+    if(step1){
+      LoopRightMLX();
+    }else{
+      LoopLeftMLX();
+    }
+    step1 = !step1;
+    
   }
-  //Serial2.println();
+
+
+
+/*
+  for(int i = 0; i < 8; i++){
+    Serial.print(channels[i]);
+    Serial.print("  ");
+  }
+  Serial.println();
 */
 
 /*

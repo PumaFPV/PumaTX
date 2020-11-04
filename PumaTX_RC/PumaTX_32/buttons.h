@@ -17,14 +17,14 @@ void PinModeDef(){
 
 
 void ProcessButtons(){
-  
+  /*
   //Navigation joystick
   Ok.State = digitalRead(Ok.Pin);
   Right.State = digitalRead(Right.Pin);
   Left.State = digitalRead(Left.Pin);
   Up.State = digitalRead(Up.Pin);
   Down.State = digitalRead(Down.Pin);
-
+*/
   //Switches
   RightPot.State = analogRead(RightPot.Pin);
   LeftPot.State = analogRead(LeftPot.Pin);

@@ -2,6 +2,8 @@
 #define variables_h
 
 
+#define LOWER_CHAN  256
+#define UPPER_CHAN  1792
 
 //--------------------------------------------------Include libraries--------------------------------------------------
 #include <Arduino.h>
@@ -44,6 +46,7 @@ struct ADC{
     int Process;
     int Output; //from -100 to 100
     unsigned long current_time;
+    int intermediate;
 };
 
 
@@ -93,17 +96,17 @@ Button Left = {26, 1, 1, 1, 0};
 Button Up = {14, 1, 1, 1, 0};
 Button Down = {12, 1, 1, 1, 0};
 Button Ok = {19, 1, 1, 1, 0};
-Button RTH = {18, 1, -100, 1, 0};
-Button Pause = {5, 1, -100, 1, 0};
+Button RTH = {18, 1, LOWER_CHAN, 1, 0};
+Button Pause = {5, 1, LOWER_CHAN, 1, 0};
 Button Pwr = {27, 1, 1, 1, 0};  
-Button Arm = {15, 1, -100, 1, 0};
-Button Pre = {23, 1, -100, 1, 0};
+Button Arm = {15, 1, LOWER_CHAN, 1, 0};
+Button Pre = {23, 1, LOWER_CHAN, 1, 0};
 Button LED = {22, 1, 1, 1, 0};   
 
 //--------------------------------------------------ADC struct--------------------------------------------------
-ADC Voltage = {33, 0.00, 0, 0}; //GPIO35
-ADC LeftPot = {32, 0, 0, 0};  //GPIO34
-ADC RightPot = {35, 0, 0, 0}; //GPIO39
+ADC Voltage = {33, 0.00, 0, 0, 0}; //GPIO35
+ADC LeftPot = {35, 0, 0, 0, 0};  //GPIO34
+ADC RightPot = {32, 0, 0, 0, 0}; //GPIO39
 
 
 
@@ -113,9 +116,13 @@ String Firmware;
 unsigned long debouncedelay = 200;
 unsigned long currenttime = 0;
 
-int channels[10];
+int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
 
 uint8_t page = 0;
+
+bool step1, step2, step3 = 0;
+
+bool left = 0;
 
 float lipo100 = 4.2;
 float lipo90 = 4.13;

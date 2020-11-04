@@ -22,7 +22,7 @@ void loop() {
 void loop_pxx(){
   
     if(prepare){
-            PXX.prepare(channels, rx_number, 0x00);    
+            PXX.prepare(channels, 0x12, 0x00);    
     }
     else
     {
@@ -36,7 +36,10 @@ void loop_pxx(){
 }
 
 void test_data(){
-  channels[0] = 0;
+  for(int i = 0; i < 100; i++){
+    channels[0] = i;
+  }
+  //channels[0] = 10;
   channels[1] = 0;
   channels[2] = 0;
   channels[3] = 0;

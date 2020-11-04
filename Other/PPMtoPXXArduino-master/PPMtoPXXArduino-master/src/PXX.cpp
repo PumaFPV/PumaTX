@@ -1,19 +1,15 @@
 #include <Arduino.h>
 #include "PXX.h"
 
-#define PPM_CENTER                          0    //1500
-#define PPM_LOW                             -100     //817
-#define PPM_HIGH                            100    //2182
+#define PPM_CENTER                          1500
+#define PPM_LOW                             817
+#define PPM_HIGH                            2182
 #define PPM_HIGH_ADJUSTED                   (PPM_HIGH - PPM_LOW)
 #define PXX_CHANNEL_WIDTH                   2048
 #define PXX_UPPER_LOW                       2049
 #define PXX_UPPER_HIGH                      4094
 #define PXX_LOWER_LOW                       1
 #define PXX_LOWER_HIGH                      2046
-
-#define RX_NUMBER 0x12
-#define FAIL_SAFE 0
-#define BIND 0
 
 const uint16_t CRC_Short[] =
 {
@@ -29,7 +25,7 @@ uint16_t CRCTable(uint8_t val)
 
 void PXX_Class::crc( uint8_t data )
 {
-    pcmCrc = (pcmCrc<<8) ^ CRCTable((pcmCrc>>8)^data);
+    pcmCrc=(pcmCrc<<8) ^ CRCTable((pcmCrc>>8)^data) ;
 }
 
 void USART_Init(long baud)
@@ -52,8 +48,7 @@ void USART_Init(long baud)
     UBRR0 = _baud;
 }
 
-void USART_Send(uint8_t data) 
-{
+void USART_Send(uint8_t data) {
     /* Put data into buffer, sends the data */
     UDR0 = data;
 
@@ -146,7 +141,7 @@ void PXX_Class::putPcmHead()
     putPcmPart(0);
 }
 
-void PXX_Class::prepare(int16_t channels[16], int16_t rx_number, byte bind)
+void PXX_Class::prepare(int16_t channels[16])
 {
     uint16_t chan=0, chan_low=0;
 
@@ -154,23 +149,18 @@ void PXX_Class::prepare(int16_t channels[16], int16_t rx_number, byte bind)
     pcmCrc = 0;
     pcmOnesCount = 0;
 
-    /* Preamble */
-    //putPcmPart(0);
-    //putPcmPart(0);
-    //putPcmPart(0);
-    //putPcmPart(0);
 
     /* Sync */
     putPcmHead();
 
     // Rx Number
-    putPcmByte(rx_number);
+    putPcmByte(16);
 
     // FLAG1 - Fail Safe Mode, nothing currently set, maybe want to do this
-    putPcmByte(0x00);
+    putPcmByte(0);
 
     // FLAG2
-    putPcmByte(0x00);
+    putPcmByte(0);
 
     // PPM
     for (int i=0; i<8; i++)
@@ -178,7 +168,9 @@ void PXX_Class::prepare(int16_t channels[16], int16_t rx_number, byte bind)
 
         int channelPPM = channels[(sendUpperChannels ? (8 + i) : i)];
         float convertedChan = ((float(channelPPM) - float(PPM_LOW)) / (float(PPM_HIGH_ADJUSTED))) * float(PXX_CHANNEL_WIDTH);
-        chan = limit((sendUpperChannels ? PXX_UPPER_LOW : PXX_LOWER_LOW), convertedChan, (sendUpperChannels ? PXX_UPPER_HIGH : PXX_LOWER_HIGH));
+        chan = limit((sendUpperChannels ? PXX_UPPER_LOW : PXX_LOWER_LOW),
+                     convertedChan,
+                     (sendUpperChannels ? PXX_UPPER_HIGH : PXX_LOWER_HIGH));
 
         if (i & 1)
         {
@@ -191,10 +183,9 @@ void PXX_Class::prepare(int16_t channels[16], int16_t rx_number, byte bind)
             chan_low = chan;
         }
     }
-    
-    putPcmByte(0x40); //10mw EU
 
     // CRC16
+    putPcmByte(0);
     chan = pcmCrc;
     putPcmByte(chan>>8);
     putPcmByte(chan);
@@ -214,8 +205,7 @@ void PXX_Class::send()
     sendUpperChannels = !sendUpperChannels;
 }
 
-uint16_t PXX_Class::limit(uint16_t low, uint16_t val, uint16_t high)
-{
+uint16_t PXX_Class::limit(uint16_t low, uint16_t val, uint16_t high) {
     if(val < low)
     {
         return low;
