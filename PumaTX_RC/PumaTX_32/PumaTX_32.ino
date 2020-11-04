@@ -54,7 +54,7 @@ void loop() {
   if (current_millis_pxx - previous_millis_pxx >= interval_pxx) {
 
     previous_millis_pxx = current_millis_pxx;
-    prepare_pxx(channels, receiver_number, flag1);  //receive channels data and prepare then for PXX
+    prepare_pxx(channels, receiver_number, flag1, EU_10_mw);  //receive channels data and prepare then for PXX
     
     if(step1){
       LoopRightMLX();

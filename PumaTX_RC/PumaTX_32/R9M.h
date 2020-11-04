@@ -168,7 +168,7 @@ uint16_t limit(uint16_t low, uint16_t val, uint16_t high)
 }
 
 
-void prepare_pxx(int16_t channels[16], byte rx_number, byte bind)
+void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zone)
 {
     uint16_t chan=0, chan_low=0;
 
