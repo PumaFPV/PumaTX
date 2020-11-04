@@ -4,113 +4,46 @@
 
 #include "buttons.h"
 #include "computeRCdata.h"
+#include "mlx.h"
 #include "R9M.h"
 
-void GetSketchName(){
-  
-  String path = __FILE__;
-  int slash = path.lastIndexOf('\x5C');
-  String the_cpp_name = path.substring(slash+1);
-  int dot_loc = the_cpp_name.lastIndexOf('.');
-  Firmware = the_cpp_name.substring(0, dot_loc);
-  Serial.println(Firmware);
-    
-}
 
-void setup() {
-  GetSketchName();  //Outputs the firmware name used
+void setup() 
+{
   Serial.begin(115200); //Starts Serial connection
   Wire.begin(I2C_SDA, I2C_SCL); //Starts I2C connection
-  //mlx.begin();  //Starts mlx communication 
-  SetupLeftMLX();
-  SetupRightMLX();
+  setup_left_mlx();
+  setup_right_mlx();
 
-  PinModeDef(); //Defines every buttons
-
-  setup_PXX(0x12, EU_10_mw); //Rx number, power and zone
+  pin_mode_def(); //Defines every buttons
 }
 
-void loop() {
-  /*
-    unsigned long current_millis_mlx = millis();
+void loop() 
+{
 
-  if (current_millis_mlx - previous_millis_mlx >= interval_mlx) {
-
-    previous_millis_mlx = current_millis_mlx;
-          LoopRightMLX();
-
-  }
-*/
-
-  
-  //mlx.process();
-  ProcessButtons();
-  ComputeRC4();
+  process_buttons();
+  compute_rc();
   rc_data();
   
 
   unsigned long current_millis_pxx = millis();
   
-  if (current_millis_pxx - previous_millis_pxx >= interval_pxx) {
+  if (current_millis_pxx - previous_millis_pxx >= interval_pxx) 
+  {
 
     previous_millis_pxx = current_millis_pxx;
     prepare_pxx(channels, receiver_number, flag1, EU_10_mw);  //receive channels data and prepare then for PXX
     
-    if(step1){
-      LoopRightMLX();
-    }else{
-      LoopLeftMLX();
+    if(left_mlx)
+    {
+      loop_left_mlx();
     }
-    step1 = !step1;
+    else
+    {
+      loop_right_mlx();
+    }
+    left_mlx = !left_mlx;
     
   }
 
-
-
-/*
-  for(int i = 0; i < 8; i++){
-    Serial.print(channels[i]);
-    Serial.print("  ");
-  }
-  Serial.println();
-*/
-
-/*
-Serial.print(Throttle.Output);
-Serial.print("  ");
-Serial.print(Pitch.Output);
-Serial.print("  ");
-Serial.print(Roll.Output);
-Serial.print("  ");
-Serial.print(Yaw.Output);
-Serial.print("  ");
-Serial.print(RightPot.Output);
-Serial.print("  ");
-Serial.print(LeftPot.Output);
-Serial.print("  ");
-Serial.print(Arm.Output);
-Serial.print("  ");
-Serial.print(Pre.Output);
-Serial.print("  ");
-Serial.print(RTH.Output);
-Serial.print("  ");
-Serial.print(Pause.Output);
-Serial.print("  ");
-Serial.print(Pwr.State);
-Serial.println("  ");
-*/
-/*
-Serial.print(Ok.State);
-Serial.print("  ");
-Serial.print(Up.State);
-Serial.print("  ");
-Serial.print(Down.State);
-Serial.print("  ");
-Serial.print(Right.State);
-Serial.print("  ");
-Serial.print(Left.State);
-Serial.print("  ");
-
-Serial.println();
-*/
 }

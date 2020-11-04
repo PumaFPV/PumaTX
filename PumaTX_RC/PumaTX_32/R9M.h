@@ -176,7 +176,7 @@ void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zon
     pcm_crc = 0;
     pcm_ones_count = 0;
 
-    /* Preamble */
+    /* preamble */
     //putPcmPart(0);
     //putPcmPart(0);
     //putPcmPart(0);

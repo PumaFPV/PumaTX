@@ -1,37 +1,37 @@
-void PinModeDef(){
+void pin_mode_def(){
 
-  pinMode(Right.Pin, INPUT_PULLUP);
-  pinMode(Left.Pin, INPUT_PULLUP);
-  pinMode(Up.Pin, INPUT_PULLUP);
-  pinMode(Down.Pin, INPUT_PULLUP);
-  pinMode(Ok.Pin, INPUT_PULLUP);
-  pinMode(RTH.Pin, INPUT_PULLUP);    
-  pinMode(Arm.Pin, INPUT_PULLUP);
-  pinMode(Pre.Pin, INPUT_PULLUP);
-  pinMode(Pwr.Pin, INPUT_PULLUP);
-  pinMode(Pause.Pin, INPUT_PULLUP);
-  pinMode(LED.Pin, OUTPUT);
+  pinMode(right.pin, INPUT_PULLUP);
+  pinMode(left.pin, INPUT_PULLUP);
+  pinMode(up.pin, INPUT_PULLUP);
+  pinMode(down.pin, INPUT_PULLUP);
+  pinMode(ok.pin, INPUT_PULLUP);
+  pinMode(rth.pin, INPUT_PULLUP);    
+  pinMode(arm.pin, INPUT_PULLUP);
+  pinMode(pre.pin, INPUT_PULLUP);
+  pinMode(pwr.pin, INPUT_PULLUP);
+  pinMode(play.pin, INPUT_PULLUP);
+  pinMode(led.pin, OUTPUT);
   pinMode(17, OUTPUT);
   
 }
 
 
-void ProcessButtons(){
-  /*
+void process_buttons(){
+  
   //Navigation joystick
-  Ok.State = digitalRead(Ok.Pin);
-  Right.State = digitalRead(Right.Pin);
-  Left.State = digitalRead(Left.Pin);
-  Up.State = digitalRead(Up.Pin);
-  Down.State = digitalRead(Down.Pin);
-*/
+  ok.state = digitalRead(ok.pin);
+  right.state = digitalRead(right.pin);
+  left.state = digitalRead(left.pin);
+  up.state = digitalRead(up.pin);
+  down.state = digitalRead(down.pin);
+
   //Switches
-  RightPot.State = analogRead(RightPot.Pin);
-  LeftPot.State = analogRead(LeftPot.Pin);
-  Arm.State = digitalRead(Arm.Pin);
-  Pre.State = digitalRead(Pre.Pin);
-  RTH.State = digitalRead(RTH.Pin);
-  Pwr.State = digitalRead(Pwr.Pin);
-  Pause.State = digitalRead(Pause.Pin);
+  rightpot.state = analogRead(rightpot.pin);
+  leftpot.state = analogRead(leftpot.pin);
+  arm.state = digitalRead(arm.pin);
+  pre.state = digitalRead(pre.pin);
+  rth.state = digitalRead(rth.pin);
+  pwr.state = digitalRead(pwr.pin);
+  play.state = digitalRead(play.pin);
   
 }
