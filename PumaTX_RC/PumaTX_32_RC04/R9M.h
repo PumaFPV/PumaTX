@@ -90,21 +90,27 @@ void crc( uint8_t data )
 }
 
 
-void serial_bit(bool bit){
-  if(bit){
+void serial_bit(bool bit)
+{
+  if(bit)
+  {
     GPIO.out_w1ts = ((uint32_t)1 << 17);
     delayMicroseconds(7);
-  }else{
+  }
+  else
+  {
     GPIO.out_w1tc = ((uint32_t)1 << 17);
     delayMicroseconds(7);    
   }
 }
 
-void put_pcm_part(bool bit){
+void put_pcm_part(bool bit)
+{
 
   serial_bit(0);
   
-  if(bit){
+  if(bit)
+  {
     serial_bit(0);
   }
 
@@ -112,15 +118,19 @@ void put_pcm_part(bool bit){
   
 }
 
-void put_pcm_bit(bool bit){
-  if(pcm_ones_count >= 5){
+void put_pcm_bit(bool bit)
+{
+  if(pcm_ones_count >= 5)
+  {
     put_pcm_part(0);
   }
-  if(bit){
+  if(bit)
+  {
     pcm_ones_count++;
     put_pcm_part(1);
   }
-  else{
+  else
+  {
     pcm_ones_count = 0;
     put_pcm_part(0);
   }
@@ -128,10 +138,12 @@ void put_pcm_bit(bool bit){
 }
 
 
-void put_pcm_byte(uint8_t byte){
+void put_pcm_byte(uint8_t byte)
+{
   crc(byte);
 
-  for(uint8_t i = 0; i < 8; i++){
+  for(uint8_t i = 0; i < 8; i++)
+  {
     put_pcm_bit(byte & 0x80);
     byte <<= 1;  
   }
@@ -194,34 +206,9 @@ void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zon
 
     // FLAG2
     put_pcm_byte(0x00);
-
-
-/*
-    // PPM
-    for (int i=0; i<8; i++)
+   
+    if(send_upper_channel)
     {
-
-        //int channelPPM = channels[i];//channels[(sendUpperChannels ? (8 + i) : i)];
-        //Serial.print(channels[i]); Serial.print("  ");
-        //float convertedChan = ((float(channelPPM) - float(PPM_LOW)) / (float(PPM_HIGH_ADJUSTED))) * float(PXX_CHANNEL_WIDTH);
-        //chan = limit((sendUpperChannels ? PXX_UPPER_LOW : PXX_LOWER_LOW), convertedChan, (sendUpperChannels ? PXX_UPPER_HIGH : PXX_LOWER_HIGH));
-        
-        chan = channels[i];
-        
-        if (i & 1)
-        {
-            put_pcm_byte(chan_low); // Low byte of channel
-            put_pcm_byte(((chan_low >> 8) & 0x0F) | (chan << 4));  // 4 bits each from 2 channels
-            put_pcm_byte(chan >> 4);  // High byte of channel
-        }
-        else
-        {
-            chan_low = chan;
-        }
-    }
-    //Serial.println();
-*/    
-    if(send_upper_channel){
       put_pcm_byte(channels[0] & 0xFF);
       put_pcm_byte((channels[0] >> 8) | ((0x0F & channels[1]) << 4));
       put_pcm_byte(channels[1] >> 4);
@@ -234,7 +221,9 @@ void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zon
       put_pcm_byte(channels[6] & 0xFF);
       put_pcm_byte((channels[6] >> 8) | ((0x0F & channels[7]) << 4));
       put_pcm_byte(channels[7] >> 4);
-    }else{
+    }
+    else
+    {
       put_pcm_byte((channels[8] + 2048) & 0xFF);
       put_pcm_byte(((channels[8] + 2048) >> 8) | ((0x0F & (channels[9] + 2048)) << 4));
       put_pcm_byte((channels[9] + 2048) >> 4);
@@ -261,14 +250,5 @@ void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zon
     put_pcm_head();
     GPIO.out_w1tc = ((uint32_t)1 << 17);
     send_upper_channel = !send_upper_channel;
-  
-}
-
-
-
-void setup_PXX(byte rx, byte pwr){
-  
-  receiver_number = rx;
-  power_zone = pwr;
   
 }

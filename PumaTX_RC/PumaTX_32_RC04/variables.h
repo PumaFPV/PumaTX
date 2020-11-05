@@ -18,7 +18,8 @@
 
 
 //--------------------------------------------------Structs--------------------------------------------------
-struct Channel{
+struct Channel
+{
     int reading;    //MLX reading from -10000 to 10000
     int min;    //MLX scale
     int max;    //MLX scale
@@ -28,7 +29,8 @@ struct Channel{
     bool Reverse;
 };
 
-struct Button{
+struct Button
+{
     uint8_t pin;    //which pin the button is connected to
     bool state;  //what state the button is
     int ouput; //from -100 to 100
@@ -36,7 +38,8 @@ struct Button{
     unsigned long current_time; 
 };
 
-struct ADC{
+struct ADC
+{
     uint8_t pin;    //which pin the analog device is connected to
     float state;    //What state the analog device is at
     int process;
@@ -48,41 +51,45 @@ struct ADC{
 
 
 //--------------------------------------------------Channel struct--------------------------------------------------
-Channel throttle = {0, //reading
-                    -10000, //Min
-                    10000,  //Max
-                    0,  //Trim
-                    0,  //Inter
-                    0,  //ouput
-                    0   //Reverse
-                    };
+Channel throttle = {
+  0, //reading
+  -10000, //Min
+  10000,  //Max
+  0,  //Trim
+  0,  //Inter
+  0,  //ouput
+  0   //Reverse
+};
 
-Channel yaw = {0, //reading
-                    -10000, //Min
-                    10000,  //Max
-                    0,  //Trim
-                    0,  //Inter
-                    0,  //ouput
-                    0   //Reverse
-                    };
+Channel yaw = {
+  0, //reading
+  -10000, //Min
+  10000,  //Max
+  0,  //Trim
+  0,  //Inter
+  0,  //ouput
+  0   //Reverse
+};
 
-Channel pitch = {0, //reading
-                    -10000, //Min
-                    10000,  //Max
-                    0,  //Trim
-                    0,  //Inter
-                    0,  //ouput
-                    0   //Reverse
-                    };
+Channel pitch = {
+  0, //reading
+  -10000, //Min
+  10000,  //Max
+  0,  //Trim
+  0,  //Inter
+  0,  //ouput
+  0   //Reverse
+};
 
-Channel roll = {0, //reading
-                    -10000, //Min
-                    10000,  //Max
-                    0,  //Trim
-                    0,  //Inter
-                    0,  //ouput
-                    0   //Reverse
-                    };
+Channel roll = {
+  0, //reading
+  -10000, //Min
+  10000,  //Max
+  0,  //Trim
+  0,  //Inter
+  0,  //ouput
+  0   //Reverse
+};
 
 
 

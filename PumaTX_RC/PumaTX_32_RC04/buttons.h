@@ -1,4 +1,5 @@
-void pin_mode_def(){
+void pin_mode_def()
+{
 
   pinMode(right.pin, INPUT_PULLUP);
   pinMode(left.pin, INPUT_PULLUP);
@@ -16,7 +17,8 @@ void pin_mode_def(){
 }
 
 
-void process_buttons(){
+void process_buttons()
+{
   
   //Navigation joystick
   ok.state = digitalRead(ok.pin);
