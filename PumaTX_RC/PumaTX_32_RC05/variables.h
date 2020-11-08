@@ -7,7 +7,9 @@
 //--------------------------------------------------Include libraries--------------------------------------------------
 #include <Arduino.h>
 #include <Wire.h>
-
+#include "driver/gpio.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 
 //--------------------------------------------------Define--------------------------------------------------
@@ -31,7 +33,7 @@ struct Channel
 
 struct Button
 {
-    uint8_t pin;    //which pin the button is connected to
+    int pin;    //which pin the button is connected to
     bool state;  //what state the button is
     int ouput; //from -100 to 100
     bool prev;   //previous state
@@ -114,6 +116,8 @@ ADC rightpot = {32, 0, 0, 0, 0}; //GPIO39
 
 
 //--------------------------------------------------Variables--------------------------------------------------
+int rc_pin = 17;
+
 unsigned long debouncedelay = 200;
 unsigned long currenttime = 0;
 

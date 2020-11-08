@@ -8,6 +8,8 @@
 #include "R9M.h"
 
 
+byte receiver_number = 0x12;
+
 void setup() 
 {
   Serial.begin(115200); //Starts Serial connection
@@ -45,6 +47,6 @@ void loop()
     left_mlx = !left_mlx;
     
   }
-  Serial.println(channels[0]);
+  //Serial.println(channels[4]);
 
 }

@@ -50,7 +50,7 @@ Failsafe: Not found yet
 
 
 //-----Default values
-byte receiver_number = 0x00;
+//byte receiver_number = 0x00;
 byte power_zone = EU_10_mw;
 byte flag1 = 0x00;
 byte CRC_1 = 0x00;
@@ -94,12 +94,12 @@ void serial_bit(bool bit)
 {
   if(bit)
   {
-    GPIO.out_w1ts = ((uint32_t)1 << 17);
+    GPIO.out_w1ts = ((uint32_t)1 << rc_pin);  //gpio_sett_level(pin, state);
     delayMicroseconds(7);
   }
   else
   {
-    GPIO.out_w1tc = ((uint32_t)1 << 17);
+    GPIO.out_w1tc = ((uint32_t)1 << rc_pin);
     delayMicroseconds(7);    
   }
 }
@@ -202,7 +202,7 @@ void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zon
     put_pcm_byte(rx_number);
 
     // FLAG1 - Fail Safe Mode, nothing currently set, maybe want to do this
-    put_pcm_byte(0x00);
+    put_pcm_byte(bind);
 
     // FLAG2
     put_pcm_byte(0x00);
@@ -248,7 +248,7 @@ void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zon
 
     // Sync
     put_pcm_head();
-    GPIO.out_w1tc = ((uint32_t)1 << 17);
+    GPIO.out_w1tc = ((uint32_t)1 << rc_pin);
     send_upper_channel = !send_upper_channel;
   
 }
