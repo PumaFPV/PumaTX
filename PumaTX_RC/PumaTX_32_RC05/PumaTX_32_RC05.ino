@@ -1,14 +1,13 @@
 #include <Arduino.h>
 
 #include "variables.h"
-
 #include "buttons.h"
 #include "computeRCdata.h"
 #include "mlx.h"
 #include "R9M.h"
+#include "dualcore.h"
 
 
-byte receiver_number = 0x12;
 
 void setup() 
 {
@@ -16,6 +15,7 @@ void setup()
   Wire.begin(I2C_SDA, I2C_SCL); //Starts I2C connection
   setup_left_mlx();
   setup_right_mlx();
+  setup_dualcore();
 
   pin_mode_def(); //Defines every buttons
 }
@@ -28,8 +28,8 @@ void loop()
   rc_data();
   
 
-  unsigned long current_millis_pxx = millis();
-  
+  //unsigned long current_millis_pxx = millis();
+  /*
   if (current_millis_pxx - previous_millis_pxx >= interval_pxx) 
   {
 
@@ -48,5 +48,5 @@ void loop()
     
   }
   //Serial.println(channels[4]);
-
+*/
 }

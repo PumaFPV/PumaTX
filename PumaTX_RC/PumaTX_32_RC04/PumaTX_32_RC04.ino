@@ -24,6 +24,8 @@ void loop()
   process_buttons();
   compute_rc();
   rc_data();
+
+  receiver_number = 0x12;
   
 
   unsigned long current_millis_pxx = millis();

@@ -15,6 +15,22 @@
 //--------------------------------------------------Define--------------------------------------------------
 #define I2C_SDA 4
 #define I2C_SCL 13
+
+#define PXX_CHANNEL_WIDTH                   2048
+#define PXX_UPPER_LOW                       2049
+#define PXX_UPPER_HIGH                      4094
+#define PXX_LOWER_LOW                       1
+#define PXX_LOWER_HIGH                      2046
+
+
+
+#define HEAD 0x7E //0x7C
+#define BIND 0x05
+#define RANGE 0x20
+#define EU_100_mw 0x48  // 0100 1000
+#define EU_10_mw 0x40   // 0100 0000
+
+
 //--------------------------------------------------Initialize libraries--------------------------------------------------
 
 

@@ -22,7 +22,7 @@ void pin_mode_def()
 
 void process_buttons()
 {
-  
+
   //Navigation joystick
   ok.state = (GPIO.in >> ok.pin) & 0x1;
   right.state = (GPIO.in >> right.pin) & 0x1;
