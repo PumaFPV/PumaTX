@@ -50,79 +50,17 @@ void loop()
 
   Wire.beginTransmission(0x38);
   Wire.write(0x40);
+  
   Serial.println("begin");
-  Wire.write(display_byte[0]);  
-  Wire.write(display_byte[1]); 
-  Wire.write(display_byte[2]); 
-  Wire.write(display_byte[3]); 
-  Wire.write(display_byte[4]); 
-  Wire.write(display_byte[5]); 
-  Wire.write(display_byte[6]); 
-  Wire.write(display_byte[7]); 
-  Wire.write(display_byte[8]); 
-  Wire.write(display_byte[9]); 
-  Wire.write(display_byte[10]); 
-  Wire.write(display_byte[11]); 
-  Wire.write(display_byte[12]); 
-  Wire.write(display_byte[13]); 
-  Wire.write(display_byte[14]); 
-  Wire.write(display_byte[15]); 
-  Wire.write(display_byte[16]); 
-  Wire.write(display_byte[17]); 
-  Wire.write(display_byte[18]); 
-  Wire.write(display_byte[19]); 
-  Wire.write(display_byte[20]); 
-  Wire.write(display_byte[21]); 
-  Wire.write(display_byte[22]); 
-  Wire.write(display_byte[23]);   
-  Wire.write(display_byte[24]); 
-  Wire.write(display_byte[25]);
-  Wire.write(display_byte[26]);
-  Wire.write(display_byte[27]);
-  Wire.write(display_byte[28]);
-  Wire.write(display_byte[29]);
-  Wire.write(display_byte[30]);
-  Wire.write(display_byte[31]);
-  Wire.write(display_byte[32]);
-  Wire.write(display_byte[33]);
-  Wire.write(display_byte[34]);
-  Wire.write(display_byte[35]);
-  Wire.write(display_byte[36]);
-  Wire.write(display_byte[37]);
-  Wire.write(display_byte[38]);
-  Wire.write(display_byte[39]);
-  Wire.write(display_byte[40]);
-  Wire.write(display_byte[41]);
-  Wire.write(display_byte[42]);
-  Wire.write(display_byte[43]);
-  Wire.write(display_byte[44]);
-  Wire.write(display_byte[45]);
-  Wire.write(display_byte[46]);
-  Wire.write(display_byte[47]);
-  Wire.write(display_byte[48]);
-  Wire.write(display_byte[49]);
-  Wire.write(display_byte[50]);
-  Wire.write(display_byte[51]);
-  Wire.write(display_byte[52]);
-  Wire.write(display_byte[53]);
-  Wire.write(display_byte[54]);
-  Wire.write(display_byte[55]);
-  Wire.write(display_byte[56]);
-  Wire.write(display_byte[57]);
-  Wire.write(display_byte[58]);
-  Wire.write(display_byte[59]);
-  Wire.write(display_byte[60]);
-  Wire.write(display_byte[61]);
-  Wire.write(display_byte[62]);
-  Wire.write(display_byte[63]);
-  Wire.write(display_byte[64]);
-  Wire.write(display_byte[65]);
-  Wire.write(display_byte[66]);
-  Wire.write(display_byte[67]);
-
-
+  
+  for(int i = 0; i < 68; i++)
+  {
+    Wire.write(display_byte[i]);
+  }
+  
   Wire.endTransmission();
-Serial.println("end");
+
+  Serial.println("end");
   delay(10);
 }
 
