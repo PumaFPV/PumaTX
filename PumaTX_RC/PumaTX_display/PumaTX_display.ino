@@ -27,10 +27,32 @@ void setup()
 
   for(int i = 0; i < 68; i++)
   {
-    display_byte[i] = 0xFF; 
+    display_byte[i] = 0x00; 
   }
 
-}
+  display_byte[0] =  0b00000010;  //Choose to display fr or m in bottom right corner 0bxxxxfxmx f for foot m for meter 
+  display_byte[1] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom right 7 segment 1st from right
+  display_byte[2] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom right 7 segment 2nd from right
+  display_byte[3] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom right 7 segment 3rd from right
+  display_byte[4] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | | bottom right 7 segment 4th from right
+  display_byte[5] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom right 7 segment 5th from right
+  display_byte[6] =  0b00000010;  // 0b1234f6m8 | 1st bit is top line | 2nd bit is 2nd arrow up | 3rd bit is 3rd arrow up | 4th bit is 1st arrow down or 2nd arrow down| 6th bit is 1st arrow up | 8th bit 
+  display_byte[7] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom mid 7 segment 1st from right
+  display_byte[8] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom mid 7 segment 2nd from right
+  display_byte[9] =  0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom mid 7 segment 3rd from right
+  display_byte[10] = 0b11101111;  // 0bxxx4xxxx | bit 4 is useless | bottom mid 7 segment 4th from right
+  display_byte[11] = 0b01101100;  // 0b12345678 | bit 1: ft on bottom left | bit 2: clearance | bit 3: meter on bottom left | bit 4: saw teeth on bottom left | bit 5: top right segment for right 7 segment on bottom left | bit 6: bottom right segment for right 7 segment on bottom left | bit 7: mid segment for right 7 segment on bottom left|  bit 8 is triangle on bottom left
+  display_byte[12] = 0b11111100;  // 0b12345678 | bit 1: top segment for right 7 segment on bottom left | bit 2: bottom left segment for right 7 segment on bottom left| bit 3: top left segment for right 7 segment on bottom left| bit 4: bottom segment for right 7 segment on bottom left| bit 5: top right segment for left 7 segment on bottom left | bit 6: bottom right segment for left 7 segment on bottom left | bit 7: mid segment for left 7 segment on bottom left | bit 8: dot on bottom left
+  display_byte[13] = 0b11111010;  // 0b12345678 | bit 1: top segment left 7 segment on bottom left | bit 2: bottom left segment segment for left 7 segment on bottom left | bit 3: top left segment right 7 segment on bottom left | bit 4: bottom segment for right 7 segment on bottom left | bit 5: top right for unit rpm | bit 6: | bit 7:  bottom right for unit rpm | bit 8: xxx
+  display_byte[14] = 0b11000010;  // 0b12345678 | bit 1: top segment unit rpm | bit 2: bottom segment for unit rpm | bit 3: mid segment for unit rpm | bit 4: 1st bar right graph | bit 5: xxx | bit 6: xxx | bit 7: bottom left segment for unit rpm | bit 8: xxx |
+  display_byte[15] = 0b11101101;  // 0b12345678 | bit 1: top right segment tens rpm | bit 2: RPM | bit 3: bottom right segment tens rpm | bit 4: 2nd bar right graph | bit 5: top segment tens rpm | bit 6: bottom segment tens rpm | bit 7: mid segment tens rpm | bit 8: xxx
+  display_byte[16] = 0b10101110;  // 0b12345678 | bit 1: top left segment tens rpm | bit 2: 10 rpm | bit 3: bottom left segment tens rpm | bit 4: 3rd bar right graph | bit 5: top right segment hundreds rpm | bit 6: *rpm | bit 7: bottom right segment hundreds rpm | bit 8: 4th bar right graph |
+  display_byte[17] = 0b11001110;  // 0b12345678 | bit 1: top segment hundreds rpm | bit 2: bottom segment hundreds rpm | bit 3: mid segment hundreds rpm | bit 4: 5th bar right graph | bit 5: top left segment hundreds rpm | bit 6: thousand rpm | bit 7: bottom left segment hundreds rpm | bit 8: 6th bar right graph
+  display_byte[18] = 0b00001100;  // 0b12345678 | bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: boxes right graph | bit 5: top right 11th letter | bit 6: bottom right 11th letter | bit 7: xxx | bit 8: xxx
+  display_byte[19] = 0b10000000;  // 0b12345678 | bit 1: 
+  
+  
+  }
 
 
 
@@ -46,7 +68,6 @@ void loop()
   Wire.write(0x00);
   Wire.write(0x4C);
   Wire.endTransmission();
-
 
   Wire.beginTransmission(0x38);
   Wire.write(0x40);
