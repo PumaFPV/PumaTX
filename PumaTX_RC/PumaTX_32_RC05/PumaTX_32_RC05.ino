@@ -20,9 +20,10 @@ void setup()
   pin_mode_def(); //Defines every buttons
 }
 
+
+
 void loop() 
 {
-
   process_buttons();
   compute_rc();
   rc_data();
