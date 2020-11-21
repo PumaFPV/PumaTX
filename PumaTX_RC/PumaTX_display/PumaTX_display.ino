@@ -64,25 +64,37 @@ void setup()
   display_byte[29] = 0b11001110;  // bit 1: f 7th  | bit 2: e 7th  | bit 3: g 7th  | bit 4: k 7th  | bit 5: b unit drone battery | bit 6: drone battery percentage | bit 7: c unit drone battery | bit 8: xxx
   display_byte[30] = 0b11001110;  // bit 1: a unit drone battery | bit 2: d unit drone battery | bit 3 : g unit drone battery | bit 4: xxx | bit 5: f unit drone battery | bit 6: top triangle | bit 7: e unit drone battery | bit 8: xxx
   display_byte[31] = 0b11101100;  // bit 1: b tens drone battery | bit 2: 3rd drone battery | bit 3: e tens drone battery | bit 4: xxx | bit 5: a tens drone battery | bit 6: d tens drone battery | bit 7: g tens drone battery | bit 8: xxx
-  display_byte[32] = 0b11101111;  // bit 1: t l tens drone battery | bit 2: hundreds drone battery | bit 3: b l tens drone battery | bit 4: xxx | bit 5: drone battery box | bit 6: 2nd drone battery | bit 7: 1st drone battery | bit 8: xxx
-  display_byte[33] = 0b11000001;  // bit 1: b 6th | bit 2: c 6th | bit 3: h 6th | bit 4: i 6th | bit 5: n 6th | bit 6: j 6th | bit 7: m 6th | bit 8: d 6th
-  display_byte[34] = 0b10001111;  // bit 1: a 6th | bit 2: g 6th | bit 3: l 6th | bit 4: e 6th | bit 5: b 5th | bit 6: c 5th | bit 7: f 6th | bit 8: e 6th
-  display_byte[35] = 0b10000001;  // bit 1: a 5th | bit 2: h 5th | bit 3: n 5th | bit 4: i 5th | bit 5: l 5th | bit 6: j 5th | bit 7: m 5th | bit 8: d 5th
-  display_byte[36] = 0b11001100;  // bit 1: f 5th | bit 2: e 5th | bit 3: g 5th | bit 4: k 5th | bit 5: b 4th | bit 6: c 4th | bit 7: h 4th | bit 8: i 4th
-  display_byte[37] = 0b00011000;  // bit 1: n 4th | bit 2: j 4th | bit 3: m 4th | bit 4: d 4th | bit 5: a 4th | bit 6: g 4th | bit 7: l 4th | bit 8: k 4th
-  display_byte[38] = 0b11111000;  // bit 1: b 3rd | bit 2: c 3rd | bit 3: f 4th | bit 4: e 4th | bit 5: a 3rd | bit 6: h 3rd | bit 7: n 3rd | bit 8: i 3rd
-  display_byte[39] = 0b00011100;  // bit 1: l 3rd | bit 2: j 3rd | bit 3: m 3rd | bit 4: d 3rd | bit 5: f 3rd | bit 6: e 3rd | bit 7: g 3rd | bit 8: k 3rd
-  display_byte[40] = 0b01100110;  // bit 1: t 5th named rssi | bit 2: b 2nd named rssi | bit 3: b 5th named rssi | bit 4: xxx | bit 5: t 4th named rssi | bit 6: b 3rd named rssi | bit 7: b 4th named rssi | bit 8: xxx
-  display_byte[41] = 0b00001111;  // bit 1: t 3rd named rssi | bit 2: t 1st named rssi | bit 3: t 2nd named rssi | bit 4: xxx | bit 5: b 4th rssi name | bit 6: b 1st named rssi | bit 7: c 4th rssi name | bit 8: xxx
-  display_byte[42] = 0b11111111;
-  
+  display_byte[32] = 0b11101111;  // bit 1: f tens drone battery | bit 2: hundreds drone battery | bit 3: e tens drone battery | bit 4: xxx | bit 5: drone battery box | bit 6: 2nd drone battery | bit 7: 1st drone battery | bit 8: xxx
+  display_byte[33] = 0b11000001;  // bit 1: b 6th  | bit 2: c 6th  | bit 3: h 6th  | bit 4: i 6th  | bit 5: n 6th  | bit 6: j 6th  | bit 7: m 6th  | bit 8: d 6th
+  display_byte[34] = 0b10001111;  // bit 1: a 6th  | bit 2: g 6th  | bit 3: l 6th  | bit 4: e 6th  | bit 5: b 5th  | bit 6: c 5th  | bit 7: f 6th  | bit 8: e 6th
+  display_byte[35] = 0b10000001;  // bit 1: a 5th  | bit 2: h 5th  | bit 3: n 5th  | bit 4: i 5th  | bit 5: l 5th  | bit 6: j 5th  | bit 7: m 5th  | bit 8: d 5th
+  display_byte[36] = 0b11001100;  // bit 1: f 5th  | bit 2: e 5th  | bit 3: g 5th  | bit 4: k 5th  | bit 5: b 4th  | bit 6: c 4th  | bit 7: h 4th  | bit 8: i 4th
+  display_byte[37] = 0b00011000;  // bit 1: n 4th  | bit 2: j 4th  | bit 3: m 4th  | bit 4: d 4th  | bit 5: a 4th  | bit 6: g 4th  | bit 7: l 4th  | bit 8: k 4th
+  display_byte[38] = 0b11111000;  // bit 1: b 3rd  | bit 2: c 3rd  | bit 3: f 4th  | bit 4: e 4th  | bit 5: a 3rd  | bit 6: h 3rd  | bit 7: n 3rd  | bit 8: i 3rd
+  display_byte[39] = 0b00011100;  // bit 1: l 3rd  | bit 2: j 3rd  | bit 3: m 3rd  | bit 4: d 3rd  | bit 5: f 3rd  | bit 6: e 3rd  | bit 7: g 3rd  | bit 8: k 3rd
+  display_byte[40] = 0b01100110;  // bit 1: t 5th named rssi | bit 2: b 2nd named rssi | bit 3: b 5th named rssi | bit 4: xxx  | bit 5: t 4th named rssi | bit 6: b 3rd named rssi | bit 7: b 4th named rssi | bit 8: xxx
+  display_byte[41] = 0b00001111;  // bit 1: t 3rd named rssi | bit 2: t 1st named rssi | bit 3: t 2nd named rssi | bit 4: xxx  | bit 5: b 4th rssi name  | bit 6: b 1st named rssi | bit 7: c 4th rssi name  | bit 8: xxx
+  display_byte[42] = 0b00001001;  // bit 1: n 4th rssi name  | bit 2: i 4th rssi name  | bit 3: h 4th rssi name  | bit 4: xxx  | bit 5: a 4th rssi name  | bit 6: j 4th rssi name  | bit 7: m 4th rssi name  | bit 8: a 4th rssi name
+  display_byte[43] = 0b00001110;  // bit 1: l 4th rssi name  | bit 2: k 4th rssi name  | bit 3: g 4th rssi name  | bit 4: xxx  | bit 5: f 4th rssi name  | bit 6: d 4th rssi name  | bit 7: e 4th rssi name  | bit 8: xxx
+  display_byte[44] = 0b10100000;  // bit 1: b 3rd rssi name  | bit 2: xxx              | bit 3: c 3rd rssi name  | bit 4: xxx  | bit 5: n 3rd rssi name  | bit 6: i 3rd rssi name  | bit 7: h 3rd rssi name  | bit 8: xxx
+  display_byte[45] = 0b10000000;  // bit 1: a 3rd rssi name  | bit 2: j 3rd rssi name  | bit 3: m 3rd rssi name  | bit 4: xxx  | bit 5: l 3rd rssi name  | bit 6: k 3rd rssi name  | bit 7: g 3rd rssi name  | bit 8: xxx
+  display_byte[46] = 0b11101010;  // bit 1: f 3rd rssi name  | bit 2: d 3rd rssi name  | bit 3: e 3rd rssi name  | bit 4: xxx  | bit 5: b 2nd rssi name  | bit 6: xxx              | bit 7: c 2nd rssi name  | bit 8: xxx
+  display_byte[47] = 0b00001000;  // bit 1: n 2nd rssi name  | bit 2: i 2nd rssi name  | bit 3: h 2nd rssi name  | bit 4: xxx  | bit 5: a 2nd rssi name  | bit 6: j 2nd rssi name  | bit 7: m 2nd rssi name  | bit 8: xxx
+  display_byte[48] = 0b00001110;  // bit 1: l 2nd rssi name  | bit 2: k 2nd rssi name  | bit 3: g 2nd rssi name  | bit 4: xxx  | bit 5: f 2nd rssi name  | bit 6: d 2nd rssi name  | bit 7: e 2nd rssi name  | bit 8: xxx
+  display_byte[49] = 0b10100000;  // bit 1: b 1st rssi name  | bit 2: xxx              | bit 3: c 1st rssi name  | bit 4: xxx  | bit 5: n 1st rssi name  | bit 6: i 1st rssi name  | bit 7: h 1st rssi name  | bit 8: xxx
+  display_byte[50] = 0b10000000;  // bit 1: a 1st rssi name  | bit 2: j 3rd rssi name  | bit 3: m 3rd rssi name  | bit 4: xxx  | bit 5: l 3rd rssi name  | bit 6: k 3rd rssi name  | bit 7: g 3rd rssi name  | bit 8: xxx
+  display_byte[51] = 0b11101100;  // bit 1: f 1st rssi name  | bit 2: d 1st rssi name  | bit 3: e 1st rssi name  | bit 4: xxx  | bit 5: b 2nd  | bit 6: c 2nd | bit 7: h 2nd | bit 8: i 2nd 
+  display_byte[52] = 0b00011000;  // bit 1: n 2nd | bit 2: j 2nd | bit 3: m 2nd | bit 4: d 2nd | bit 5: a 2nd | bit 6: g 2nd | bit 7: l 2nd | bit 8: k 2nd 
+  display_byte[53] = 0b11111000;  // bit 1: b 1st | bit 2: c 1st | bit 3: f 2nd | bit 4: e 2nd | bit 5: a 1st | bit 6: h 1st | bit 7: n 1st | bit 8: i 2nd
+  display_byte[54] = 0b00011100;  // bit 1: l 1st | bit 2: j 1st | bit 3: m 1st | bit 4: d 1st | bit 5: f 1st | bit 6: e 1st | bit 7: g 1st | bit 8: k 1st
+  display_byte[55] = 0b01000000;  // bit 1: xxx | bit 2:
 }
 
 
 
 void loop()
 {
-  
+  Serial.println("begin");
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
   Wire.write(0x00);
