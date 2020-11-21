@@ -11,6 +11,8 @@ byte display_byte[68];
 
 void setup_display();
 void display_default();
+void set_left_graph(uint8_t bar);
+void set_right_graph(uint8_t bar);
 
 
 void setup()
@@ -40,6 +42,10 @@ void setup()
 
 void loop()
 {
+for(int i = 0; i < 7; i++)
+{
+  set_left_graph(i);
+  set_right_graph(i);
   Serial.println("begin");
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
@@ -63,7 +69,104 @@ void loop()
 
   delay(100);
 }
+}
 
+
+
+void set_left_graph(uint8_t bar)
+{
+  byte left_graph = 0b000000;
+  
+  /*
+  switch(bar)
+  {
+    case 0:
+      left_graph = 0b000000; 
+      break;
+    case 1:
+      left_graph = 0b000001; 
+      break;
+    case 2:
+      left_graph = 0b000011; 
+      break;
+    case 3:
+      left_graph = 0b000111; 
+      break;
+    case 4:
+      left_graph = 0b001111; 
+      break;
+    case 5:
+      left_graph = 0b011111; 
+      break;
+    case 6:
+      left_graph = 0b111111; 
+      break;
+  }
+  */
+
+  left_graph = pow(2, bar) - 1;
+
+  //1st bar
+  bitWrite(display_byte[59], 0, bitRead(left_graph, 0));
+  //2nd bar
+  bitWrite(display_byte[59], 4, bitRead(left_graph, 1));
+  //3rd bar
+  bitWrite(display_byte[58], 4, bitRead(left_graph, 2));
+  //4th bar
+  bitWrite(display_byte[57], 0, bitRead(left_graph, 3));
+  //5th bar
+  bitWrite(display_byte[57], 4, bitRead(left_graph, 4));
+  //6th bar
+  bitWrite(display_byte[56], 4, bitRead(left_graph, 5));
+}
+
+
+void set_right_graph(uint8_t bar)
+{
+  byte right_graph = 0b000000;
+  
+  /*
+  switch(bar)
+  {
+    case 0:
+      left_graph = 0b000000; 
+      break;
+    case 1:
+      left_graph = 0b000001; 
+      break;
+    case 2:
+      left_graph = 0b000011; 
+      break;
+    case 3:
+      left_graph = 0b000111; 
+      break;
+    case 4:
+      left_graph = 0b001111; 
+      break;
+    case 5:
+      left_graph = 0b011111; 
+      break;
+    case 6:
+      left_graph = 0b111111; 
+      break;
+  }
+  */
+
+  right_graph = pow(2, bar) - 1;
+
+  //1st bar
+  bitWrite(display_byte[14], 4, bitRead(right_graph, 0));
+  //2nd bar
+  bitWrite(display_byte[15], 4, bitRead(right_graph, 1));
+  //3rd bar
+  bitWrite(display_byte[16], 4, bitRead(right_graph, 2));
+  //4th bar
+  bitWrite(display_byte[16], 0, bitRead(right_graph, 3));
+  //5th bar
+  bitWrite(display_byte[17], 4, bitRead(right_graph, 4));
+  //6th bar
+  bitWrite(display_byte[17], 0, bitRead(right_graph, 5));
+}
 
 
 void setup_display()
