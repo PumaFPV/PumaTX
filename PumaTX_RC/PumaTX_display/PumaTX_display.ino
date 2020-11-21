@@ -90,9 +90,17 @@ void setup()
   display_byte[55] = 0b00011010;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: left graph box | bit 5: b unit speed | bit 6: xxx | bit 7: c unit speed | bit 8: xxx
   display_byte[56] = 0b11001010;  // bit 1: a unit speed | bit 2: d unit speed | bit 3: g unit speed | bit 4: 6th left graph | bit 5: f unit speed | bit 6: xxx | bit 7: e unit speed | bit 8: xxx
   display_byte[57] = 0b10101100;  // bit 1: b tens speed | bit 2: right dot speed | bit 3: c tens speed | bit 4: 5th left graph | bit 5: a tens speed | bit 6: d tens speed | bit 7: g tens speed | bit 8: 4th left graph
-  display_byte[58] = 0b11101100;  // bit 1: f tens speed | bit 2: kmh | bit 3: e tens speed | bit 4: 3rd left graph | bit 5: b hundreds speed | bit 6: 
-
-
+  display_byte[58] = 0b11101010;  // bit 1: f tens speed | bit 2: kmh | bit 3: e tens speed | bit 4: 3rd left graph | bit 5: b hundreds speed | bit 6: left dot speed | bit 7: c hundreds speed | bit 8: xxx
+  display_byte[59] = 0b11001010;  // bit 1: 1 hundreds speed | bit 2: d hundreds speed | bit 3: g hundreds speed | bit 4: 2nd left graph | bit 5: f hundreds speed | bit 6: mph | bit 7: e hundreds speed | bit 8: 1st left graph
+  display_byte[60] = 0b11010011;  // bit 1: sd | bit 2: c tenth ev | bit 3: ev | bit 4: b tenth ev | bit 5: sport | bit 6: g tenth ev | bit 7: d tenth ev | bit 8: a tenth ev
+  display_byte[61] = 0b01010111;  // bit 1: xxx | bit 2: e tenth ev | bit 3: xxx | bit 4: f tenth ev | bit 5: xxx | bit 6: c unit ev | bit 7: ev dot | bit 8: b unit ev 
+  display_byte[62] = 0b00110101;  // bit 1: xxx | bit 2: g unit ev | bit 3: d unit ev | bit 4: a unit ev | bit 5: xxx | bit 6: e unit ev | bit 7: xxx | bit 8: f unit ev
+  display_byte[63] = 0b01110000;  // bit 1: rec | bit 2: c tens ev | bit 3: d tens ev | bit 4: b tens ev | bit 5: xxx | bit 6: g tens ev | bit 7: j tens ev | bit 8: m tens ev
+  display_byte[64] = 0b01110111;  // bit 1: xxx | bit 2: f tens ev | bit 3: e tens ev | bit 4: a tens ev | bit 5: vision | bit 6: c unit tx battery | bit 7: tx battery percentage | bit 8: b unit tx battery
+  display_byte[65] = 0b10111111;  // bit 1: 1st tx battery | bit 2: g unit tx battery | bit 3: d  unit tx battery | bit 4: a unit tx battery | bit 5: 2nd tx battery | bit 6: e unit battery | bit 7: tx battery box | bit 8: f unit tx battery
+  display_byte[66] = 0b11110011;  // bit 1: 3rd tx battery | bit 2: c tens tx battery | bit 3: tx battery | bit 4: b tens tx battery | bit 5: xxx | bit 6: g tens tx battery | bit 7: d tens tx battery | bit 8: a tens tx battery 
+  display_byte[67] = 0b01110001;  // bit 1: xxx | bit 2: e tens tx battery | bit 3: hundreds tx battery | bit 4: f tens tx battery | bit 5: xxx | bit 6: xxx | bit 7: xxx | bit 8: xxx
+  display_byte[68] = 0000000000;  // bit 1:
 
 }
 
