@@ -87,7 +87,11 @@ void setup()
   display_byte[52] = 0b00011000;  // bit 1: n 2nd | bit 2: j 2nd | bit 3: m 2nd | bit 4: d 2nd | bit 5: a 2nd | bit 6: g 2nd | bit 7: l 2nd | bit 8: k 2nd 
   display_byte[53] = 0b11111000;  // bit 1: b 1st | bit 2: c 1st | bit 3: f 2nd | bit 4: e 2nd | bit 5: a 1st | bit 6: h 1st | bit 7: n 1st | bit 8: i 2nd
   display_byte[54] = 0b00011100;  // bit 1: l 1st | bit 2: j 1st | bit 3: m 1st | bit 4: d 1st | bit 5: f 1st | bit 6: e 1st | bit 7: g 1st | bit 8: k 1st
-  display_byte[55] = 0b01000000;  // bit 1: xxx | bit 2:
+  display_byte[55] = 0b00011010;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: left graph box | bit 5: b unit speed | bit 6: xxx | bit 7: c unit speed | bit 8: xxx
+  display_byte[56] = 0b11001010;  // bit 1: a unit speed | bit 2: d unit speed | bit 3: g unit speed | bit 4: 6th left graph | bit 5: f unit speed | bit 6: xxx | bit 7: e unit speed | bit 8: xxx
+  display_byte[57] = 0b10101100;  // bit 1: b tens speed | bit 2: right dot speed | bit 3: c tens speed | bit 4: 5th left graph | bit 5: a tens speed | bit 6: d tens speed | bit 7: g tens speed | bit 8: 4th left graph
+  display_byte[58] = 0b11101100;  // bit 1: f tens speed | bit 2: kmh | bit 3: e tens speed | bit 4: 3rd left graph | bit 5: b hundreds speed | bit 6: 
+
 
 
 }
