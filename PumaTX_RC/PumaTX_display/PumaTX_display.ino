@@ -48,9 +48,9 @@ void setup()
   display_byte[13] = 0b11111010;  // bit 1: a tens clear | bit 2: e tens clear | bit 3: f tens clear | bit 4: d tens clear | bit 5: b unit rpm | bit 6: xxx | bit 7: c unit rpm | bit 8: xxx
   display_byte[14] = 0b11000010;  // bit 1: a unit rpm | bit 2: d unit rpm | bit 3: g unit rpm | bit 4: 1st bar r graph | bit 5: xxx | bit 6: xxx | bit 7: e unit rpm | bit 8: xxx 
   display_byte[15] = 0b11101101;  // bit 1: b tens rpm | bit 2: RPM | bit 3: c tens rpm | bit 4: 2nd bar r graph | bit 5: a tens rpm | bit 6: d tens rpm | bit 7: g tens rpm | bit 8: xxx
-  display_byte[16] = 0b10101110;  // bit 1: f tens rpm | bit 2: 10 rpm | bit 3: e tens rpm | bit 4: 3rd bar r graph | bit 5: b hundreds rpm | bit 6: *rpm | bit 7: c hundreds rpm | bit 8: 4th bar r graph 
+  display_byte[16] = 0b10101010;  // bit 1: f tens rpm | bit 2: 10 rpm | bit 3: e tens rpm | bit 4: 3rd bar r graph | bit 5: b hundreds rpm | bit 6: *rpm | bit 7: c hundreds rpm | bit 8: 4th bar r graph 
   display_byte[17] = 0b11001110;  // bit 1: a hundreds rpm | bit 2: d hundreds rpm | bit 3: g hundreds rpm | bit 4: 5th bar r graph | bit 5: f hundreds rpm | bit 6: thousand rpm | bit 7: e hundreds rpm | bit 8: 6th bar r graph
-  display_byte[18] = 0b00001100;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: boxes r graph | bit 5: b 11th  | bit 6: c 11th  | bit 7: xxx | bit 8: xxx
+  display_byte[18] = 0b00011100;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: right graph box | bit 5: b 11th  | bit 6: c 11th  | bit 7: xxx | bit 8: xxx
   display_byte[19] = 0b10000001;  // bit 1: a 11th | bit 2: h 11th | bit 3: n 11th | bit 4: i 11th | bit 5: l 11th | bit 6: j 11th | bit 7: m 11th | bit 8: d 11th 
   display_byte[20] = 0b11000010;  // bit 1: f 11th | bit 2: e 11th | bit 3: g 11th | bit 4: k 11th | bit 5: t 5th radio rssi | bit 6: xxx | bit 7: b 5th radio rssi | bit 8: xxx
   display_byte[21] = 0b01100100;  // bit 1: t 4th radio rssi | bit 2: b 3rd radio rssi | bit 3: b 4th radio rassi | bit 4: xxx | bit 5: t 3rd radio rssi | bit 6: b 2nd radio rssi | bit 7: t 2nd radio rssi | bit 8: xxx
@@ -88,6 +88,8 @@ void setup()
   display_byte[53] = 0b11111000;  // bit 1: b 1st | bit 2: c 1st | bit 3: f 2nd | bit 4: e 2nd | bit 5: a 1st | bit 6: h 1st | bit 7: n 1st | bit 8: i 2nd
   display_byte[54] = 0b00011100;  // bit 1: l 1st | bit 2: j 1st | bit 3: m 1st | bit 4: d 1st | bit 5: f 1st | bit 6: e 1st | bit 7: g 1st | bit 8: k 1st
   display_byte[55] = 0b01000000;  // bit 1: xxx | bit 2:
+
+
 }
 
 
