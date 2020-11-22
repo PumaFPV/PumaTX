@@ -73,7 +73,7 @@ void loop_display(int i)
   set_tx_battery_percentage(100);
   set_drone_battery_bar(i / 300);
   set_drone_battery_percentage(100);
-  set_rpm(2000);
+  set_rpm(i);
   set_speed(275);
   set_distance(23546);
   
@@ -358,8 +358,8 @@ void set_speed(int speed)
   int speed_tens = 0;
   int speed_hundreds = 0;
 
-  speed_hundreds = speed % 1000;
-  speed_tens     = speed % 100;
+  speed_hundreds = speed % 1000 / 100;
+  speed_tens     = speed % 100 / 10;
   speed_units    = speed % 10;
   
   draw_speed(1, speed_units);
@@ -413,22 +413,23 @@ void set_distance(int distance)
   int distance_1000 = 0;
   int distance_10000 = 0;
 
-  distamce_10000 = speed % 100000 / 10000;
-  distance_1000  = speed % 10000 / 1000;
-  distance_100   = speed % 1000/ 100;
-  distance_10    = ;
-  distance_1     = (speed - distance_hundreds * 100 - speed_tens * 10);
+  distance_10000 = distance % 100000 / 10000;
+  distance_1000  = distance % 10000 / 1000;
+  distance_100   = distance % 1000 / 100;
+  distance_10    = distance % 100 / 10;
+  distance_1     = distance % 10;
 
-  draw_distance(1, distance_units);
-  draw_distance(2, distance_tens);
-  draw_distance(3, distance_hundreds);
-  
+  draw_distance(1, distance_1);
+  draw_distance(2, distance_10);
+  draw_distance(3, distance_100);
+  draw_distance(4, distance_1000);
+  draw_distance(5, distance_10000);
 }
 
 void draw_distance(uint8_t display, char digit)
 {
   byte segment = char_to_7_segment(digit);
-  
+/*  
   switch(display)
   {
     case 1: // distance unit 
@@ -459,13 +460,14 @@ void draw_distance(uint8_t display, char digit)
       bitWrite(display_byte[], , bitRead(segment, 6));  //g
       break;
   }
+  */
 }
 
 byte char_to_7_segment(char digit)
 {
-  byte 7_digit[] = {63,6,91,79,102,109,125,7,127,111};
- 
-  return 7_digit[digit]; 
+  byte bit_7_digit[] = {63,6,91,79,102,109,125,7,127,111};
+  byte segment = bit_7_digit[digit];
+  return segment; 
 }
 
 void display_default()
