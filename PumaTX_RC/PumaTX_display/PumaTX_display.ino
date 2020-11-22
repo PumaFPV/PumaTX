@@ -429,54 +429,13 @@ void draw_distance(uint8_t display, char digit)
 {
   byte segment = char_to_7_segment(digit);
  
-  switch(display)
-  {
-    case 1: // distance 1
-      bitWrite(display_byte[5], 3, bitRead(segment, 0));  //a
-      bitWrite(display_byte[5], 7, bitRead(segment, 1));  //b
-      bitWrite(display_byte[5], 6, bitRead(segment, 2));  //c
-      bitWrite(display_byte[5], 0, bitRead(segment, 3));  //d
-      bitWrite(display_byte[5], 2, bitRead(segment, 4));  //e
-      bitWrite(display_byte[5], 1, bitRead(segment, 5));  //f
-      bitWrite(display_byte[5], 5, bitRead(segment, 6));  //g
-      break;
-    case 2: // distance 10
-      bitWrite(display_byte[4], 3, bitRead(segment, 0));  //a
-      bitWrite(display_byte[4], 7, bitRead(segment, 1));  //b
-      bitWrite(display_byte[4], 6, bitRead(segment, 2));  //c
-      bitWrite(display_byte[4], 0, bitRead(segment, 3));  //d
-      bitWrite(display_byte[4], 2, bitRead(segment, 4));  //e
-      bitWrite(display_byte[4], 1, bitRead(segment, 5));  //f
-      bitWrite(display_byte[4], 5, bitRead(segment, 6));  //g
-      break
-    case 3: // distance 100
-      bitWrite(display_byte[3], 3, bitRead(segment, 0));  //a
-      bitWrite(display_byte[3], 7, bitRead(segment, 1));  //b
-      bitWrite(display_byte[3], 6, bitRead(segment, 2));  //c
-      bitWrite(display_byte[3], 0, bitRead(segment, 3));  //d
-      bitWrite(display_byte[3], 2, bitRead(segment, 4));  //e
-      bitWrite(display_byte[3], 1, bitRead(segment, 5));  //f
-      bitWrite(display_byte[3], 5, bitRead(segment, 6));  //g
-      break;
-    case 4: // distance 1000
-      bitWrite(display_byte[2], 3, bitRead(segment, 0));  //a
-      bitWrite(display_byte[2], 7, bitRead(segment, 1));  //b
-      bitWrite(display_byte[2], 6, bitRead(segment, 2));  //c
-      bitWrite(display_byte[2], 0, bitRead(segment, 3));  //d
-      bitWrite(display_byte[2], 2, bitRead(segment, 4));  //e
-      bitWrite(display_byte[2], 1, bitRead(segment, 5));  //f
-      bitWrite(display_byte[2], 5, bitRead(segment, 6));  //g
-      break;
-    case 5: // distance 10000
-      bitWrite(display_byte[1], 3, bitRead(segment, 0));  //a
-      bitWrite(display_byte[1], 7, bitRead(segment, 1));  //b
-      bitWrite(display_byte[1], 6, bitRead(segment, 2));  //c
-      bitWrite(display_byte[1], 0, bitRead(segment, 3));  //d
-      bitWrite(display_byte[1], 2, bitRead(segment, 4));  //e
-      bitWrite(display_byte[1], 1, bitRead(segment, 5));  //f
-      bitWrite(display_byte[1], 5, bitRead(segment, 6));  //g
-      break;
-  }
+      bitWrite(display_byte[display], 3, bitRead(segment, 0));  //a
+      bitWrite(display_byte[display], 7, bitRead(segment, 1));  //b
+      bitWrite(display_byte[display], 6, bitRead(segment, 2));  //c
+      bitWrite(display_byte[display], 0, bitRead(segment, 3));  //d
+      bitWrite(display_byte[display], 2, bitRead(segment, 4));  //e
+      bitWrite(display_byte[display], 1, bitRead(segment, 5));  //f
+      bitWrite(display_byte[display], 5, bitRead(segment, 6));  //g
   
 }
 
