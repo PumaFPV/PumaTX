@@ -23,6 +23,7 @@ void set_rpm(int rpm);
 void draw_rpm(uint8_t display, char digit);
 byte char_to_7_segment(char digit);
 void set_speed(int speed);
+void set_distance(int distance);
 
 void setup()
 {
@@ -74,6 +75,7 @@ void loop_display(int i)
   set_drone_battery_percentage(100);
   set_rpm(2000);
   set_speed(275);
+  set_distance(23546);
   
   Serial.println("begin");
   Wire.beginTransmission(0x38);
@@ -298,10 +300,10 @@ void set_rpm(int rpm)
   int rpm_hundreds = 0;
   int rpm_thousands = 0;
 
-  rpm_thousands = rpm / 1000;
-  rpm_hundreds  = (rpm - rpm_thousands * 1000) / 100;
-  rpm_tens      = (rpm - rpm_thousands * 1000 - rpm_hundreds * 100) / 10;
-  rpm_units     = (rpm - rpm_thousands * 1000 - rpm_hundreds * 100 - rpm_tens * 10);
+  rpm_thousands = rpm % 10000 / 1000;
+  rpm_hundreds  = rpm % 1000 / 100;
+  rpm_tens      = rpm % 100 / 10;
+  rpm_units     = rpm % 10;
 
   draw_rpm(1, rpm_units);
   draw_rpm(2, rpm_tens);
@@ -356,10 +358,10 @@ void set_speed(int speed)
   int speed_tens = 0;
   int speed_hundreds = 0;
 
-  speed_hundreds = speed / 100;
-  speed_tens     = (speed - speed_hundreds * 100) / 10;
-  speed_units    = (speed - speed_hundreds * 100 - speed_tens * 10);
-
+  speed_hundreds = speed % 1000;
+  speed_tens     = speed % 100;
+  speed_units    = speed % 10;
+  
   draw_speed(1, speed_units);
   draw_speed(2, speed_tens);
   draw_speed(3, speed_hundreds);
@@ -402,44 +404,68 @@ void draw_speed(uint8_t display, char digit)
   }
 }
 
-byte char_to_7_segment(char digit)
+void set_distance(int distance)
 {
-  byte segment = 0b0000000;
-  switch(digit)
+ 
+  int distance_1 = 0;
+  int distance_10 = 0;
+  int distance_100 = 0;
+  int distance_1000 = 0;
+  int distance_10000 = 0;
+
+  distamce_10000 = speed % 100000 / 10000;
+  distance_1000  = speed % 10000 / 1000;
+  distance_100   = speed % 1000/ 100;
+  distance_10    = ;
+  distance_1     = (speed - distance_hundreds * 100 - speed_tens * 10);
+
+  draw_distance(1, distance_units);
+  draw_distance(2, distance_tens);
+  draw_distance(3, distance_hundreds);
+  
+}
+
+void draw_distance(uint8_t display, char digit)
+{
+  byte segment = char_to_7_segment(digit);
+  
+  switch(display)
   {
-    case 0:
-      segment = 0b0111111;
+    case 1: // distance unit 
+      bitWrite(display_byte[], , bitRead(segment, 0));  //a
+      bitWrite(display_byte[], , bitRead(segment, 1));  //b
+      bitWrite(display_byte[], , bitRead(segment, 2));  //c
+      bitWrite(display_byte[], , bitRead(segment, 3));  //d
+      bitWrite(display_byte[], , bitRead(segment, 4));  //e
+      bitWrite(display_byte[], , bitRead(segment, 5));  //f
+      bitWrite(display_byte[], , bitRead(segment, 6));  //g
       break;
-    case 1:
-      segment = 0b0000110;
+    case 2: // distance tens
+      bitWrite(display_byte[], , bitRead(segment, 0));  //a
+      bitWrite(display_byte[], , bitRead(segment, 1));  //b
+      bitWrite(display_byte[], , bitRead(segment, 2));  //c
+      bitWrite(display_byte[], , bitRead(segment, 3));  //d
+      bitWrite(display_byte[], , bitRead(segment, 4));  //e
+      bitWrite(display_byte[], , bitRead(segment, 5));  //f
+      bitWrite(display_byte[], , bitRead(segment, 6));  //g
       break;
-    case 2:
-      segment = 0b1011011;
-      break;
-    case 3:
-      segment = 0b1001111;
-      break;
-    case 4:
-      segment = 0b1100110;
-      break;
-    case 5:
-      segment = 0b1101101;
-      break;
-    case 6:
-      segment = 0b1111101;
-      break;
-    case 7:
-      segment = 0b0000111;
-      break;
-    case 8:
-      segment = 0b1111111;
-      break;
-    case 9:
-      segment = 0b1101111;
+    case 3: // distance hundreds
+      bitWrite(display_byte[], , bitRead(segment, 0));  //a
+      bitWrite(display_byte[], , bitRead(segment, 1));  //b
+      bitWrite(display_byte[], , bitRead(segment, 2));  //c
+      bitWrite(display_byte[], , bitRead(segment, 3));  //d
+      bitWrite(display_byte[], , bitRead(segment, 4));  //e
+      bitWrite(display_byte[], , bitRead(segment, 5));  //f
+      bitWrite(display_byte[], , bitRead(segment, 6));  //g
       break;
   }
+}
 
-  return segment;
+byte char_to_7_segment(char digit)
+{
+  byte 7_digit[] = {63,6,91,79,102,109,125,7,127,111};
+ 
+  return 7_digit[digit]; 
 }
 
 void display_default()
