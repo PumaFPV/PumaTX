@@ -16,11 +16,13 @@ void set_left_graph(uint8_t bar);
 void set_right_graph(uint8_t bar);
 void set_rc_rssi(uint8_t bar);
 void set_named_rssi(uint8_t bar);
-void set_tx_battery(uint8_t bar);
-void set_drone_battery(uint8_t bar);
+void set_tx_battery_bar(uint8_t bar);
+void set_tx_battery_percentage(uint8_t percentage);
+void set_drone_battery_bar(uint8_t bar);
 void set_rpm(int rpm); 
 void draw_rpm(uint8_t display, char digit);
 byte char_to_7_segment(char digit);
+void set_speed(int speed);
 
 void setup()
 {
@@ -66,9 +68,12 @@ void loop_display(int i)
   set_right_graph(6 - (i / 120));
   set_rc_rssi(i / 200);
   set_named_rssi(i / 200);
-  set_tx_battery(i / 300);
-  set_drone_battery(i / 300);
+  set_tx_battery_bar(i / 300);
+  set_tx_battery_percentage(100);
+  set_drone_battery_bar(i / 300);
+  set_drone_battery_percentage(100);
   set_rpm(2000);
+  set_speed(275);
   
   Serial.println("begin");
   Wire.beginTransmission(0x38);
@@ -172,10 +177,10 @@ void set_named_rssi(uint8_t bar)
   bitWrite(display_byte[40], 7, bitRead(named_rssi, 4));  
 }
 
-void set_tx_battery(uint8_t bar)
+void set_tx_battery_bar(uint8_t bar)
 {
   byte tx_battery = 0b000;
-
+  
   tx_battery = pow(2, bar) - 1;
    
   //1st bar
@@ -186,7 +191,45 @@ void set_tx_battery(uint8_t bar)
   bitWrite(display_byte[66], 7, bitRead(tx_battery, 2));
 }
 
-void set_drone_battery(uint8_t bar)
+void set_tx_battery_percentage(uint8_t percentage)
+{
+  uint8_t tx_battery_percentage_hundred = percentage / 100;
+  uint8_t tx_battery_percentage_tens = (percentage - tx_battery_percentage_hundred * 100 ) / 10;
+  uint8_t tx_battery_percentage_units= (percentage - tx_battery_percentage_hundred * 100 - tx_battery_percentage_tens * 10);
+
+  draw_tx_battery_percentage(1, tx_battery_percentage_units);
+  draw_tx_battery_percentage(2, tx_battery_percentage_tens);
+  bitWrite(display_byte[67], 5, tx_battery_percentage_hundred);
+}
+
+void draw_tx_battery_percentage(uint8_t display, char digit)
+{
+  byte segment = char_to_7_segment(digit);
+  
+  switch(display)
+  {
+    case 1: // tx battery  unit 
+      bitWrite(display_byte[65], 5, bitRead(segment, 0));  //a
+      bitWrite(display_byte[64], 0, bitRead(segment, 1));  //b
+      bitWrite(display_byte[64], 2, bitRead(segment, 2));  //c
+      bitWrite(display_byte[65], 5, bitRead(segment, 3));  //d
+      bitWrite(display_byte[65], 2, bitRead(segment, 4));  //e
+      bitWrite(display_byte[65], 0, bitRead(segment, 5));  //f
+      bitWrite(display_byte[65], 6, bitRead(segment, 6));  //g
+      break;
+    case 2: // tx battery tens
+      bitWrite(display_byte[66], 0, bitRead(segment, 0));  //a
+      bitWrite(display_byte[66], 4, bitRead(segment, 1));  //b
+      bitWrite(display_byte[66], 6, bitRead(segment, 2));  //c
+      bitWrite(display_byte[66], 1, bitRead(segment, 3));  //d
+      bitWrite(display_byte[67], 6, bitRead(segment, 4));  //e
+      bitWrite(display_byte[67], 4, bitRead(segment, 5));  //f
+      bitWrite(display_byte[66], 2, bitRead(segment, 6));  //g
+      break;
+  }
+}
+
+void set_drone_battery_bar(uint8_t bar)
 {
   byte drone_battery = 0b000;
 
@@ -199,6 +242,46 @@ void set_drone_battery(uint8_t bar)
   //3rd bar
   bitWrite(display_byte[32], 1, bitRead(drone_battery, 2));
 }
+
+void set_drone_battery_percentage(uint8_t percentage)
+{
+  uint8_t drone_battery_percentage_hundred = percentage / 100;
+  uint8_t drone_battery_percentage_tens = (percentage - drone_battery_percentage_hundred * 100 ) / 10;
+  uint8_t drone_battery_percentage_units= (percentage - drone_battery_percentage_hundred * 100 - drone_battery_percentage_tens * 10);
+
+  draw_drone_battery_percentage(1, drone_battery_percentage_units);
+  draw_drone_battery_percentage(2, drone_battery_percentage_tens);
+  bitWrite(display_byte[32], 6, drone_battery_percentage_hundred);
+
+}
+
+void draw_drone_battery_percentage(uint8_t display, char digit)
+{
+  byte segment = char_to_7_segment(digit);
+  
+  switch(display)
+  {
+    case 1: // drone battery  unit 
+      bitWrite(display_byte[30], 7, bitRead(segment, 0));  //a
+      bitWrite(display_byte[29], 3, bitRead(segment, 1));  //b
+      bitWrite(display_byte[29], 1, bitRead(segment, 2));  //c
+      bitWrite(display_byte[30], 6, bitRead(segment, 3));  //d
+      bitWrite(display_byte[30], 1, bitRead(segment, 4));  //e
+      bitWrite(display_byte[30], 3, bitRead(segment, 5));  //f
+      bitWrite(display_byte[30], 5, bitRead(segment, 6));  //g
+      break;
+    case 2: // drone battery tens
+      bitWrite(display_byte[31], 3, bitRead(segment, 0));  //a
+      bitWrite(display_byte[31], 7, bitRead(segment, 1));  //b
+      bitWrite(display_byte[31], 5, bitRead(segment, 2));  //c
+      bitWrite(display_byte[31], 2, bitRead(segment, 3));  //d
+      bitWrite(display_byte[32], 5, bitRead(segment, 4));  //e
+      bitWrite(display_byte[32], 7, bitRead(segment, 5));  //f
+      bitWrite(display_byte[31], 1, bitRead(segment, 6));  //g
+      break;
+  }
+}
+
 
 void set_rpm(int rpm)
 {
@@ -262,6 +345,59 @@ void draw_rpm(uint8_t display, char digit)
       bitWrite(display_byte[17], 1, bitRead(segment, 4));  //e
       bitWrite(display_byte[17], 3, bitRead(segment, 5));  //f
       bitWrite(display_byte[17], 5, bitRead(segment, 6));  //g
+      break;
+  }
+}
+
+void set_speed(int speed)
+{
+
+  int speed_units = 0;
+  int speed_tens = 0;
+  int speed_hundreds = 0;
+
+  speed_hundreds = speed / 100;
+  speed_tens     = (speed - speed_hundreds * 100) / 10;
+  speed_units    = (speed - speed_hundreds * 100 - speed_tens * 10);
+
+  draw_speed(1, speed_units);
+  draw_speed(2, speed_tens);
+  draw_speed(3, speed_hundreds);
+  
+}
+
+void draw_speed(uint8_t display, char digit)
+{
+  byte segment = char_to_7_segment(digit);
+  
+  switch(display)
+  {
+    case 1: // speed unit 
+      bitWrite(display_byte[56], 7, bitRead(segment, 0));  //a
+      bitWrite(display_byte[55], 3, bitRead(segment, 1));  //b
+      bitWrite(display_byte[55], 1, bitRead(segment, 2));  //c
+      bitWrite(display_byte[56], 6, bitRead(segment, 3));  //d
+      bitWrite(display_byte[56], 1, bitRead(segment, 4));  //e
+      bitWrite(display_byte[56], 3, bitRead(segment, 5));  //f
+      bitWrite(display_byte[56], 5, bitRead(segment, 6));  //g
+      break;
+    case 2: // speed tens
+      bitWrite(display_byte[57], 3, bitRead(segment, 0));  //a
+      bitWrite(display_byte[57], 7, bitRead(segment, 1));  //b
+      bitWrite(display_byte[57], 5, bitRead(segment, 2));  //c
+      bitWrite(display_byte[57], 2, bitRead(segment, 3));  //d
+      bitWrite(display_byte[58], 5, bitRead(segment, 4));  //e
+      bitWrite(display_byte[58], 7, bitRead(segment, 5));  //f
+      bitWrite(display_byte[57], 1, bitRead(segment, 6));  //g
+      break;
+    case 3: // speed hundreds
+      bitWrite(display_byte[59], 7, bitRead(segment, 0));  //a
+      bitWrite(display_byte[58], 3, bitRead(segment, 1));  //b
+      bitWrite(display_byte[58], 1, bitRead(segment, 2));  //c
+      bitWrite(display_byte[59], 6, bitRead(segment, 3));  //d
+      bitWrite(display_byte[59], 1, bitRead(segment, 4));  //e
+      bitWrite(display_byte[59], 3, bitRead(segment, 5));  //f
+      bitWrite(display_byte[59], 5, bitRead(segment, 6));  //g
       break;
   }
 }
@@ -339,7 +475,7 @@ void display_default()
   display_byte[28] = 0b10000001;  // bit 1: a 7th  | bit 2: h 7th  | bit 3: n 7th  | bit 4: i 7th  | bit 5: l 7th  | bit 6: j 7th  | bit 7: m 7th | bit 8: d 7th
   display_byte[29] = 0b11001110;  // bit 1: f 7th  | bit 2: e 7th  | bit 3: g 7th  | bit 4: k 7th  | bit 5: b unit drone battery | bit 6: drone battery percentage | bit 7: c unit drone battery | bit 8: xxx
   display_byte[30] = 0b11001110;  // bit 1: a unit drone battery | bit 2: d unit drone battery | bit 3 : g unit drone battery | bit 4: xxx | bit 5: f unit drone battery | bit 6: top triangle | bit 7: e unit drone battery | bit 8: xxx
-  display_byte[31] = 0b11101100;  // bit 1: b tens drone battery | bit 2: 3rd drone battery | bit 3: e tens drone battery | bit 4: xxx | bit 5: a tens drone battery | bit 6: d tens drone battery | bit 7: g tens drone battery | bit 8: xxx
+  display_byte[31] = 0b11101100;  // bit 1: b tens drone battery | bit 2: 3rd drone battery | bit 3: c tens drone battery | bit 4: xxx | bit 5: a tens drone battery | bit 6: d tens drone battery | bit 7: g tens drone battery | bit 8: xxx
   display_byte[32] = 0b11101111;  // bit 1: f tens drone battery | bit 2: hundreds drone battery | bit 3: e tens drone battery | bit 4: xxx | bit 5: drone battery box | bit 6: 2nd drone battery | bit 7: 1st drone battery | bit 8: xxx
   display_byte[33] = 0b11000001;  // bit 1: b 6th  | bit 2: c 6th  | bit 3: h 6th  | bit 4: i 6th  | bit 5: n 6th  | bit 6: j 6th  | bit 7: m 6th  | bit 8: d 6th
   display_byte[34] = 0b10001111;  // bit 1: a 6th  | bit 2: g 6th  | bit 3: l 6th  | bit 4: e 6th  | bit 5: b 5th  | bit 6: c 5th  | bit 7: f 6th  | bit 8: e 6th
@@ -367,13 +503,13 @@ void display_default()
   display_byte[56] = 0b11001010;  // bit 1: a unit speed | bit 2: d unit speed | bit 3: g unit speed | bit 4: 6th left graph | bit 5: f unit speed | bit 6: xxx | bit 7: e unit speed | bit 8: xxx
   display_byte[57] = 0b10101100;  // bit 1: b tens speed | bit 2: right dot speed | bit 3: c tens speed | bit 4: 5th left graph | bit 5: a tens speed | bit 6: d tens speed | bit 7: g tens speed | bit 8: 4th left graph
   display_byte[58] = 0b11101010;  // bit 1: f tens speed | bit 2: kmh | bit 3: e tens speed | bit 4: 3rd left graph | bit 5: b hundreds speed | bit 6: left dot speed | bit 7: c hundreds speed | bit 8: xxx
-  display_byte[59] = 0b11001010;  // bit 1: 1 hundreds speed | bit 2: d hundreds speed | bit 3: g hundreds speed | bit 4: 2nd left graph | bit 5: f hundreds speed | bit 6: mph | bit 7: e hundreds speed | bit 8: 1st left graph
+  display_byte[59] = 0b11001010;  // bit 1: a hundreds speed | bit 2: d hundreds speed | bit 3: g hundreds speed | bit 4: 2nd left graph | bit 5: f hundreds speed | bit 6: mph | bit 7: e hundreds speed | bit 8: 1st left graph
   display_byte[60] = 0b11010011;  // bit 1: sd | bit 2: c tenth ev | bit 3: ev | bit 4: b tenth ev | bit 5: sport | bit 6: g tenth ev | bit 7: d tenth ev | bit 8: a tenth ev
   display_byte[61] = 0b01010111;  // bit 1: xxx | bit 2: e tenth ev | bit 3: xxx | bit 4: f tenth ev | bit 5: xxx | bit 6: c unit ev | bit 7: ev dot | bit 8: b unit ev 
   display_byte[62] = 0b00110101;  // bit 1: xxx | bit 2: g unit ev | bit 3: d unit ev | bit 4: a unit ev | bit 5: xxx | bit 6: e unit ev | bit 7: xxx | bit 8: f unit ev
   display_byte[63] = 0b01110000;  // bit 1: rec | bit 2: c tens ev | bit 3: d tens ev | bit 4: b tens ev | bit 5: xxx | bit 6: g tens ev | bit 7: j tens ev | bit 8: m tens ev
   display_byte[64] = 0b01110111;  // bit 1: xxx | bit 2: f tens ev | bit 3: e tens ev | bit 4: a tens ev | bit 5: vision | bit 6: c unit tx battery | bit 7: tx battery percentage | bit 8: b unit tx battery
-  display_byte[65] = 0b10111111;  // bit 1: 1st tx battery | bit 2: g unit tx battery | bit 3: d  unit tx battery | bit 4: a unit tx battery | bit 5: 2nd tx battery | bit 6: e unit battery | bit 7: tx battery box | bit 8: f unit tx battery
+  display_byte[65] = 0b10111111;  // bit 1: 1st tx battery | bit 2: g unit tx battery | bit 3: d unit tx battery | bit 4: a unit tx battery | bit 5: 2nd tx battery | bit 6: e unit tx battery | bit 7: tx battery box | bit 8: f unit tx battery
   display_byte[66] = 0b11110011;  // bit 1: 3rd tx battery | bit 2: c tens tx battery | bit 3: tx battery | bit 4: b tens tx battery | bit 5: xxx | bit 6: g tens tx battery | bit 7: d tens tx battery | bit 8: a tens tx battery 
   display_byte[67] = 0b01110001;  // bit 1: xxx | bit 2: e tens tx battery | bit 3: hundreds tx battery | bit 4: f tens tx battery | bit 5: xxx | bit 6: xxx | bit 7: xxx | bit 8: xxx
   display_byte[68] = 0000000000;  // bit 1:
