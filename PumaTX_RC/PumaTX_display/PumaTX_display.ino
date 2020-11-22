@@ -12,21 +12,27 @@ byte display_byte[68];
 void setup_display();
 void loop_display(int i);
 void display_default();
-void set_left_graph(uint8_t bar);
-void set_right_graph(uint8_t bar);
-void set_rc_rssi(uint8_t bar);
-void set_named_rssi(uint8_t bar);
-void set_tx_battery_bar(uint8_t bar);
-void set_tx_battery_percentage(uint8_t percentage);
-void set_drone_battery_bar(uint8_t bar);
-void set_rpm(int rpm); 
+void set_left_graph(uint8_t bar, bool pic);
+void set_right_graph(uint8_t bar, bool pic);
+void set_rc_rssi(uint8_t bar, bool pic);
+void set_named_rssi(uint8_t bar, bool pic);
+void set_tx_battery_bar(uint8_t bar, bool pic);
+void set_tx_battery_percentage(uint8_t percentage, bool pic);
+void set_drone_battery_bar(uint8_t bar, bool pic);
+void set_rpm(int rpm, bool pic); 
 void draw_rpm(uint8_t display, char digit);
 byte char_to_7_segment(char digit);
-void set_speed(int speed);
-void set_distance(int distance);
-void set_altitude(int altitude);
-void set_clearance(int clearance);
-void set_ev(int ev);
+void set_speed(int speed, bool pic);
+void set_distance(int distance, bool pic);
+void set_altitude(int altitude, bool pic);
+void set_clearance(int clearance, bool pic);
+void set_ev(int ev, bool pic);
+void set_sd(bool sd);
+void set_sport(bool sport);
+void set_vision(bool vision);
+void set_rec(bool rec);
+
+
 
 void setup()
 {
@@ -67,20 +73,25 @@ void loop()
 void loop_display(int i)
 {
 
-  set_left_graph(i / 120);
-  set_right_graph(6 - (i / 120));
-  set_rc_rssi(i / 200);
-  set_named_rssi(i / 200);
-  set_tx_battery_bar(i / 300);
-  set_tx_battery_percentage(56);
-  set_drone_battery_bar(i / 300);
-  set_drone_battery_percentage(85);
-  set_rpm(i);
-  set_speed(275);
-  set_distance(66860);
-  set_altitude(4807);
-  set_clearance(23);
-  set_ev(123);
+  set_left_graph(i / 120, 0);
+  set_right_graph(6 - (i / 120), 0);
+  set_rc_rssi(i / 200, 1);
+  set_named_rssi(i / 200, 1);
+  set_tx_battery_bar(i / 300, 1);
+  set_tx_battery_percentage(56, 1);
+  set_drone_battery_bar(i / 300, 1);
+  set_drone_battery_percentage(85, 1);
+  set_rpm(2000, 1);
+  set_speed(275, 1);
+  set_distance(66860, 1);
+  set_altitude(4807, 1);
+  set_clearance(23, 1);
+  set_ev(123, 0);
+  set_sd(0);
+  set_sport(0);
+  set_vision(0);
+  set_rec(0);
+  
   
   Serial.println("begin");
   Wire.beginTransmission(0x38);
@@ -107,7 +118,7 @@ void loop_display(int i)
  
 }
 
-void set_left_graph(uint8_t bar)
+void set_left_graph(uint8_t bar, bool pic)
 {
   byte left_graph = 0b000000;
 
@@ -125,9 +136,11 @@ void set_left_graph(uint8_t bar)
   bitWrite(display_byte[57], 4, bitRead(left_graph, 4));
   //6th bar
   bitWrite(display_byte[56], 4, bitRead(left_graph, 5));
+  //box
+  bitWrite(display_byte[55], 4, pic);
 }
 
-void set_right_graph(uint8_t bar)
+void set_right_graph(uint8_t bar, bool pic)
 {
   byte right_graph = 0b000000;
 
@@ -145,9 +158,11 @@ void set_right_graph(uint8_t bar)
   bitWrite(display_byte[17], 4, bitRead(right_graph, 4));
   //6th bar
   bitWrite(display_byte[17], 0, bitRead(right_graph, 5));
+  //box
+  bitWrite(display_byte[18], 4, pic);
 }
 
-void set_rc_rssi(uint8_t bar)
+void set_rc_rssi(uint8_t bar, bool pic)
 {
   byte rc_rssi = 0b00000;
 
@@ -163,10 +178,17 @@ void set_rc_rssi(uint8_t bar)
   bitWrite(display_byte[21], 7, bitRead(rc_rssi, 3));
   //5th bar
   bitWrite(display_byte[20], 3, bitRead(rc_rssi, 4));
+  //pic
+  bitWrite(display_byte[22], 7, pic); //radio
+  bitWrite(display_byte[20], 1, pic); //5
+  bitWrite(display_byte[21], 5, pic); //4th
+  bitWrite(display_byte[21], 6, pic); //3rd
+  bitWrite(display_byte[21], 2, pic); //2nd
+  bitWrite(display_byte[22], 6, pic); //1st
    
 }
 
-void set_named_rssi(uint8_t bar)
+void set_named_rssi(uint8_t bar, bool pic)
 {
   byte named_rssi = 0b00000;
 
@@ -182,9 +204,15 @@ void set_named_rssi(uint8_t bar)
   bitWrite(display_byte[40], 3, bitRead(named_rssi, 3));
   //5th bar
   bitWrite(display_byte[40], 7, bitRead(named_rssi, 4));  
+  //bottom rssi
+  bitWrite(display_byte[41], 2, pic);  //1st
+  bitWrite(display_byte[40], 6, pic);
+  bitWrite(display_byte[40], 2, pic);
+  bitWrite(display_byte[40], 1, pic);
+  bitWrite(display_byte[40], 5, pic);
 }
 
-void set_tx_battery_bar(uint8_t bar)
+void set_tx_battery_bar(uint8_t bar, bool pic)
 {
   byte tx_battery = 0b000;
   
@@ -196,17 +224,21 @@ void set_tx_battery_bar(uint8_t bar)
   bitWrite(display_byte[65], 3 ,bitRead(tx_battery, 1));
   //3rd bar
   bitWrite(display_byte[66], 7, bitRead(tx_battery, 2));
+  //box
+  bitWrite(display_byte[65], 1, pic);
 }
 
-void set_tx_battery_percentage(uint8_t percentage)
+void set_tx_battery_percentage(uint8_t percentage, bool pic)
 {
-  uint8_t tx_battery_percentage_hundred = percentage / 100;
-  uint8_t tx_battery_percentage_10 = (percentage - tx_battery_percentage_hundred * 100 ) / 10;
-  uint8_t tx_battery_percentage_units= (percentage - tx_battery_percentage_hundred * 100 - tx_battery_percentage_10 * 10);
+  uint8_t tx_battery_percentage_100 = percentage / 100;
+  uint8_t tx_battery_percentage_10 = (percentage - tx_battery_percentage_100 * 100 ) / 10;
+  uint8_t tx_battery_percentage_1 = (percentage - tx_battery_percentage_100 * 100 - tx_battery_percentage_10 * 10);
 
-  draw_tx_battery_percentage(1, tx_battery_percentage_units);
+  draw_tx_battery_percentage(1, tx_battery_percentage_1);
   draw_tx_battery_percentage(2, tx_battery_percentage_10);
-  bitWrite(display_byte[67], 5, tx_battery_percentage_hundred);
+  bitWrite(display_byte[67], 5, tx_battery_percentage_100);
+  bitWrite(display_byte[64], 1, pic);
+  bitWrite(display_byte[66], 5, pic);
 }
 
 void draw_tx_battery_percentage(uint8_t display, char digit)
@@ -236,7 +268,7 @@ void draw_tx_battery_percentage(uint8_t display, char digit)
   }
 }
 
-void set_drone_battery_bar(uint8_t bar)
+void set_drone_battery_bar(uint8_t bar, bool pic)
 {
   byte drone_battery = 0b000;
 
@@ -248,9 +280,11 @@ void set_drone_battery_bar(uint8_t bar)
   bitWrite(display_byte[32], 2 ,bitRead(drone_battery, 1));
   //3rd bar
   bitWrite(display_byte[32], 1, bitRead(drone_battery, 2));
+
+  bitWrite(display_byte[32], 3, pic);
 }
 
-void set_drone_battery_percentage(uint8_t percentage)
+void set_drone_battery_percentage(uint8_t percentage, bool pic)
 {
   uint8_t drone_battery_percentage_hundred = percentage / 100;
   uint8_t drone_battery_percentage_10 = (percentage - drone_battery_percentage_hundred * 100 ) / 10;
@@ -259,7 +293,8 @@ void set_drone_battery_percentage(uint8_t percentage)
   draw_drone_battery_percentage(1, drone_battery_percentage_units);
   draw_drone_battery_percentage(2, drone_battery_percentage_10);
   bitWrite(display_byte[32], 6, drone_battery_percentage_hundred);
-
+  
+  bitWrite(display_byte[29], 2, pic);
 }
 
 void draw_drone_battery_percentage(uint8_t display, char digit)
@@ -290,7 +325,7 @@ void draw_drone_battery_percentage(uint8_t display, char digit)
 }
 
 
-void set_rpm(int rpm)
+void set_rpm(int rpm, bool pic)
 {
   bool rpm10 = 0;
   
@@ -316,6 +351,7 @@ void set_rpm(int rpm)
   bitWrite(display_byte[17], 2, rpm_1000);
   bitWrite(display_byte[16], 2, rpm10);
   bitWrite(display_byte[16], 6, rpm10);
+  bitWrite(display_byte[15], 6, pic);
   
 }
 
@@ -356,7 +392,7 @@ void draw_rpm(uint8_t display, char digit)
   }
 }
 
-void set_speed(int speed)
+void set_speed(int speed, bool pic)
 {
 
   int speed_1   = 0;
@@ -370,7 +406,8 @@ void set_speed(int speed)
   draw_speed(1, speed_1);
   draw_speed(2, speed_10);
   draw_speed(3, speed_100);
-  
+
+  bitWrite(display_byte[58], 6, pic); //kmh
 }
 
 void draw_speed(uint8_t display, char digit)
@@ -409,7 +446,7 @@ void draw_speed(uint8_t display, char digit)
   }
 }
 
-void set_distance(int distance)
+void set_distance(int distance, bool pic)
 {
   int distance_1 = 0;
   int distance_10 = 0;
@@ -428,6 +465,7 @@ void set_distance(int distance)
   draw_distance(3, distance_100);
   draw_distance(4, distance_1000);
   draw_distance(5, distance_10000);
+  bitWrite(display_byte[3], 4, pic);
 }
 
 void draw_distance(uint8_t display, char digit)
@@ -445,7 +483,7 @@ void draw_distance(uint8_t display, char digit)
 
 
 
-void set_altitude(int altitude)
+void set_altitude(int altitude, bool pic)
 {
   int altitude_1 = 0;
   int altitude_10 = 0;
@@ -461,6 +499,7 @@ void set_altitude(int altitude)
   draw_altitude(2, altitude_10);
   draw_altitude(3, altitude_100);
   draw_altitude(4, altitude_1000);
+  bitWrite(display_byte[8], 4, pic);
 }
 
 void draw_altitude(uint8_t display, char digit)
@@ -476,7 +515,7 @@ void draw_altitude(uint8_t display, char digit)
   bitWrite(display_byte[display + 6], 5, bitRead(segment, 6));  //g
 }
 
-void set_clearance(int clearance)
+void set_clearance(int clearance, bool pic)
 {
   int clearance_1 = 0;
   int clearance_10 = 0;
@@ -498,6 +537,7 @@ void set_clearance(int clearance)
     draw_clearance(2, clearance_10);    
     bitWrite(display_byte[12] , 0, 1);
   }
+  bitWrite(display_byte[11], 6, pic);
 }
 
 void draw_clearance(uint8_t display, char digit)
@@ -516,7 +556,7 @@ void draw_clearance(uint8_t display, char digit)
 
 
 
-void set_ev(int ev)
+void set_ev(int ev, bool pic)
 {
   int ev_1   = 0;
   int ev_10  = 0;
@@ -533,6 +573,7 @@ void set_ev(int ev)
   draw_ev(1, ev_1);
   draw_ev(2, ev_10);
   draw_ev(3, ev_100);
+  bitWrite(display_byte[60], 5, pic);
 }
 
 void draw_ev(uint8_t display, char digit)
@@ -571,6 +612,25 @@ void draw_ev(uint8_t display, char digit)
   }
 }
 
+void set_sd(bool sd)
+{
+  bitWrite(display_byte[60], 7, sd);
+}
+
+void set_sport(bool sport)
+{
+  bitWrite(display_byte[60], 3, sport);
+}
+
+void set_vision(bool vision)
+{
+  bitWrite(display_byte[64], 3, vision);
+}
+
+void set_rec(bool rec)
+{
+  bitWrite(display_byte[63], 7, rec);
+}
 
 byte char_to_7_segment(char digit)
 {
@@ -602,7 +662,7 @@ void display_default()
   display_byte[18] = 0b00011100;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: right graph box | bit 5: b 11th  | bit 6: c 11th  | bit 7: xxx | bit 8: xxx
   display_byte[19] = 0b10000001;  // bit 1: a 11th | bit 2: h 11th | bit 3: n 11th | bit 4: i 11th | bit 5: l 11th | bit 6: j 11th | bit 7: m 11th | bit 8: d 11th 
   display_byte[20] = 0b11000010;  // bit 1: f 11th | bit 2: e 11th | bit 3: g 11th | bit 4: k 11th | bit 5: t 5th radio rssi | bit 6: xxx | bit 7: b 5th radio rssi | bit 8: xxx
-  display_byte[21] = 0b01100100;  // bit 1: t 4th radio rssi | bit 2: b 3rd radio rssi | bit 3: b 4th radio rassi | bit 4: xxx | bit 5: t 3rd radio rssi | bit 6: b 2nd radio rssi | bit 7: t 2nd radio rssi | bit 8: xxx
+  display_byte[21] = 0b01100100;  // bit 1: t 4th radio rssi | bit 2: b 3rd radio rssi | bit 3: b 4th radio rssi | bit 4: xxx | bit 5: t 3rd radio rssi | bit 6: b 2nd radio rssi | bit 7: t 2nd radio rssi | bit 8: xxx
   display_byte[22] = 0b11001100;  // bit 1: radio | bit 2: b 1st radio rssi | bit 3: t 1st radio rssi | bit 4: xxx | bit 5: b 10th | bit 6: c 10th | bit 7: h 10th | bit 8: i 10th 
   display_byte[23] = 0b00011000;  // bit 1: n 10th | bit 2: j 10th | bit 3: m 10th | bit 4: d 10th | bit 5: a 10th | bit 6: g 10th | bit 7: l 10th | bit 8: k 10th 
   display_byte[24] = 0b11111000;  // bit 1: b 9th  | bit 2: c 9th  | bit 3: f 9th  | bit 4: e 9th  | bit 5: a 9th  | bit 6: h 9th  | bit 7: n 9th  | bit 8: i 9th 
