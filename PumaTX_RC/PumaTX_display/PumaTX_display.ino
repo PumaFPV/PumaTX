@@ -24,6 +24,8 @@ void draw_rpm(uint8_t display, char digit);
 byte char_to_7_segment(char digit);
 void set_speed(int speed);
 void set_distance(int distance);
+void set_altitude(int altitude);
+void set_clearance(int clearance);
 
 void setup()
 {
@@ -45,7 +47,6 @@ void setup()
   }
   display_default();
  
-
 }
 
 
@@ -75,7 +76,9 @@ void loop_display(int i)
   set_drone_battery_percentage(100);
   set_rpm(i);
   set_speed(275);
-  set_distance(23546);
+  set_distance(66860);
+  set_altitude(4807);
+  set_clearance(23);
   
   Serial.println("begin");
   Wire.beginTransmission(0x38);
@@ -429,14 +432,97 @@ void draw_distance(uint8_t display, char digit)
 {
   byte segment = char_to_7_segment(digit);
  
-      bitWrite(display_byte[display], 3, bitRead(segment, 0));  //a
-      bitWrite(display_byte[display], 7, bitRead(segment, 1));  //b
-      bitWrite(display_byte[display], 6, bitRead(segment, 2));  //c
-      bitWrite(display_byte[display], 0, bitRead(segment, 3));  //d
-      bitWrite(display_byte[display], 2, bitRead(segment, 4));  //e
-      bitWrite(display_byte[display], 1, bitRead(segment, 5));  //f
-      bitWrite(display_byte[display], 5, bitRead(segment, 6));  //g
+  bitWrite(display_byte[display], 3, bitRead(segment, 0));  //a
+  bitWrite(display_byte[display], 7, bitRead(segment, 1));  //b
+  bitWrite(display_byte[display], 6, bitRead(segment, 2));  //c
+  bitWrite(display_byte[display], 0, bitRead(segment, 3));  //d
+  bitWrite(display_byte[display], 2, bitRead(segment, 4));  //e
+  bitWrite(display_byte[display], 1, bitRead(segment, 5));  //f
+  bitWrite(display_byte[display], 5, bitRead(segment, 6));  //g
+}
+
+
+
+void set_altitude(int altitude)
+{
+  int altitude_1 = 0;
+  int altitude_10 = 0;
+  int altitude_100 = 0;
+  int altitude_1000 = 0;
+
+  altitude_1000  = altitude % 10000 / 1000;
+  altitude_100   = altitude % 1000 / 100;
+  altitude_10    = altitude % 100 / 10;
+  altitude_1     = altitude % 10;
+
+  draw_altitude(1, altitude_1);
+  draw_altitude(2, altitude_10);
+  draw_altitude(3, altitude_100);
+  draw_altitude(4, altitude_1000);
+}
+
+void draw_altitude(uint8_t display, char digit)
+{
+  byte segment = char_to_7_segment(digit);
+ 
+  bitWrite(display_byte[display + 6], 3, bitRead(segment, 0));  //a
+  bitWrite(display_byte[display + 6], 7, bitRead(segment, 1));  //b
+  bitWrite(display_byte[display + 6], 6, bitRead(segment, 2));  //c
+  bitWrite(display_byte[display + 6], 0, bitRead(segment, 3));  //d
+  bitWrite(display_byte[display + 6], 2, bitRead(segment, 4));  //e
+  bitWrite(display_byte[display + 6], 1, bitRead(segment, 5));  //f
+  bitWrite(display_byte[display + 6], 5, bitRead(segment, 6));  //g
+}
+
+void set_clearance(int clearance)
+{
+  int clearance_1 = 0;
+  int clearance_10 = 0;
+  int clearance_100 = 0;
+
+  clearance_100   = clearance % 1000 / 100;
+  clearance_10    = clearance % 100 / 10;
+  clearance_1     = clearance % 10;
   
+  if(clearance_100)
+  {
+    draw_clearance(1, clearance_10);
+    draw_clearance(2, clearance_100);
+    bitWrite(display_byte[12] , 0, 0);
+  }
+  else
+  {
+    draw_clearance(1, clearance_1);
+    draw_clearance(2, clearance_10);    
+    bitWrite(display_byte[12] , 0, 1);
+  }
+}
+
+void draw_clearance(uint8_t display, char digit)
+{
+  byte segment = char_to_7_segment(digit);
+ 
+  switch(display)
+  {
+    case 1: // clearance 1
+      bitWrite(display_byte[12], 7, bitRead(segment, 0));  //a
+      bitWrite(display_byte[11], 3, bitRead(segment, 1));  //b
+      bitWrite(display_byte[11], 2, bitRead(segment, 2));  //c
+      bitWrite(display_byte[12], 4, bitRead(segment, 3));  //d
+      bitWrite(display_byte[12], 6, bitRead(segment, 4));  //e
+      bitWrite(display_byte[12], 5, bitRead(segment, 5));  //f
+      bitWrite(display_byte[11], 1, bitRead(segment, 6));  //g
+      break;
+    case 2: // clearance 10
+      bitWrite(display_byte[13], 7, bitRead(segment, 0));  //a
+      bitWrite(display_byte[12], 3, bitRead(segment, 1));  //b
+      bitWrite(display_byte[12], 2, bitRead(segment, 2));  //c
+      bitWrite(display_byte[13], 4, bitRead(segment, 3));  //d
+      bitWrite(display_byte[13], 6, bitRead(segment, 4));  //e
+      bitWrite(display_byte[13], 5, bitRead(segment, 5));  //f
+      bitWrite(display_byte[12], 1, bitRead(segment, 6));  //g
+      break;
+  }
 }
 
 byte char_to_7_segment(char digit)
