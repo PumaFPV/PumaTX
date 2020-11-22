@@ -31,8 +31,8 @@ void set_sd(bool sd);
 void set_sport(bool sport);
 void set_vision(bool vision);
 void set_rec(bool rec);
-
-
+void set_text(String text);
+byte char_to_14_segment(char chara);
 
 void setup()
 {
@@ -92,7 +92,7 @@ void loop_display(int i)
   set_vision(0);
   set_rec(0);
   
-  
+  set_text("abcdefghijk");
   Serial.println("begin");
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
@@ -632,11 +632,153 @@ void set_rec(bool rec)
   bitWrite(display_byte[63], 7, rec);
 }
 
+void set_text(String text)
+{
+  
+}
+
+void draw_text(int display, char chara)
+{
+  byte segment = char_to_14_segment(chara);
+ 
+    bitWrite(display_byte[], , bitRead(segment, 0));  //a
+    bitWrite(display_byte[], , bitRead(segment, 1));  //b
+    bitWrite(display_byte[], , bitRead(segment, 2));  //c
+    bitWrite(display_byte[], , bitRead(segment, 3));  //d
+    bitWrite(display_byte[], , bitRead(segment, 4));  //e
+    bitWrite(display_byte[], , bitRead(segment, 5));  //f
+    bitWrite(display_byte[], , bitRead(segment, 6));  //g
+    bitWrite(display_byte[], , bitRead(segment, 7));  //a
+    bitWrite(display_byte[], , bitRead(segment, 8));  //b
+    bitWrite(display_byte[], , bitRead(segment, 9));  //c
+    bitWrite(display_byte[], , bitRead(segment, 10));  //d
+    bitWrite(display_byte[], , bitRead(segment, 11));  //e
+    bitWrite(display_byte[], , bitRead(segment, 12));  //f
+    bitWrite(display_byte[], , bitRead(segment, 13));  //g
+
+}
+
+
 byte char_to_7_segment(char digit)
 {
   byte bit_7_digit[] = {63,6,91,79,102,109,125,7,127,111};
 
-  return bit_7_digit[digit];; 
+  return bit_7_digit[digit];
+}
+
+byte char_to_14_segment(char chara)
+{
+  int digit = 0;
+  byte bit_14_digit[] = {
+                         0b00000011110111,  //A   0
+                         0b01001010001111,  //B   1
+                         0b00000000111001,  //C   2
+                         0b01001000001111,  //D   3
+                         0b00000001111001,  //E   4
+                         0b00000001111000,  //F   5
+                         0b00000010111101,  //G   6
+                         0b00000011110110,  //H   7
+                         0b01001000001001,  //I   8
+                         0b00010000001111,  //J   9
+                         0b10000101110000,  //K   10
+                         0b00000000111000,  //L   11
+                         0b10100000110110,  //M   12
+                         0b00100100110110,  //N   13
+                         0b00000000111111,  //O   14
+                         0b00000011110011,  //P   15
+                         0b00000100111111,  //Q   16
+                         0b00000111110011,  //R   17
+                         0b00000011101101,  //S   18
+                         0b01001000000001,  //T   19
+                         0b00000000111110,  //U   20
+                         0b00001011100010,  //V   21
+                         0b00010100110110,  //W   22
+                         0b10110100000000,  //X   23
+                         0b10101000000000,  //Y   24
+                         0b10010000001001  //Z   25
+                        };
+  switch(chara)
+  {
+    case a:
+      digit = 0;
+      break;
+    case b:
+      digit = 1;
+      break;
+    case c:
+      digit = 2;
+      break;
+    case d:
+      digit = 3;
+      break;
+    case e:
+      digit = 4;
+      break;
+    case f:
+      digit = 5;
+      break;
+    case g:
+      digit = 6;
+      break;
+    case h:
+      digit = 7;
+      break;
+    case i:
+      digit = 8;
+      break;
+    case j:
+      digit = 9;
+      break;
+    case k:
+      digit = 10;
+      break;
+    case l:
+      digit = 11;
+      break;
+    case m:
+      digit = 12;
+      break;
+    case n:
+      digit = 13;
+      break;
+    case o:
+      digit = 14;
+      break;
+    case p:
+      digit = 15;
+      break;
+    case q:
+      digit = 16;
+      break;
+    case r:
+      digit = 17;
+      break;
+    case s:
+      digit = 18;
+      break;
+    case t:
+      digit = 19;
+      break;
+    case u:
+      digit = 20;
+      break;
+    case v:
+      digit = 21;
+      break;
+    case w:
+      digit = 22;
+      break;
+    case x:
+      digit = 23;
+      break;
+    case y:
+      digit = 24;
+      break;
+    case z:
+      digit = 25;
+      break;
+  }
+  return bit_14_digit[digit];
 }
 
 void display_default()
