@@ -2,8 +2,9 @@
 
 #define I2C_SDA 23
 #define I2C_SCL 18
-
 #define BL 22
+
+
 
 byte display_byte[68];
 
@@ -32,8 +33,10 @@ void set_sport(bool sport);
 void set_vision(bool vision);
 void set_rec(bool rec);
 void set_text(String text, int scroll_speed);
-void set_name(String text);
+void set_name(String text, int scroll_speed);
 int char_to_14_segment(int chara);
+
+
 
 void setup()
 {
@@ -53,15 +56,15 @@ void setup()
   {
     display_byte[i] = 0x00; 
   }
+  
   display_default();
- 
 }
 
 
 
 void loop()
 {
-  for(int i = 0; i < 999; i++)
+  for(int i = 0; i < 6; i++)
   {
     loop_display(i);
   }
@@ -74,32 +77,33 @@ void loop()
 void loop_display(int i)
 {
   Serial.println("1");
-  set_left_graph(i / 120, 0);
-  set_right_graph(6 - (i / 120), 0);
-  set_rc_rssi(i / 200, 1);
-  set_named_rssi(i / 200, 1);
-  set_tx_battery_bar(i / 300, 1);
-  set_tx_battery_percentage(56, 1);
-  set_drone_battery_bar(i / 300, 1);
-  set_drone_battery_percentage(85, 1);
-  set_rpm(19999, 1);
-  set_speed(275, 1);
-  set_distance(66860, 1);
+  set_left_graph(i, 0);
+  set_right_graph(6 - i, 0);
+  set_rc_rssi(0, 1);
+  set_named_rssi(0, 1);
+  set_tx_battery_bar(3, 1);
+  set_tx_battery_percentage(100, 1);
+  set_drone_battery_bar(3, 1);
+  set_drone_battery_percentage(100, 1);
+  set_rpm(0, 1);
+  set_speed(0, 1);
+  set_distance(0, 1);
   set_altitude(4807, 1);
-  set_clearance(23, 1);
-  set_ev(10, 0);
+  set_clearance(0, 1);
+  set_ev(0, 0);
   set_sd(0);
   set_sport(0);
   set_vision(0);
   set_rec(0);
-  set_name(" gps");
-  set_text("receiver", 750);
+  set_name(" gps", 750);
+  set_text("  puma tx", 750);
+  
   update_display();
-  delay(1);
- 
+  
+  delay(100);
 }
 
-void set_left_graph(uint8_t bar, bool pic)
+void set_left_graph(uint8_t bar, bool pic)	//left bar graph | pic is the outline
 {
   byte left_graph = 0b000000;
 
@@ -121,7 +125,7 @@ void set_left_graph(uint8_t bar, bool pic)
   bitWrite(display_byte[55], 4, pic);
 }
 
-void set_right_graph(uint8_t bar, bool pic)
+void set_right_graph(uint8_t bar, bool pic)	//right bar graph | pic is the outline
 {
   byte right_graph = 0b000000;
 
@@ -143,7 +147,7 @@ void set_right_graph(uint8_t bar, bool pic)
   bitWrite(display_byte[18], 4, pic);
 }
 
-void set_rc_rssi(uint8_t bar, bool pic)
+void set_rc_rssi(uint8_t bar, bool pic)	//bar rssi for tx (upper right) | pic is top right radio + bottom rssi bar
 {
   byte rc_rssi = 0b00000;
 
@@ -169,7 +173,7 @@ void set_rc_rssi(uint8_t bar, bool pic)
    
 }
 
-void set_named_rssi(uint8_t bar, bool pic)
+void set_named_rssi(uint8_t bar, bool pic)	//bar rssi for named (upper left) | pic
 {
   byte named_rssi = 0b00000;
 
@@ -193,7 +197,7 @@ void set_named_rssi(uint8_t bar, bool pic)
   bitWrite(display_byte[40], 5, pic);
 }
 
-void set_tx_battery_bar(uint8_t bar, bool pic)
+void set_tx_battery_bar(uint8_t bar, bool pic)	//tx bar battery middle left 
 {
   byte tx_battery = 0b000;
   
@@ -209,7 +213,7 @@ void set_tx_battery_bar(uint8_t bar, bool pic)
   bitWrite(display_byte[65], 1, pic);
 }
 
-void set_tx_battery_percentage(uint8_t percentage, bool pic)
+void set_tx_battery_percentage(uint8_t percentage, bool pic)  //tx battery percentage middle left
 {
   uint8_t tx_battery_percentage_100 = percentage / 100;
   uint8_t tx_battery_percentage_10 = (percentage - tx_battery_percentage_100 * 100 ) / 10;
@@ -222,7 +226,7 @@ void set_tx_battery_percentage(uint8_t percentage, bool pic)
   bitWrite(display_byte[66], 5, pic);
 }
 
-void draw_tx_battery_percentage(uint8_t display, char digit)
+void draw_tx_battery_percentage(uint8_t display, char digit)  //draw to individual digit of battery percentage
 {
   byte segment = char_to_7_segment(digit);
   
@@ -249,7 +253,7 @@ void draw_tx_battery_percentage(uint8_t display, char digit)
   }
 }
 
-void set_drone_battery_bar(uint8_t bar, bool pic)
+void set_drone_battery_bar(uint8_t bar, bool pic)  //drone bar battery middle top 
 {
   byte drone_battery = 0b000;
 
@@ -265,7 +269,7 @@ void set_drone_battery_bar(uint8_t bar, bool pic)
   bitWrite(display_byte[32], 3, pic);
 }
 
-void set_drone_battery_percentage(uint8_t percentage, bool pic)
+void set_drone_battery_percentage(uint8_t percentage, bool pic)  //drone battery percentage middle top
 {
   uint8_t drone_battery_percentage_hundred = percentage / 100;
   uint8_t drone_battery_percentage_10 = (percentage - drone_battery_percentage_hundred * 100 ) / 10;
@@ -278,7 +282,7 @@ void set_drone_battery_percentage(uint8_t percentage, bool pic)
   bitWrite(display_byte[29], 2, pic);
 }
 
-void draw_drone_battery_percentage(uint8_t display, char digit)
+void draw_drone_battery_percentage(uint8_t display, char digit)  //draw to individual digit of drone percentage
 {
   byte segment = char_to_7_segment(digit);
   
@@ -305,8 +309,7 @@ void draw_drone_battery_percentage(uint8_t display, char digit)
   }
 }
 
-
-void set_rpm(int rpm, bool pic)
+void set_rpm(int rpm, bool pic)  //set rpm value on upper right corner. if value > 1999 than x10 is on. value above 19990 wont work
 {
   bool rpm10 = 0;
   
@@ -336,7 +339,7 @@ void set_rpm(int rpm, bool pic)
   
 }
 
-void draw_rpm(uint8_t display, char digit)
+void draw_rpm(uint8_t display, char digit)  //draw to individual digit of rpm
 {
 
   byte segment = char_to_7_segment(digit);
@@ -373,25 +376,39 @@ void draw_rpm(uint8_t display, char digit)
   }
 }
 
-void set_speed(int speed, bool pic)
+void set_speed(int speed, bool pic)	//set speed value, input 999 output 99.9, input 1000 output 100 | pic is kmh no support for mph yet
 {
 
   int speed_1   = 0;
   int speed_10  = 0;
   int speed_100 = 0;
+  int speed_1000 = 0;
+  bool dot = 0;
 
-  speed_100 = speed % 1000 / 100;
-  speed_10  = speed % 100 / 10;
-  speed_1   = speed % 10;
-  
-  draw_speed(1, speed_1);
-  draw_speed(2, speed_10);
-  draw_speed(3, speed_100);
+  speed_1000 = speed % 10000 / 1000;
+  speed_100  = speed % 1000 / 100;
+  speed_10   = speed % 100 / 10;
+  speed_1    = speed % 10;
 
+  if(speed > 999)
+  {
+    dot = 0;
+    draw_speed(1, speed_10);
+    draw_speed(2, speed_100);
+    draw_speed(3, speed_1000);
+  }
+  else
+  {
+    dot = 1;
+    draw_speed(1, speed_1);
+    draw_speed(2, speed_10);
+    draw_speed(3, speed_100);
+  }
   bitWrite(display_byte[58], 6, pic); //kmh
+  bitWrite(display_byte[57], 6, dot);
 }
 
-void draw_speed(uint8_t display, char digit)
+void draw_speed(uint8_t display, char digit)  //draw to individual digit of speed
 {
   byte segment = char_to_7_segment(digit);
   
@@ -427,7 +444,7 @@ void draw_speed(uint8_t display, char digit)
   }
 }
 
-void set_distance(int distance, bool pic)
+void set_distance(int distance, bool pic)	//set distance, 5 digit max | pic is distance on bottom right | only meter yet (turned on by pic)
 {
   int distance_1 = 0;
   int distance_10 = 0;
@@ -447,9 +464,10 @@ void set_distance(int distance, bool pic)
   draw_distance(4, distance_1000);
   draw_distance(5, distance_10000);
   bitWrite(display_byte[3], 4, pic);
+  bitWrite(display_byte[0], 1, pic);
 }
 
-void draw_distance(uint8_t display, char digit)
+void draw_distance(uint8_t display, char digit)  //draw to individual digit of distance
 {
   byte segment = char_to_7_segment(digit);
  
@@ -462,28 +480,35 @@ void draw_distance(uint8_t display, char digit)
   bitWrite(display_byte[display], 5, bitRead(segment, 6));  //g
 }
 
-
-
-void set_altitude(int altitude, bool pic)
+void set_altitude(int altitude, bool pic)	//set altitude, 4 digit max | pic is altitude on middle bottom | only meter yet (turn on by pic)
 {
   int altitude_1 = 0;
   int altitude_10 = 0;
   int altitude_100 = 0;
   int altitude_1000 = 0;
-
+  bool negative = 0;
+  
+  if(altitude < 0)
+  {
+     negative = 1;
+  }
+  
   altitude_1000  = altitude % 10000 / 1000;
   altitude_100   = altitude % 1000 / 100;
   altitude_10    = altitude % 100 / 10;
   altitude_1     = altitude % 10;
-
+	
   draw_altitude(1, altitude_1);
   draw_altitude(2, altitude_10);
   draw_altitude(3, altitude_100);
   draw_altitude(4, altitude_1000);
-  bitWrite(display_byte[8], 4, pic);
+  
+  bitWrite(display_byte[8], 4, pic); //height
+  bitWrite(display_byte[6], 1, pic); //meter
+  bitWrite(display_byte[9], 4, negative);
 }
 
-void draw_altitude(uint8_t display, char digit)
+void draw_altitude(uint8_t display, char digit)  //draw to individual digit of altitude
 {
   byte segment = char_to_7_segment(digit);
  
@@ -496,7 +521,7 @@ void draw_altitude(uint8_t display, char digit)
   bitWrite(display_byte[display + 6], 5, bitRead(segment, 6));  //g
 }
 
-void set_clearance(int clearance, bool pic)
+void set_clearance(int clearance, bool pic)		//set clearance, 3 digit max, input 123 output 12, input 12 output 1.2 | pic is clearance, meter, triangle, saw teeth
 {
   int clearance_1 = 0;
   int clearance_10 = 0;
@@ -518,10 +543,14 @@ void set_clearance(int clearance, bool pic)
     draw_clearance(2, clearance_10);    
     bitWrite(display_byte[12] , 0, 1);
   }
-  bitWrite(display_byte[11], 6, pic);
+  
+  bitWrite(display_byte[11], 6, pic);  //clearance
+  bitWrite(display_byte[11], 5, pic);  //meter
+  bitWrite(display_byte[11], 0, pic);  //triangle
+  bitWrite(display_byte[11], 4, pic);  //saw teeth
 }
 
-void draw_clearance(uint8_t display, char digit)
+void draw_clearance(uint8_t display, char digit)  //draw to individual digit of clearance
 {
   byte segment = char_to_7_segment(digit);
  
@@ -535,9 +564,7 @@ void draw_clearance(uint8_t display, char digit)
 
 }
 
-
-
-void set_ev(int ev, bool pic)
+void set_ev(int ev, bool pic)  //set ev, 3 digit max, 2 if using + or - | pic is ev | dot kinda supported
 {
   int ev_1   = 0;
   int ev_10  = 0;
@@ -557,7 +584,7 @@ void set_ev(int ev, bool pic)
   bitWrite(display_byte[60], 5, pic);
 }
 
-void draw_ev(uint8_t display, char digit)
+void draw_ev(uint8_t display, char digit) //draw to individual digit of ev 
 {
   byte segment = char_to_7_segment(digit);
   
@@ -593,27 +620,27 @@ void draw_ev(uint8_t display, char digit)
   }
 }
 
-void set_sd(bool sd)
+void set_sd(bool sd)	//turn on sd logo mid right
 {
   bitWrite(display_byte[60], 7, sd);
 }
 
-void set_sport(bool sport)
+void set_sport(bool sport)  //turn on sport logo full right
 {
   bitWrite(display_byte[60], 3, sport);
 }
 
-void set_vision(bool vision)
+void set_vision(bool vision)  //turn on vision mid left
 {
   bitWrite(display_byte[64], 3, vision);
 }
 
-void set_rec(bool rec)
+void set_rec(bool rec)  //turn on rec 
 {
   bitWrite(display_byte[63], 7, rec);
 }
 
-void set_text(String text, int scroll_speed)
+void set_text(String text, int scroll_speed)  //set text to display on the 11 14 segment display. if size of text > 11 the text will scroll automaticly | scroll speed is in ms 
 {
   if(text.length() > 11)
   {
@@ -643,7 +670,7 @@ void set_text(String text, int scroll_speed)
   }
 }
 
-void update_display()
+void update_display()	//update display, has to be called to update display.
 {
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
@@ -666,7 +693,7 @@ void update_display()
   Wire.endTransmission();  
 }
 
-void draw_text(int display, int chara)
+void draw_text(int display, int chara)	//draw to individual digit of 14 segment displays
 {
   int segment = char_to_14_segment(chara);
   switch(display)
@@ -851,15 +878,36 @@ void draw_text(int display, int chara)
   }
 }
 
-void set_name(String name)
+void set_name(String name, int scroll_speed)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
 {
-  for(int i = 0; i < 4; i++)
+  if(name.length() > 4)
   {
-    draw_name(i, name.charAt(i));
+    for(int j = 0; name.length() - j + 2 > 4; j++)
+    {
+      for(int i = 0; i < name.length() ; i++)
+      {
+        draw_name(i - j, name.charAt(i)); 
+      }
+      update_display();
+      delay(scroll_speed);
+    }
+  }
+  else
+  {
+    for(int i = 0; i < name.length() ; i++)
+    {
+      draw_name(i, name.charAt(i)); 
+    }
+    if(name.length() < 4)
+    {
+      for(int i = 0; i < 4 - name.length(); i++)
+      {
+        draw_name(i + name.length(), 32); //fill with space if less than 4 char
+      }
+    }
   }
 }
-
-void draw_name(int display, int chara)
+void draw_name(int display, int chara)	//draw to individual digit of 14 segment displays
 {
   int segment = char_to_14_segment(chara);
   switch(display)
@@ -931,14 +979,14 @@ void draw_name(int display, int chara)
   }
 }
 
-byte char_to_7_segment(char digit)
+byte char_to_7_segment(char digit) //input number, output segment to turn on. order is 0bgfedcba
 {
   byte bit_7_digit[] = {63,6,91,79,102,109,125,7,127,111};
 
   return bit_7_digit[digit];
 }
 
-int char_to_14_segment(int digit)
+int char_to_14_segment(int digit)  //input char, output segment to turn on. order is 0bnmlkjihgfedcba
 {
   if(digit == 32)
   {
@@ -994,7 +1042,7 @@ int char_to_14_segment(int digit)
   return bit_14_digit[digit];
 }
 
-void display_default()
+void display_default()  //display 0 everywhere
 {
   display_byte[0] =  0b00000010;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: xxx | bit 5: feet on bottom right | bit 6: xxx | bit 7: meters on bottom right | bit 8: xxx  
   display_byte[1] =  0b11001111;  // bit 1: b 5th dist | bit 2: c 5th dist | bit 3: g 5th dist | bit 4: xxx | bit 5: a 5th dist | bit 6: e 5th dist | bit 7: f 5th dist | bit 8: d 5th dist
@@ -1067,7 +1115,7 @@ void display_default()
   display_byte[68] = 0000000000;  // bit 1:
 }
 
-void setup_display()
+void setup_display()  //setup function. has to be called to init program
 {
   
   Wire.beginTransmission(0x38);
