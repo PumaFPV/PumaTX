@@ -1,6 +1,8 @@
 /*
 	display.cpp - Library made to write to a DJI Mavic Pro controller (GL200A) display using I2C
 	dont forget to initialise I2C with this command:   Wire.begin(I2C_SDA, I2C_SCL);
+
+  Display pinout on the ribbon cable (take reference from the 2 no connected pads): 1-BL | 2-Gnd | 3-Gnd | 4-NC  | 5-Gnd | 6-NC | 7-3.3v | 8-SCL | 9-SDA | 10-Gnd | 11-NC | 12-NC
 	
 	Created by Nicolas de Grave and with the help of lael, November 23rd, 2020
 */
