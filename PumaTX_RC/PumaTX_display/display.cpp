@@ -2,7 +2,7 @@
 	display.cpp - Library made to write to a DJI Mavic Pro controller (GL200A) display using I2C
 	dont forget to initialise I2C with this command:   Wire.begin(I2C_SDA, I2C_SCL);
 	
-	Created by Nicolas de Grave, November 23rd, 2020
+	Created by Nicolas de Grave and with the help of lael, November 23rd, 2020
 */
 
 #include "Arduino.h"
