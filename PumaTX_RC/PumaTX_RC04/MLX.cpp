@@ -6,7 +6,7 @@
 	Ask for MLX.begin(); in void setup and MLX.process(); in loop
 	Then get value from = MLX.Throttle();
 	
-	Created by Nicolas de Grave, May 19, 2019
+	Created by Nicolas de Grave, May 19th, 2019
 */
 
 #include "Arduino.h"
@@ -42,7 +42,7 @@ void MLX::begin(bool init){
 //void MLX::begin(){
 void MLX::beginLeft(){	//0x0C
 
-Wire.beginTransmission(_LeftAddr);   // Start I2C Transmission
+	Wire.beginTransmission(_LeftAddr);   // Start I2C Transmission
     Wire.write(0x60);   // Select Write register command
     Wire.write(0x00);   // Set AH = 0x00, BIST disabled
     Wire.write(0x5C);   // Set AL = 0x5C, Hall plate spinning rate = DEFAULT, GAIN_SEL = 5
@@ -108,7 +108,7 @@ void MLX::processLeft(){
   int ThrottleReading;
   int YawReading;
 	
-	 unsigned int data[7];
+	unsigned int data[7];
   
     Wire.beginTransmission(_LeftAddr);   // Start I2C Transmission
     Wire.write(0x3E);   // Start single meaurement mode, ZYX enabled
