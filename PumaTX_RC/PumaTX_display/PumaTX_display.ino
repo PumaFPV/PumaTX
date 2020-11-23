@@ -32,7 +32,8 @@ void set_sport(bool sport);
 void set_vision(bool vision);
 void set_rec(bool rec);
 void set_text(String text);
-byte char_to_14_segment(char chara);
+void set_name(String text);
+int char_to_14_segment(int chara);
 
 void setup()
 {
@@ -91,9 +92,9 @@ void loop_display(int i)
   set_sport(0);
   set_vision(0);
   set_rec(0);
-  
   set_text("abcdefghijk");
-  Serial.println("begin");
+  set_name("test");
+  
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
   Wire.write(0x00);
@@ -634,30 +635,276 @@ void set_rec(bool rec)
 
 void set_text(String text)
 {
-  
+  for(int i = 0; i < 11; i++)
+  {
+    draw_text(i, text.charAt(i));
+  }
 }
 
-void draw_text(int display, char chara)
+void draw_text(int display, int chara)
 {
-  byte segment = char_to_14_segment(chara);
- 
-    bitWrite(display_byte[], , bitRead(segment, 0));  //a
-    bitWrite(display_byte[], , bitRead(segment, 1));  //b
-    bitWrite(display_byte[], , bitRead(segment, 2));  //c
-    bitWrite(display_byte[], , bitRead(segment, 3));  //d
-    bitWrite(display_byte[], , bitRead(segment, 4));  //e
-    bitWrite(display_byte[], , bitRead(segment, 5));  //f
-    bitWrite(display_byte[], , bitRead(segment, 6));  //g
-    bitWrite(display_byte[], , bitRead(segment, 7));  //a
-    bitWrite(display_byte[], , bitRead(segment, 8));  //b
-    bitWrite(display_byte[], , bitRead(segment, 9));  //c
-    bitWrite(display_byte[], , bitRead(segment, 10));  //d
-    bitWrite(display_byte[], , bitRead(segment, 11));  //e
-    bitWrite(display_byte[], , bitRead(segment, 12));  //f
-    bitWrite(display_byte[], , bitRead(segment, 13));  //g
-
+  int segment = char_to_14_segment(chara);
+  switch(display)
+  {
+  case 0:
+    bitWrite(display_byte[53], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[53], 7, bitRead(segment, 1));  //b
+    bitWrite(display_byte[53], 6, bitRead(segment, 2));  //c
+    bitWrite(display_byte[54], 4, bitRead(segment, 3));  //d
+    bitWrite(display_byte[54], 2, bitRead(segment, 4));  //e
+    bitWrite(display_byte[54], 3, bitRead(segment, 5));  //f
+    bitWrite(display_byte[54], 1, bitRead(segment, 6));  //g
+    bitWrite(display_byte[53], 2, bitRead(segment, 7));  //h
+    bitWrite(display_byte[53], 0, bitRead(segment, 8));  //i
+    bitWrite(display_byte[54], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[54], 0, bitRead(segment, 10));  //k
+    bitWrite(display_byte[54], 7, bitRead(segment, 11));  //l
+    bitWrite(display_byte[54], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[53], 1, bitRead(segment, 13));  //n
+    break; 
+  case 1:
+    bitWrite(display_byte[52], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[51], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[51], 2, bitRead(segment, 2));  //c
+    bitWrite(display_byte[52], 4, bitRead(segment, 3));  //d
+    bitWrite(display_byte[53], 4, bitRead(segment, 4));  //e
+    bitWrite(display_byte[53], 5, bitRead(segment, 5));  //f
+    bitWrite(display_byte[52], 2, bitRead(segment, 6));  //g
+    bitWrite(display_byte[51], 1, bitRead(segment, 7));  //h
+    bitWrite(display_byte[51], 0, bitRead(segment, 8));  //i
+    bitWrite(display_byte[52], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[52], 0, bitRead(segment, 10));  //k
+    bitWrite(display_byte[52], 1, bitRead(segment, 11));  //l
+    bitWrite(display_byte[52], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[52], 7, bitRead(segment, 13));  //n
+    break; 
+  case 2:
+    bitWrite(display_byte[38], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[38], 7, bitRead(segment, 1));  //b
+    bitWrite(display_byte[38], 6, bitRead(segment, 2));  //c
+    bitWrite(display_byte[39], 4, bitRead(segment, 3));  //d
+    bitWrite(display_byte[39], 2, bitRead(segment, 4));  //e
+    bitWrite(display_byte[39], 3, bitRead(segment, 5));  //f
+    bitWrite(display_byte[39], 1, bitRead(segment, 6));  //g
+    bitWrite(display_byte[38], 2, bitRead(segment, 7));  //h
+    bitWrite(display_byte[38], 0, bitRead(segment, 8));  //i
+    bitWrite(display_byte[39], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[39], 0, bitRead(segment, 10));  //k
+    bitWrite(display_byte[39], 7, bitRead(segment, 11));  //l
+    bitWrite(display_byte[39], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[38], 1, bitRead(segment, 13));  //n
+    break; 
+  case 3:
+    bitWrite(display_byte[37], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[36], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[36], 2, bitRead(segment, 2));  //c
+    bitWrite(display_byte[37], 4, bitRead(segment, 3));  //d
+    bitWrite(display_byte[38], 4, bitRead(segment, 4));  //e
+    bitWrite(display_byte[38], 5, bitRead(segment, 5));  //f
+    bitWrite(display_byte[37], 2, bitRead(segment, 6));  //g
+    bitWrite(display_byte[36], 1, bitRead(segment, 7));  //h
+    bitWrite(display_byte[36], 0, bitRead(segment, 8));  //i
+    bitWrite(display_byte[37], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[37], 0, bitRead(segment, 10));  //k
+    bitWrite(display_byte[37], 1, bitRead(segment, 11));  //l
+    bitWrite(display_byte[37], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[37], 7, bitRead(segment, 13));  //n
+    break;
+  case 4:
+    bitWrite(display_byte[35], 7, bitRead(segment, 0));  //a
+    bitWrite(display_byte[34], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[34], 2, bitRead(segment, 2));  //c
+    bitWrite(display_byte[35], 0, bitRead(segment, 3));  //d
+    bitWrite(display_byte[36], 6, bitRead(segment, 4));  //e
+    bitWrite(display_byte[36], 7, bitRead(segment, 5));  //f
+    bitWrite(display_byte[36], 5, bitRead(segment, 6));  //g
+    bitWrite(display_byte[35], 6, bitRead(segment, 7));  //h
+    bitWrite(display_byte[35], 4, bitRead(segment, 8));  //i
+    bitWrite(display_byte[35], 2, bitRead(segment, 9));  //j
+    bitWrite(display_byte[36], 4, bitRead(segment, 10));  //k
+    bitWrite(display_byte[35], 3, bitRead(segment, 11));  //l
+    bitWrite(display_byte[35], 1, bitRead(segment, 12));  //m
+    bitWrite(display_byte[35], 5, bitRead(segment, 13));  //n
+    break;  
+  case 5:
+    bitWrite(display_byte[34], 7, bitRead(segment, 0));  //a
+    bitWrite(display_byte[33], 7, bitRead(segment, 1));  //b
+    bitWrite(display_byte[33], 6, bitRead(segment, 2));  //c
+    bitWrite(display_byte[33], 0, bitRead(segment, 3));  //d
+    bitWrite(display_byte[34], 0, bitRead(segment, 4));  //e
+    bitWrite(display_byte[34], 1, bitRead(segment, 5));  //f
+    bitWrite(display_byte[34], 6, bitRead(segment, 6));  //g
+    bitWrite(display_byte[33], 5, bitRead(segment, 7));  //h
+    bitWrite(display_byte[33], 4, bitRead(segment, 8));  //i
+    bitWrite(display_byte[33], 2, bitRead(segment, 9));  //j
+    bitWrite(display_byte[34], 4, bitRead(segment, 10));  //k
+    bitWrite(display_byte[34], 5, bitRead(segment, 11));  //l
+    bitWrite(display_byte[33], 1, bitRead(segment, 12));  //m
+    bitWrite(display_byte[33], 3, bitRead(segment, 13));  //n
+    break;
+  case 6:
+    bitWrite(display_byte[28], 7, bitRead(segment, 0));  //a
+    bitWrite(display_byte[27], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[27], 2, bitRead(segment, 2));  //c
+    bitWrite(display_byte[28], 0, bitRead(segment, 3));  //d
+    bitWrite(display_byte[29], 6, bitRead(segment, 4));  //e
+    bitWrite(display_byte[29], 7, bitRead(segment, 5));  //f
+    bitWrite(display_byte[29], 5, bitRead(segment, 6));  //g
+    bitWrite(display_byte[28], 6, bitRead(segment, 7));  //h
+    bitWrite(display_byte[28], 4, bitRead(segment, 8));  //i
+    bitWrite(display_byte[28], 2, bitRead(segment, 9));  //j
+    bitWrite(display_byte[29], 4, bitRead(segment, 10));  //k
+    bitWrite(display_byte[28], 3, bitRead(segment, 11));  //l
+    bitWrite(display_byte[28], 1, bitRead(segment, 12));  //m
+    bitWrite(display_byte[28], 5, bitRead(segment, 13));  //n
+    break;
+  case 7:
+    bitWrite(display_byte[27], 7, bitRead(segment, 0));  //a
+    bitWrite(display_byte[26], 7, bitRead(segment, 1));  //b
+    bitWrite(display_byte[26], 6, bitRead(segment, 2));  //c
+    bitWrite(display_byte[26], 0, bitRead(segment, 3));  //d
+    bitWrite(display_byte[27], 0, bitRead(segment, 4));  //e
+    bitWrite(display_byte[27], 1, bitRead(segment, 5));  //f
+    bitWrite(display_byte[27], 6, bitRead(segment, 6));  //g
+    bitWrite(display_byte[26], 5, bitRead(segment, 7));  //h
+    bitWrite(display_byte[26], 4, bitRead(segment, 8));  //i
+    bitWrite(display_byte[26], 2, bitRead(segment, 9));  //j
+    bitWrite(display_byte[27], 4, bitRead(segment, 10));  //k
+    bitWrite(display_byte[27], 5, bitRead(segment, 11));  //l
+    bitWrite(display_byte[26], 1, bitRead(segment, 12));  //m
+    bitWrite(display_byte[26], 3, bitRead(segment, 13));  //n
+    break;
+  case 8:
+    bitWrite(display_byte[24], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[24], 7, bitRead(segment, 1));  //b
+    bitWrite(display_byte[24], 6, bitRead(segment, 2));  //c
+    bitWrite(display_byte[25], 4, bitRead(segment, 3));  //d
+    bitWrite(display_byte[25], 2, bitRead(segment, 4));  //e
+    bitWrite(display_byte[25], 3, bitRead(segment, 5));  //f
+    bitWrite(display_byte[25], 1, bitRead(segment, 6));  //g
+    bitWrite(display_byte[24], 2, bitRead(segment, 7));  //h
+    bitWrite(display_byte[24], 0, bitRead(segment, 8));  //i
+    bitWrite(display_byte[25], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[25], 0, bitRead(segment, 10));  //k
+    bitWrite(display_byte[25], 7, bitRead(segment, 11));  //l
+    bitWrite(display_byte[25], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[24], 1, bitRead(segment, 13));  //n
+    break;   
+  case 9:
+    bitWrite(display_byte[23], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[22], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[22], 2, bitRead(segment, 2));  //c
+    bitWrite(display_byte[23], 4, bitRead(segment, 3));  //d
+    bitWrite(display_byte[24], 4, bitRead(segment, 4));  //e
+    bitWrite(display_byte[24], 5, bitRead(segment, 5));  //f
+    bitWrite(display_byte[23], 2, bitRead(segment, 6));  //g
+    bitWrite(display_byte[22], 1, bitRead(segment, 7));  //h
+    bitWrite(display_byte[22], 0, bitRead(segment, 8));  //i
+    bitWrite(display_byte[23], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[23], 0, bitRead(segment, 10));  //k
+    bitWrite(display_byte[23], 1, bitRead(segment, 11));  //l
+    bitWrite(display_byte[23], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[23], 7, bitRead(segment, 13));  //n
+    break;  
+  case 10:
+    bitWrite(display_byte[19], 7, bitRead(segment, 0));  //a
+    bitWrite(display_byte[18], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[18], 2, bitRead(segment, 2));  //c
+    bitWrite(display_byte[19], 0, bitRead(segment, 3));  //d
+    bitWrite(display_byte[20], 6, bitRead(segment, 4));  //e
+    bitWrite(display_byte[20], 7, bitRead(segment, 5));  //f
+    bitWrite(display_byte[20], 5, bitRead(segment, 6));  //g
+    bitWrite(display_byte[19], 6, bitRead(segment, 7));  //h
+    bitWrite(display_byte[19], 4, bitRead(segment, 8));  //i
+    bitWrite(display_byte[19], 2, bitRead(segment, 9));  //j
+    bitWrite(display_byte[20], 4, bitRead(segment, 10));  //k
+    bitWrite(display_byte[19], 3, bitRead(segment, 11));  //l
+    bitWrite(display_byte[19], 1, bitRead(segment, 12));  //m
+    bitWrite(display_byte[19], 5, bitRead(segment, 13));  //n
+    break;
+    
+  }
 }
 
+void set_name(String name)
+{
+  for(int i = 0; i < 4; i++)
+  {
+    draw_name(i, name.charAt(i));
+  }
+}
+
+void draw_name(int display, int chara)
+{
+  int segment = char_to_14_segment(chara);
+  switch(display)
+  {
+  case 0:
+    bitWrite(display_byte[50], 7, bitRead(segment, 0));  //a
+    bitWrite(display_byte[49], 7, bitRead(segment, 1));  //b
+    bitWrite(display_byte[49], 5, bitRead(segment, 2));  //c
+    bitWrite(display_byte[51], 6, bitRead(segment, 3));  //d
+    bitWrite(display_byte[51], 5, bitRead(segment, 4));  //e
+    bitWrite(display_byte[51], 7, bitRead(segment, 5));  //f
+    bitWrite(display_byte[50], 1, bitRead(segment, 6));  //g
+    bitWrite(display_byte[49], 1, bitRead(segment, 7));  //h
+    bitWrite(display_byte[49], 2, bitRead(segment, 8));  //i
+    bitWrite(display_byte[50], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[50], 2, bitRead(segment, 10));  //k
+    bitWrite(display_byte[50], 3, bitRead(segment, 11));  //l
+    bitWrite(display_byte[50], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[49], 3, bitRead(segment, 13));  //n
+    break; 
+  case 1:
+    bitWrite(display_byte[47], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[46], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[46], 1, bitRead(segment, 2));  //c
+    bitWrite(display_byte[48], 2, bitRead(segment, 3));  //d
+    bitWrite(display_byte[48], 1, bitRead(segment, 4));  //e
+    bitWrite(display_byte[48], 3, bitRead(segment, 5));  //f
+    bitWrite(display_byte[48], 5, bitRead(segment, 6));  //g
+    bitWrite(display_byte[47], 5, bitRead(segment, 7));  //h
+    bitWrite(display_byte[47], 6, bitRead(segment, 8));  //i
+    bitWrite(display_byte[47], 2, bitRead(segment, 9));  //j
+    bitWrite(display_byte[48], 6, bitRead(segment, 10));  //k
+    bitWrite(display_byte[48], 7, bitRead(segment, 11));  //l
+    bitWrite(display_byte[47], 1, bitRead(segment, 12));  //m
+    bitWrite(display_byte[47], 7, bitRead(segment, 13));  //n
+    break;
+  case 2:
+    bitWrite(display_byte[45], 7, bitRead(segment, 0));  //a
+    bitWrite(display_byte[44], 7, bitRead(segment, 1));  //b
+    bitWrite(display_byte[44], 5, bitRead(segment, 2));  //c
+    bitWrite(display_byte[46], 6, bitRead(segment, 3));  //d
+    bitWrite(display_byte[46], 5, bitRead(segment, 4));  //e
+    bitWrite(display_byte[46], 7, bitRead(segment, 5));  //f
+    bitWrite(display_byte[45], 1, bitRead(segment, 6));  //g
+    bitWrite(display_byte[44], 1, bitRead(segment, 7));  //h
+    bitWrite(display_byte[44], 2, bitRead(segment, 8));  //i
+    bitWrite(display_byte[45], 6, bitRead(segment, 9));  //j
+    bitWrite(display_byte[45], 2, bitRead(segment, 10));  //k
+    bitWrite(display_byte[45], 3, bitRead(segment, 11));  //l
+    bitWrite(display_byte[45], 5, bitRead(segment, 12));  //m
+    bitWrite(display_byte[44], 3, bitRead(segment, 13));  //n
+    break;
+  case 3:
+    bitWrite(display_byte[42], 3, bitRead(segment, 0));  //a
+    bitWrite(display_byte[41], 3, bitRead(segment, 1));  //b
+    bitWrite(display_byte[41], 1, bitRead(segment, 2));  //c
+    bitWrite(display_byte[43], 2, bitRead(segment, 3));  //d
+    bitWrite(display_byte[43], 1, bitRead(segment, 4));  //e
+    bitWrite(display_byte[43], 3, bitRead(segment, 5));  //f
+    bitWrite(display_byte[43], 5, bitRead(segment, 6));  //g
+    bitWrite(display_byte[42], 5, bitRead(segment, 7));  //h
+    bitWrite(display_byte[42], 6, bitRead(segment, 8));  //i
+    bitWrite(display_byte[42], 2, bitRead(segment, 9));  //j
+    bitWrite(display_byte[43], 6, bitRead(segment, 10));  //k
+    bitWrite(display_byte[43], 7, bitRead(segment, 11));  //l
+    bitWrite(display_byte[42], 1, bitRead(segment, 12));  //m
+    bitWrite(display_byte[42], 7, bitRead(segment, 13));  //n
+    break;
+  }
+}
 
 byte char_to_7_segment(char digit)
 {
@@ -666,16 +913,17 @@ byte char_to_7_segment(char digit)
   return bit_7_digit[digit];
 }
 
-byte char_to_14_segment(char chara)
+int char_to_14_segment(int digit)
 {
-  int digit = 0;
-  byte bit_14_digit[] = {
+  
+  digit = digit - 97;
+  int bit_14_digit[] = {
                          0b00000011110111,  //A   0
                          0b01001010001111,  //B   1
                          0b00000000111001,  //C   2
                          0b01001000001111,  //D   3
                          0b00000001111001,  //E   4
-                         0b00000001111000,  //F   5
+                         0b00000001110001,  //F   5
                          0b00000010111101,  //G   6
                          0b00000011110110,  //H   7
                          0b01001000001001,  //I   8
@@ -697,87 +945,8 @@ byte char_to_14_segment(char chara)
                          0b10101000000000,  //Y   24
                          0b10010000001001  //Z   25
                         };
-  switch(chara)
-  {
-    case a:
-      digit = 0;
-      break;
-    case b:
-      digit = 1;
-      break;
-    case c:
-      digit = 2;
-      break;
-    case d:
-      digit = 3;
-      break;
-    case e:
-      digit = 4;
-      break;
-    case f:
-      digit = 5;
-      break;
-    case g:
-      digit = 6;
-      break;
-    case h:
-      digit = 7;
-      break;
-    case i:
-      digit = 8;
-      break;
-    case j:
-      digit = 9;
-      break;
-    case k:
-      digit = 10;
-      break;
-    case l:
-      digit = 11;
-      break;
-    case m:
-      digit = 12;
-      break;
-    case n:
-      digit = 13;
-      break;
-    case o:
-      digit = 14;
-      break;
-    case p:
-      digit = 15;
-      break;
-    case q:
-      digit = 16;
-      break;
-    case r:
-      digit = 17;
-      break;
-    case s:
-      digit = 18;
-      break;
-    case t:
-      digit = 19;
-      break;
-    case u:
-      digit = 20;
-      break;
-    case v:
-      digit = 21;
-      break;
-    case w:
-      digit = 22;
-      break;
-    case x:
-      digit = 23;
-      break;
-    case y:
-      digit = 24;
-      break;
-    case z:
-      digit = 25;
-      break;
-  }
+
+  
   return bit_14_digit[digit];
 }
 
@@ -807,7 +976,7 @@ void display_default()
   display_byte[21] = 0b01100100;  // bit 1: t 4th radio rssi | bit 2: b 3rd radio rssi | bit 3: b 4th radio rssi | bit 4: xxx | bit 5: t 3rd radio rssi | bit 6: b 2nd radio rssi | bit 7: t 2nd radio rssi | bit 8: xxx
   display_byte[22] = 0b11001100;  // bit 1: radio | bit 2: b 1st radio rssi | bit 3: t 1st radio rssi | bit 4: xxx | bit 5: b 10th | bit 6: c 10th | bit 7: h 10th | bit 8: i 10th 
   display_byte[23] = 0b00011000;  // bit 1: n 10th | bit 2: j 10th | bit 3: m 10th | bit 4: d 10th | bit 5: a 10th | bit 6: g 10th | bit 7: l 10th | bit 8: k 10th 
-  display_byte[24] = 0b11111000;  // bit 1: b 9th  | bit 2: c 9th  | bit 3: f 9th  | bit 4: e 9th  | bit 5: a 9th  | bit 6: h 9th  | bit 7: n 9th  | bit 8: i 9th 
+  display_byte[24] = 0b11111000;  // bit 1: b 9th  | bit 2: c 9th  | bit 3: f 9th  | bit 4: e 10th  | bit 5: a 9th  | bit 6: h 9th  | bit 7: n 9th  | bit 8: i 9th 
   display_byte[25] = 0b00011100;  // bit 1: l 9th  | bit 2: j 9th  | bit 3: m 9th  | bit 4: d 9th  | bit 5: f 9th  | bit 6: e 9th  | bit 7: g 9th  | bit 8: k 9th 
   display_byte[26] = 0b11000001;  // bit 1: b 8th  | bit 2: c 8th  | bit 3: h 8th  | bit 4: c 8th  | bit 5: n 8th  | bit 6: j 8th  | bit 7: m 8th  | bit 8: d 8th 
   display_byte[27] = 0b10001111;  // bit 1: a 8th  | bit 2: g 8th  | bit 3: l 8th  | bit 4: k 8th  | bit 5: b 7th  | bit 6: c 7th  | bit 7: f 8th | bit 8: e 8th
@@ -817,7 +986,7 @@ void display_default()
   display_byte[31] = 0b11101100;  // bit 1: b 10 drone battery | bit 2: 3rd drone battery | bit 3: c 10 drone battery | bit 4: xxx | bit 5: a 10 drone battery | bit 6: d 10 drone battery | bit 7: g 10 drone battery | bit 8: xxx
   display_byte[32] = 0b11101111;  // bit 1: f 10 drone battery | bit 2: 100 drone battery | bit 3: e 10 drone battery | bit 4: xxx | bit 5: drone battery box | bit 6: 2nd drone battery | bit 7: 1st drone battery | bit 8: xxx
   display_byte[33] = 0b11000001;  // bit 1: b 6th  | bit 2: c 6th  | bit 3: h 6th  | bit 4: i 6th  | bit 5: n 6th  | bit 6: j 6th  | bit 7: m 6th  | bit 8: d 6th
-  display_byte[34] = 0b10001111;  // bit 1: a 6th  | bit 2: g 6th  | bit 3: l 6th  | bit 4: e 6th  | bit 5: b 5th  | bit 6: c 5th  | bit 7: f 6th  | bit 8: e 6th
+  display_byte[34] = 0b10001111;  // bit 1: a 6th  | bit 2: g 6th  | bit 3: l 6th  | bit 4: e 6th  | bit 5: b 5th  | bit 6: c 5th  | bit 7: f 6th  | bit 8: k 6th
   display_byte[35] = 0b10000001;  // bit 1: a 5th  | bit 2: h 5th  | bit 3: n 5th  | bit 4: i 5th  | bit 5: l 5th  | bit 6: j 5th  | bit 7: m 5th  | bit 8: d 5th
   display_byte[36] = 0b11001100;  // bit 1: f 5th  | bit 2: e 5th  | bit 3: g 5th  | bit 4: k 5th  | bit 5: b 4th  | bit 6: c 4th  | bit 7: h 4th  | bit 8: i 4th
   display_byte[37] = 0b00011000;  // bit 1: n 4th  | bit 2: j 4th  | bit 3: m 4th  | bit 4: d 4th  | bit 5: a 4th  | bit 6: g 4th  | bit 7: l 4th  | bit 8: k 4th
@@ -832,11 +1001,11 @@ void display_default()
   display_byte[46] = 0b11101010;  // bit 1: f 3rd rssi name  | bit 2: d 3rd rssi name  | bit 3: e 3rd rssi name  | bit 4: xxx  | bit 5: b 2nd rssi name  | bit 6: xxx              | bit 7: c 2nd rssi name  | bit 8: xxx
   display_byte[47] = 0b00001000;  // bit 1: n 2nd rssi name  | bit 2: i 2nd rssi name  | bit 3: h 2nd rssi name  | bit 4: xxx  | bit 5: a 2nd rssi name  | bit 6: j 2nd rssi name  | bit 7: m 2nd rssi name  | bit 8: xxx
   display_byte[48] = 0b00001110;  // bit 1: l 2nd rssi name  | bit 2: k 2nd rssi name  | bit 3: g 2nd rssi name  | bit 4: xxx  | bit 5: f 2nd rssi name  | bit 6: d 2nd rssi name  | bit 7: e 2nd rssi name  | bit 8: xxx
-  display_byte[49] = 0b10100000;  // bit 1: b 1st rssi name  | bit 2: xxx              | bit 3: c 1st rssi name  | bit 4: xxx  | bit 5: n 1st rssi name  | bit 6: i 1st rssi name  | bit 7: h 1st rssi name  | bit 8: xxx
+  display_byte[49] = 0b10100000;  // bit 1: b 1st rssi name  | bit 2: xxx              | bit 3: c 1st rssi name  | bit 4: xxx  | bit 5: n 1st rssi name  | bit 6: i 1st rssi name  | bi t7: h 1st rssi name  | bit 8: xxx
   display_byte[50] = 0b10000000;  // bit 1: a 1st rssi name  | bit 2: j 3rd rssi name  | bit 3: m 3rd rssi name  | bit 4: xxx  | bit 5: l 3rd rssi name  | bit 6: k 3rd rssi name  | bit 7: g 3rd rssi name  | bit 8: xxx
-  display_byte[51] = 0b11101100;  // bit 1: f 1st rssi name  | bit 2: d 1st rssi name  | bit 3: e 1st rssi name  | bit 4: xxx  | bit 5: b 2nd  | bit 6: c 2nd | bit 7: h 2nd | bit 8: i 2nd 
+  display_byte[51] = 0b11101100;  // bit 1: f 1st rssi name  | bit 2: d 1st rssi name  | bit 3: e 1st rssi name  | bit 4: xxx  | bit 5: b 2nd | bit 6: c 2nd | bit 7: h 2nd | bit 8: i 2nd 
   display_byte[52] = 0b00011000;  // bit 1: n 2nd | bit 2: j 2nd | bit 3: m 2nd | bit 4: d 2nd | bit 5: a 2nd | bit 6: g 2nd | bit 7: l 2nd | bit 8: k 2nd 
-  display_byte[53] = 0b11111000;  // bit 1: b 1st | bit 2: c 1st | bit 3: f 2nd | bit 4: e 2nd | bit 5: a 1st | bit 6: h 1st | bit 7: n 1st | bit 8: i 2nd
+  display_byte[53] = 0b11111000;  // bit 1: b 1st | bit 2: c 1st | bit 3: f 2nd | bit 4: e 2nd | bit 5: a 1st | bit 6: h 1st | bit 7: n 1st | bit 8: i 1st
   display_byte[54] = 0b00011100;  // bit 1: l 1st | bit 2: j 1st | bit 3: m 1st | bit 4: d 1st | bit 5: f 1st | bit 6: e 1st | bit 7: g 1st | bit 8: k 1st
   display_byte[55] = 0b00011010;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: left graph box | bit 5: b 1speed | bit 6: xxx | bit 7: c 1speed | bit 8: xxx
   display_byte[56] = 0b11001010;  // bit 1: a 1speed | bit 2: d 1speed | bit 3: g 1speed | bit 4: 6th left graph | bit 5: f 1speed | bit 6: xxx | bit 7: e 1speed | bit 8: xxx
