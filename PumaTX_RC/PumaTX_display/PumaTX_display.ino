@@ -31,7 +31,7 @@ void set_sd(bool sd);
 void set_sport(bool sport);
 void set_vision(bool vision);
 void set_rec(bool rec);
-void set_text(String text);
+void set_text(String text, int scroll_speed);
 void set_name(String text);
 int char_to_14_segment(int chara);
 
@@ -73,7 +73,7 @@ void loop()
 
 void loop_display(int i)
 {
-
+  Serial.println("1");
   set_left_graph(i / 120, 0);
   set_right_graph(6 - (i / 120), 0);
   set_rc_rssi(i / 200, 1);
@@ -82,39 +82,19 @@ void loop_display(int i)
   set_tx_battery_percentage(56, 1);
   set_drone_battery_bar(i / 300, 1);
   set_drone_battery_percentage(85, 1);
-  set_rpm(2000, 1);
+  set_rpm(19999, 1);
   set_speed(275, 1);
   set_distance(66860, 1);
   set_altitude(4807, 1);
   set_clearance(23, 1);
-  set_ev(123, 0);
+  set_ev(10, 0);
   set_sd(0);
   set_sport(0);
   set_vision(0);
   set_rec(0);
-  set_text("abcdefghijk");
-  set_name("test");
-  
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x00);
-  Wire.endTransmission();
-  
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x4C);
-  Wire.endTransmission();
-
-  Wire.beginTransmission(0x38);
-  Wire.write(0x40);
-    
-  for(int i = 0; i < 68; i++)
-  {
-    Wire.write(display_byte[i]);
-  }
-  
-  Wire.endTransmission();
-
+  set_name(" gps");
+  set_text("receiver", 750);
+  update_display();
   delay(1);
  
 }
@@ -633,12 +613,57 @@ void set_rec(bool rec)
   bitWrite(display_byte[63], 7, rec);
 }
 
-void set_text(String text)
+void set_text(String text, int scroll_speed)
 {
-  for(int i = 0; i < 11; i++)
+  if(text.length() > 11)
   {
-    draw_text(i, text.charAt(i));
+    for(int j = 0; text.length() - j + 2 > 11; j++)
+    {
+      for(int i = 0; i < text.length() ; i++)
+      {
+        draw_text(i - j, text.charAt(i)); 
+      }
+      update_display();
+      delay(scroll_speed);
+    }
   }
+  else
+  {
+    for(int i = 0; i < text.length() ; i++)
+    {
+      draw_text(i, text.charAt(i)); 
+    }
+    if(text.length() < 11)
+    {
+      for(int i = 0; i < 11 - text.length(); i++)
+      {
+        draw_text(i + text.length(), 32);
+      }
+    }
+  }
+}
+
+void update_display()
+{
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x00);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x4C);
+  Wire.endTransmission();
+
+  Wire.beginTransmission(0x38);
+  Wire.write(0x40);
+    
+  for(int i = 0; i < 68; i++)
+  {
+    Wire.write(display_byte[i]);
+  }
+  
+  Wire.endTransmission();  
 }
 
 void draw_text(int display, int chara)
@@ -915,35 +940,54 @@ byte char_to_7_segment(char digit)
 
 int char_to_14_segment(int digit)
 {
-  
+  if(digit == 32)
+  {
+    digit = 26 + 97;
+  }
+  if(47 < digit && digit < 58)
+  {
+    digit = 27 + 97 - 48 + digit; 
+  }
   digit = digit - 97;
+
   int bit_14_digit[] = {
-                         0b00000011110111,  //A   0
-                         0b01001010001111,  //B   1
-                         0b00000000111001,  //C   2
-                         0b01001000001111,  //D   3
-                         0b00000001111001,  //E   4
-                         0b00000001110001,  //F   5
-                         0b00000010111101,  //G   6
-                         0b00000011110110,  //H   7
-                         0b01001000001001,  //I   8
-                         0b00010000001111,  //J   9
-                         0b10000101110000,  //K   10
-                         0b00000000111000,  //L   11
-                         0b10100000110110,  //M   12
-                         0b00100100110110,  //N   13
-                         0b00000000111111,  //O   14
-                         0b00000011110011,  //P   15
-                         0b00000100111111,  //Q   16
-                         0b00000111110011,  //R   17
-                         0b00000011101101,  //S   18
-                         0b01001000000001,  //T   19
-                         0b00000000111110,  //U   20
-                         0b00001011100010,  //V   21
-                         0b00010100110110,  //W   22
-                         0b10110100000000,  //X   23
-                         0b10101000000000,  //Y   24
-                         0b10010000001001  //Z   25
+                         247,  //A   0
+                         4751,  //B   1
+                         57,  //C   2
+                         4623,  //D   3
+                         121,  //E   4
+                         113,  //F   5
+                         189,  //G   6
+                         246,  //H   7
+                         4617,  //I   8
+                         1038,  //J   9
+                         8560,  //K   10
+                         56,  //L   11
+                         10294,  //M   12
+                         2358,  //N   13
+                         63,  //O   14
+                         243,  //P   15
+                         319,  //Q   16
+                         499,  //R   17
+                         237,  //S   18
+                         4609,  //T   19
+                         62,  //U   20
+                         738,  //V   21
+                         1334,  //W   22
+                         11520,  //X   23
+                         10752,  //Y   24
+                         9225,  //Z   25
+                         0,   //space 26
+                         63,  //0
+                         6, //1
+                         219, //2
+                         143, //3
+                         230,//4
+                         237,//5
+                         253,//6
+                         7,//7
+                         255,//8
+                         239//9
                         };
 
   
