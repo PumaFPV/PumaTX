@@ -2,19 +2,19 @@ void compute_rc()
 {
 //--------------------------------------------------throttle
 
-    throttle.output = constrain(map(throttle.reading, -7600, 8300, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    throttle.output = constrain(map(throttle.reading, -7950, 9150, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------yaw
 
-    yaw.output = constrain(map(yaw.reading, -7500, 9200, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    yaw.output = constrain(map(yaw.reading, -8250, 9530, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------pitch
 
-    pitch.output = constrain(map(pitch.reading, -7300, 8520, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    pitch.output = constrain(map(pitch.reading, -7640, 8540, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------roll
 
-    roll.output = constrain(map(roll.reading, -8300, 8400, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    roll.output = constrain(map(roll.reading, -8920, 8200, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //--------------------------------------------------Right Pot
     rightpot.output = constrain(map(rightpot.state, 440, 3600, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);

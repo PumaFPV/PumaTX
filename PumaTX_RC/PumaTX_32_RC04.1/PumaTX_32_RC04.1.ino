@@ -12,6 +12,7 @@ void setup()
   Serial.begin(115200); //Starts Serial connection
   Wire.begin(I2C_SDA, I2C_SCL); //Starts I2C connection
   mlx.begin();  //Initialise MLX
+  display.begin();
 
   pin_mode_def(); //Defines every buttons
 }
@@ -25,9 +26,13 @@ void loop()
 
   receiver_number = 0x12;
   
+  display.display_default();
+  display.set_text(String(channels[0]) + " " + String(channels[2]), 500);
 
   unsigned long current_millis_pxx = millis();
-  
+
+  Serial.println(mlx.get_roll());
+
   if (current_millis_pxx - previous_millis_pxx >= interval_pxx) 
   {
     mlx.process();
@@ -36,17 +41,9 @@ void loop()
     
     previous_millis_pxx = current_millis_pxx;
     prepare_pxx(channels, receiver_number, flag1, EU_10_mw);  //receive channels data and prepare then for PXX
-
-
+    display.update_display();
   }
 
-  /*
-  for(int i = 0; i < 8; i++)
-  {
-    Serial.print(channels[i]);
-    Serial.print("  ");
-  }
-  Serial.println();
-  */
+
   
 }

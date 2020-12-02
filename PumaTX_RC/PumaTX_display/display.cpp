@@ -19,8 +19,8 @@ display::display(uint8_t BL_pin)
 void display::begin()  //setup function. has to be called to init program
 {
   ledcSetup(0, 5000, 8);
-  ledcAttachPin(BL, 0);
-  ledcWrite(0, brightness);
+  ledcAttachPin(_BL, 0);
+  ledcWrite(0, 255);
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
   Wire.write(0x12);

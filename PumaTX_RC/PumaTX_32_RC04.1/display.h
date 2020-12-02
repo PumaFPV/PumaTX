@@ -36,7 +36,9 @@ class display
 		void set_rec(bool rec);
 		void set_text(String text, int scroll_speed);
 		void set_name(String text, int scroll_speed);
-		
+   
+		void display_default();  //display 0 everywhere
+
 	private:
 		byte display_byte[68];
 		
@@ -54,8 +56,6 @@ class display
 		void draw_text(int display, int chara);	//draw to individual digit of 14 segment displays
 		void draw_name(int display, int chara);	//draw to individual digit of 14 segment displays
 		
-		void display_default();  //display 0 everywhere
-
     uint8_t _BL_pin;
 };
 
