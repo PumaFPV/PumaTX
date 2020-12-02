@@ -13,14 +13,14 @@
 
 display::display(uint8_t BL_pin)
 {
-	_BL = BL_pin;
+	_BL_pin = BL_pin;
 }
 
 void display::begin()  //setup function. has to be called to init program
 {
   ledcSetup(0, 5000, 8);
-  ledcAttachPin(BL, 0);
-  ledcWrite(0, brightness);
+  ledcAttachPin(_BL_pin, 0);
+  ledcWrite(0, 255);
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
   Wire.write(0x12);
@@ -276,8 +276,8 @@ void display::set_drone_battery_percentage(uint8_t percentage, bool pic)  //dron
 
   draw_drone_battery_percentage(1, drone_battery_percentage_units);
   draw_drone_battery_percentage(2, drone_battery_percentage_10);
-  bitWrite(display_byte[32], 6, drone_battery_percentage_hundred);
   
+  bitWrite(display_byte[32], 6, drone_battery_percentage_hundred);
   bitWrite(display_byte[29], 2, pic);
 }
 
@@ -315,27 +315,27 @@ void display::set_rpm(int rpm, bool pic)  //set rpm value on upper right corner.
   if(rpm > 1999)
   {
     rpm10 = 1;
-    rpm = rpm / 10; 
+    rpm   = rpm / 10; 
   }
 
   int rpm_units = 0;
-  int rpm_10 = 0;
-  int rpm_100 = 0;
-  int rpm_1000 = 0;
+  int rpm_10    = 0;
+  int rpm_100   = 0;
+  int rpm_1000  = 0;
 
-  rpm_1000 = rpm % 10000 / 1000;
-  rpm_100  = rpm % 1000 / 100;
-  rpm_10      = rpm % 100 / 10;
-  rpm_units     = rpm % 10;
+  rpm_1000  = rpm % 10000 / 1000;
+  rpm_100   = rpm % 1000 / 100;
+  rpm_10    = rpm % 100 / 10;
+  rpm_units = rpm % 10;
 
   draw_rpm(1, rpm_units);
   draw_rpm(2, rpm_10);
   draw_rpm(3, rpm_100);
+  
   bitWrite(display_byte[17], 2, rpm_1000);
   bitWrite(display_byte[16], 2, rpm10);
   bitWrite(display_byte[16], 6, rpm10);
   bitWrite(display_byte[15], 6, pic);
-  
 }
 
 void display::draw_rpm(uint8_t display, char digit)  //draw to individual digit of rpm
@@ -378,11 +378,11 @@ void display::draw_rpm(uint8_t display, char digit)  //draw to individual digit 
 void display::set_speed(int speed, bool pic)	//set speed value, input 999 output 99.9, input 1000 output 100 | pic is kmh no support for mph yet
 {
 
-  int speed_1   = 0;
-  int speed_10  = 0;
-  int speed_100 = 0;
+  int speed_1    = 0;
+  int speed_10   = 0;
+  int speed_100  = 0;
   int speed_1000 = 0;
-  bool dot = 0;
+  bool dot       = 0;
 
   speed_1000 = speed % 10000 / 1000;
   speed_100  = speed % 1000 / 100;

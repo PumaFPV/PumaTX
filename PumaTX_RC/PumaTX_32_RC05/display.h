@@ -37,6 +37,8 @@ class display
 		void set_text(String text, int scroll_speed);
 		void set_name(String text, int scroll_speed);
 		
+		void set_brightness();
+		
 	private:
 		byte display_byte[68];
 		

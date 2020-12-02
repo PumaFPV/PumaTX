@@ -56,7 +56,7 @@ class display
 		
 		void display_default();  //display 0 everywhere
 
-    uint8_t _BL;
+    uint8_t _BL_pin;
 };
 
 #endif

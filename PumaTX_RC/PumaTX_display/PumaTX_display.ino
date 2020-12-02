@@ -1,8 +1,8 @@
 #include "Wire.h"
 #include "display.h"
 
-#define I2C_SDA 23
-#define I2C_SCL 18
+#define I2C_SDA 4
+#define I2C_SCL 13
 #define BL 22
 
 display display(BL);
@@ -10,14 +10,13 @@ display display(BL);
 void setup()
 {
   Serial.begin(115200);
-  ledcSetup(0, 5000, 8);
-  ledcAttachPin(BL, 0);
-  ledcWrite(0, 255);
 
+
+  delay(1000);
   Wire.begin(I2C_SDA, I2C_SCL);
   delay(1000);
-
   display.begin();
+
 
   delay(6);
 
@@ -47,6 +46,7 @@ void loop()
   display.set_text("  puma tx", 750);
   
   display.update_display();
+  Serial.println("loop");
   
   delay(100);
 

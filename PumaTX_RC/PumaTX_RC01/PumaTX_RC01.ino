@@ -5,11 +5,11 @@
  * 
  */
 
-#include "U8glib.h"
+//#include <U8glib.h>
 #include <Wire.h>
 #include <EEPROM.h>
 
-U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);
+//U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);
 
 #define RC_CHANNEL_MIN 990
 #define RC_CHANNEL_MAX 2010
@@ -330,10 +330,10 @@ throttle = data[1] * 256 + data[2];
 yaw = data[3] * 256 + data[4];
  
 // Output data to serial monitor
-//Serial.print("throttle: ");
-//Serial.print(throttle);
-//Serial.print("yaw: ");
-//Serial.print(yaw);
+Serial.print("throttle: ");
+Serial.print(throttle);
+Serial.print("yaw: ");
+Serial.print(yaw);
 
 //--------------------------------------------------READ-I2C-0x0D-RIGHT-GIMBAL--------------------------------------------------
     Wire.beginTransmission(0x0D);   // Start I2C Transmission
@@ -605,7 +605,7 @@ if (readingmenuleft == LOW && page > 0){ //menu left -> page-
 //----------------------------------------------------------------------------------------------------VOID-DRAW-PAGE---------------------------------------------------------------------------------------------
 //===============================================================================================================================================================================================================
 void draw(void) {
-  u8g.setFont(u8g_font_5x7);
+//  u8g.setFont(u8g_font_5x7);
   u8g.setPrintPos(123, 57);
   u8g.print(page);
 
