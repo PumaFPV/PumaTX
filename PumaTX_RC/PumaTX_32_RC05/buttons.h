@@ -1,9 +1,7 @@
 void pin_mode_def()
 {
-  //GPIO.enable_w1tc = ((uint32_t)1 << right.pin);  //input
-  //GPIO.enable_w1ts = ((uint32_t)1 << rc_pin);  //output
-  //gpio_set_direction(rc_pin, OUTPUT);
-  pinMode(right.pin, INPUT_PULLUP); 
+
+  pinMode(right.pin, INPUT_PULLUP);
   pinMode(left.pin, INPUT_PULLUP);
   pinMode(up.pin, INPUT_PULLUP);
   pinMode(down.pin, INPUT_PULLUP);
@@ -13,30 +11,29 @@ void pin_mode_def()
   pinMode(pre.pin, INPUT_PULLUP);
   pinMode(pwr.pin, INPUT_PULLUP);
   pinMode(play.pin, INPUT_PULLUP);
-  pinMode(led.pin, OUTPUT);  //output
-  pinMode(rc_pin, OUTPUT);  
+  pinMode(led.pin, OUTPUT);
+  pinMode(17, OUTPUT);
   
 }
 
 
-
 void process_buttons()
 {
-
+  
   //Navigation joystick
-  ok.state = (GPIO.in >> ok.pin) & 0x1;
-  right.state = (GPIO.in >> right.pin) & 0x1;
-  left.state = (GPIO.in >> left.pin) & 0x1;
-  up.state = (GPIO.in >> up.pin) & 0x1;
-  down.state = (GPIO.in >> down.pin) & 0x1;
+  ok.state = digitalRead(ok.pin);
+  right.state = digitalRead(right.pin);
+  left.state = digitalRead(left.pin);
+  up.state = digitalRead(up.pin);
+  down.state = digitalRead(down.pin);
 
   //Switches
   rightpot.state = analogRead(rightpot.pin);
   leftpot.state = analogRead(leftpot.pin);
-  arm.state = (GPIO.in >> arm.pin) & 0x1;
-  pre.state = (GPIO.in >> pre.pin) & 0x1;
-  rth.state = (GPIO.in >> rth.pin) & 0x1;
-  pwr.state = (GPIO.in >> pwr.pin) & 0x1;
-  play.state = (GPIO.in >> play.pin) & 0x1;
+  arm.state = digitalRead(arm.pin);
+  pre.state = digitalRead(pre.pin);
+  rth.state = digitalRead(rth.pin);
+  pwr.state = digitalRead(pwr.pin);
+  play.state = digitalRead(play.pin);
   
 }

@@ -31,12 +31,24 @@ Failsafe: Not found yet
 
 */
 
-//#include <rom/crc.h>
+#define PXX_CHANNEL_WIDTH 2048
+#define PXX_UPPER_LOW     2049
+#define PXX_UPPER_HIGH    4094
+#define PXX_LOWER_LOW     1
+#define PXX_LOWER_HIGH    2046
+
+
+
+#define HEAD 0x7E //0x7C
+#define BIND 0x05
+#define RANGE 0x20
+#define EU_100_mw 0x48  // 0100 1000
+#define EU_10_mw 0x40   // 0100 0000
 
 
 
 //-----Default values
-//byte receiver_number = 0x00;
+byte receiver_number = 0x00;
 byte power_zone = EU_10_mw;
 byte flag1 = 0x00;
 byte CRC_1 = 0x00;
@@ -80,12 +92,12 @@ void serial_bit(bool bit)
 {
   if(bit)
   {
-    GPIO.out_w1ts = ((uint32_t)1 << rc_pin);  //gpio_sett_level(pin, state);
+    GPIO.out_w1ts = ((uint32_t)1 << 17);
     delayMicroseconds(7);
   }
   else
   {
-    GPIO.out_w1tc = ((uint32_t)1 << rc_pin);
+    GPIO.out_w1tc = ((uint32_t)1 << 17);
     delayMicroseconds(7);    
   }
 }
@@ -166,7 +178,7 @@ uint16_t limit(uint16_t low, uint16_t val, uint16_t high)
 }
 
 
-void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zone)
+void prepare_pxx(volatile int16_t channels[16], byte rx_number, byte bind, byte power_zone)
 {
     uint16_t chan=0, chan_low=0;
 
@@ -234,7 +246,7 @@ void prepare_pxx(int16_t channels[16], byte rx_number, byte bind, byte power_zon
 
     // Sync
     put_pcm_head();
-    GPIO.out_w1tc = ((uint32_t)1 << rc_pin);
+    GPIO.out_w1tc = ((uint32_t)1 << 17);
     send_upper_channel = !send_upper_channel;
   
 }

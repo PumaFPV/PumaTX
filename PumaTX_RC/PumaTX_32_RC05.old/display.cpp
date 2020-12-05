@@ -13,14 +13,13 @@
 
 display::display(uint8_t BL_pin)
 {
-	_BL_pin = BL_pin;
+	_BL = BL_pin;
 }
+
 
 void display::begin()  //setup function. has to be called to init program
 {
-  ledcSetup(0, 5000, 8);
-  ledcAttachPin(_BL_pin, 0);
-  ledcWrite(0, 255);
+  
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
   Wire.write(0x12);
@@ -174,25 +173,26 @@ void display::set_rc_rssi(uint8_t bar, bool pic)	//bar rssi for tx (upper right)
 
 void display::set_named_rssi(uint8_t bar, bool pic)	//bar rssi for named (upper left) | pic
 {
-  byte named_rssi_top =    0b00000;
-  byte named_rssi_bottom = 0b00000;
-  
-  named_rssi_top = pow(2, bar) - 1;
-  named_rssi_bottom = pow(2, pic) - 1;
+  byte named_rssi = 0b00000;
 
-  //top rssi
-  bitWrite(display_byte[41], 6, bitRead(named_rssi_top, 0));  //1st bar
-  bitWrite(display_byte[41], 5 ,bitRead(named_rssi_top, 1));  //2nd bar
-  bitWrite(display_byte[41], 7, bitRead(named_rssi_top, 2));  //3rd bar
-  bitWrite(display_byte[40], 3, bitRead(named_rssi_top, 3));  //4th bar
-  bitWrite(display_byte[40], 7, bitRead(named_rssi_top, 4));  //5th bar
+  named_rssi = pow(2, bar) - 1;
   
+  //1st bar
+  bitWrite(display_byte[41], 6, bitRead(named_rssi, 0));
+  //2nd bar
+  bitWrite(display_byte[41], 5 ,bitRead(named_rssi, 1));
+  //3rd bar
+  bitWrite(display_byte[41], 7, bitRead(named_rssi, 2));
+  //4th bar
+  bitWrite(display_byte[40], 3, bitRead(named_rssi, 3));
+  //5th bar
+  bitWrite(display_byte[40], 7, bitRead(named_rssi, 4));  
   //bottom rssi
-  bitWrite(display_byte[41], 2, bitRead(named_rssi_bottom, 0));  //1st
-  bitWrite(display_byte[40], 6, bitRead(named_rssi_bottom, 1));  //2nd
-  bitWrite(display_byte[40], 2, bitRead(named_rssi_bottom, 2));  //3rd
-  bitWrite(display_byte[40], 1, bitRead(named_rssi_bottom, 3));  //4th
-  bitWrite(display_byte[40], 5, bitRead(named_rssi_bottom, 4));  //5th
+  bitWrite(display_byte[41], 2, pic);  //1st
+  bitWrite(display_byte[40], 6, pic);
+  bitWrite(display_byte[40], 2, pic);
+  bitWrite(display_byte[40], 1, pic);
+  bitWrite(display_byte[40], 5, pic);
 }
 
 void display::set_tx_battery_bar(uint8_t bar, bool pic)	//tx bar battery middle left 
@@ -275,8 +275,8 @@ void display::set_drone_battery_percentage(uint8_t percentage, bool pic)  //dron
 
   draw_drone_battery_percentage(1, drone_battery_percentage_units);
   draw_drone_battery_percentage(2, drone_battery_percentage_10);
-  
   bitWrite(display_byte[32], 6, drone_battery_percentage_hundred);
+  
   bitWrite(display_byte[29], 2, pic);
 }
 
@@ -314,27 +314,27 @@ void display::set_rpm(int rpm, bool pic)  //set rpm value on upper right corner.
   if(rpm > 1999)
   {
     rpm10 = 1;
-    rpm   = rpm / 10; 
+    rpm = rpm / 10; 
   }
 
   int rpm_units = 0;
-  int rpm_10    = 0;
-  int rpm_100   = 0;
-  int rpm_1000  = 0;
+  int rpm_10 = 0;
+  int rpm_100 = 0;
+  int rpm_1000 = 0;
 
-  rpm_1000  = rpm % 10000 / 1000;
-  rpm_100   = rpm % 1000 / 100;
-  rpm_10    = rpm % 100 / 10;
-  rpm_units = rpm % 10;
+  rpm_1000 = rpm % 10000 / 1000;
+  rpm_100  = rpm % 1000 / 100;
+  rpm_10      = rpm % 100 / 10;
+  rpm_units     = rpm % 10;
 
   draw_rpm(1, rpm_units);
   draw_rpm(2, rpm_10);
   draw_rpm(3, rpm_100);
-  
   bitWrite(display_byte[17], 2, rpm_1000);
   bitWrite(display_byte[16], 2, rpm10);
   bitWrite(display_byte[16], 6, rpm10);
   bitWrite(display_byte[15], 6, pic);
+  
 }
 
 void display::draw_rpm(uint8_t display, char digit)  //draw to individual digit of rpm
@@ -377,11 +377,11 @@ void display::draw_rpm(uint8_t display, char digit)  //draw to individual digit 
 void display::set_speed(int speed, bool pic)	//set speed value, input 999 output 99.9, input 1000 output 100 | pic is kmh no support for mph yet
 {
 
-  int speed_1    = 0;
-  int speed_10   = 0;
-  int speed_100  = 0;
+  int speed_1   = 0;
+  int speed_10  = 0;
+  int speed_100 = 0;
   int speed_1000 = 0;
-  bool dot       = 0;
+  bool dot = 0;
 
   speed_1000 = speed % 10000 / 1000;
   speed_100  = speed % 1000 / 100;
@@ -668,37 +668,6 @@ void display::set_text(String text, int scroll_speed)  //set text to display on 
   }
 }
 
-void display::set_text(String text)  //set text to display on the 11 14 segment display. if size of text > 11 the text will scroll automaticly | scroll speed is in ms 
-{
-  int scroll_speed = 400;
-  if(text.length() > 11)
-  {
-    for(int j = 0; text.length() - j + 2 > 11; j++)
-    {
-      for(int i = 0; i < text.length() ; i++)
-      {
-        draw_text(i - j, text.charAt(i)); 
-      }
-      update_display();
-      delay(scroll_speed);
-    }
-  }
-  else
-  {
-    for(int i = 0; i < text.length() ; i++)
-    {
-      draw_text(i, text.charAt(i)); 
-    }
-    if(text.length() < 11)
-    {
-      for(int i = 0; i < 11 - text.length(); i++)
-      {
-        draw_text(i + text.length(), 32);
-      }
-    }
-  }
-}
-
 void display::update_display()	//update display, has to be called to update display.
 {
   Wire.beginTransmission(0x38);
@@ -909,37 +878,6 @@ void display::draw_text(int display, int chara)	//draw to individual digit of 14
 
 void display::set_name(String name, int scroll_speed)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
 {
-  if(name.length() > 4)
-  {
-    for(int j = 0; name.length() - j + 2 > 4; j++)
-    {
-      for(int i = 0; i < name.length() ; i++)
-      {
-        draw_name(i - j, name.charAt(i)); 
-      }
-      update_display();
-      delay(scroll_speed);
-    }
-  }
-  else
-  {
-    for(int i = 0; i < name.length() ; i++)
-    {
-      draw_name(i, name.charAt(i)); 
-    }
-    if(name.length() < 4)
-    {
-      for(int i = 0; i < 4 - name.length(); i++)
-      {
-        draw_name(i + name.length(), 32); //fill with space if less than 4 char
-      }
-    }
-  }
-}
-
-void display::set_name(String name)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
-{
-  int scroll_speed = 400;
   if(name.length() > 4)
   {
     for(int j = 0; name.length() - j + 2 > 4; j++)

@@ -7,33 +7,16 @@
 //--------------------------------------------------Include libraries--------------------------------------------------
 #include <Arduino.h>
 #include <Wire.h>
-#include "driver/gpio.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
+#include "MLX.h"
+#include "display.h"
 
 //--------------------------------------------------Define--------------------------------------------------
 #define I2C_SDA 4
 #define I2C_SCL 13
 
-#define PXX_CHANNEL_WIDTH                   2048
-#define PXX_UPPER_LOW                       2049
-#define PXX_UPPER_HIGH                      4094
-#define PXX_LOWER_LOW                       1
-#define PXX_LOWER_HIGH                      2046
-
-
-
-#define HEAD 0x7E //0x7C
-#define BIND 0x05
-#define RANGE 0x20
-#define EU_100_mw 0x48  // 0100 1000
-#define EU_10_mw 0x40   // 0100 0000
-
-
 //--------------------------------------------------Initialize libraries--------------------------------------------------
-
-
+MLX mlx(0x0C, 0x0D);  //Left, Right
+display display(22);
 
 //--------------------------------------------------Structs--------------------------------------------------
 struct Channel
@@ -43,15 +26,15 @@ struct Channel
     int max;    //MLX scale
     int trim;   //MLX scale
     int intermediate;  //Used to do some computation 
-    int ouput; //from -100 to 100
+    int output; //from -100 to 100
     bool Reverse;
 };
 
 struct Button
 {
-    int pin;    //which pin the button is connected to
+    uint8_t pin;    //which pin the button is connected to
     bool state;  //what state the button is
-    int ouput; //from -100 to 100
+    int output; //from -100 to 100
     bool prev;   //previous state
     unsigned long current_time; 
 };
@@ -61,12 +44,10 @@ struct ADC
     uint8_t pin;    //which pin the analog device is connected to
     float state;    //What state the analog device is at
     int process;
-    int ouput; //from -100 to 100
+    int output; //from -100 to 100
     unsigned long current_time;
     int intermediate;
 };
-
-
 
 //--------------------------------------------------Channel struct--------------------------------------------------
 Channel throttle = {
@@ -109,8 +90,6 @@ Channel roll = {
   0   //Reverse
 };
 
-
-
 //--------------------------------------------------Button struct--------------------------------------------------
 Button right = {25, 1, 1, 1, 0};
 Button left = {26, 1, 1, 1, 0};
@@ -129,17 +108,11 @@ ADC voltage = {33, 0.00, 0, 0, 0}; //GPIO35
 ADC leftpot = {35, 0, 0, 0, 0};  //GPIO34
 ADC rightpot = {32, 0, 0, 0, 0}; //GPIO39
 
-
-
 //--------------------------------------------------Variables--------------------------------------------------
-int rc_pin = 17;
-
 unsigned long debouncedelay = 200;
 unsigned long currenttime = 0;
 
-int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
-
-bool left_mlx = 0;
+volatile int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
 
 float lipo100 = 4.2;
 float lipo90 = 4.13;
