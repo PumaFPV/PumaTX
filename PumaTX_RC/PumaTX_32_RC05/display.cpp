@@ -648,7 +648,7 @@ void display::set_text(String text, int scroll_speed)  //set text to display on 
       {
         draw_text(i - j, text.charAt(i)); 
       }
-      update_display();
+      update();
       delay(scroll_speed);
     }
   }
@@ -679,7 +679,7 @@ void display::set_text(String text)  //set text to display on the 11 14 segment 
       {
         draw_text(i - j, text.charAt(i)); 
       }
-      update_display();
+      update();
       delay(scroll_speed);
     }
   }
@@ -699,7 +699,7 @@ void display::set_text(String text)  //set text to display on the 11 14 segment 
   }
 }
 
-void display::update_display()	//update display, has to be called to update display.
+void display::update()	//update display, has to be called to update display.
 {
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
@@ -903,7 +903,6 @@ void display::draw_text(int display, int chara)	//draw to individual digit of 14
     bitWrite(display_byte[19], 1, bitRead(segment, 12));  //m
     bitWrite(display_byte[19], 5, bitRead(segment, 13));  //n
     break;
-    
   }
 }
 
@@ -917,7 +916,7 @@ void display::set_name(String name, int scroll_speed)  //set text for rssi name 
       {
         draw_name(i - j, name.charAt(i)); 
       }
-      update_display();
+      update();
       delay(scroll_speed);
     }
   }
@@ -948,7 +947,7 @@ void display::set_name(String name)  //set text for rssi name 4 14 segment displ
       {
         draw_name(i - j, name.charAt(i)); 
       }
-      update_display();
+      update();
       delay(scroll_speed);
     }
   }

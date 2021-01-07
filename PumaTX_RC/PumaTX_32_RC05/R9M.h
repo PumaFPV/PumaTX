@@ -65,12 +65,6 @@ int pcm_ones_count = 0;
 
 int pcm_crc;
 
-unsigned long interval_pxx = 9;
-unsigned long previous_millis_pxx = 0;
-
-unsigned long interval_mlx = 5;
-unsigned long previous_millis_mlx = 0;
-
 const uint16_t CRC_Short[] =
 {
    0x0000, 0x1189, 0x2312, 0x329B, 0x4624, 0x57AD, 0x6536, 0x74BF,
@@ -205,8 +199,8 @@ void prepare_pxx(volatile int16_t channels[16], byte rx_number, byte bind, byte 
     // FLAG2
     put_pcm_byte(0x00);
    
-    if(send_upper_channel)
-    {
+   // if(send_upper_channel)
+   // {
       put_pcm_byte(channels[0] & 0xFF);
       put_pcm_byte((channels[0] >> 8) | ((0x0F & channels[1]) << 4));
       put_pcm_byte(channels[1] >> 4);
@@ -219,7 +213,7 @@ void prepare_pxx(volatile int16_t channels[16], byte rx_number, byte bind, byte 
       put_pcm_byte(channels[6] & 0xFF);
       put_pcm_byte((channels[6] >> 8) | ((0x0F & channels[7]) << 4));
       put_pcm_byte(channels[7] >> 4);
-    }
+   /* }
     else
     {
       put_pcm_byte((channels[8] + 2048) & 0xFF);
@@ -234,7 +228,7 @@ void prepare_pxx(volatile int16_t channels[16], byte rx_number, byte bind, byte 
       put_pcm_byte((channels[14] + 2048) & 0xFF);
       put_pcm_byte(((channels[14] + 2048) >> 8) | ((0x0F & (channels[15] + 2048)) << 4));
       put_pcm_byte((channels[15] + 2048) >> 4);      
-    }
+    }*/
 
     
     put_pcm_byte(power_zone); //10mw EU

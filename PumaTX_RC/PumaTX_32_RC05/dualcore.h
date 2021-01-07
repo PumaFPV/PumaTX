@@ -33,118 +33,63 @@ void Task1code( void * pvParameters ){
 
 */
 
+TaskHandle_t pxx_dualcore;
+TaskHandle_t mlx_dualcore;
+TaskHandle_t button_dualcore;
+TaskHandle_t menu_dualcore;
 
-
-TaskHandle_t PXX;
-//TaskHandle_t main;
-//TaskHandle_t mlx;
-//TaskHandle_t button;
-
-
-
-void PXX_code( void * pvParameters ){
+void pxx_code( void * pvParameters )
+{
   byte flag1 = 0x00;
   byte receiver_number = 0x12;
-  for(;;){
-  unsigned long current_millis_pxx = millis();
   
-  if (current_millis_pxx - previous_millis_pxx >= interval_pxx) 
-  {
-
-    previous_millis_pxx = current_millis_pxx;
+  for(;;){
     prepare_pxx(channels, receiver_number, flag1, EU_10_mw);  //receive channels data and prepare then for PXX
-    
-    if(left_mlx)
-    {
-      loop_left_mlx();
-    }
-    else
-    {
-      loop_right_mlx();
-    }
-    left_mlx = !left_mlx;
-    
+    delay(6);
   }
-  }
-  
 }
 
 
-/*
-void button_code( void * pvParameters ){
+
+void button_code( void * pvParameters )
+{
   
-  PinModeDef(); //Defines every buttons
+  pin_mode_def(); //Defines every buttons
 
   for(;;){
-    ProcessButtons();
-  }
+    process_buttons();
 
+  }
 }
 
 
 
-void main_code( void * pvParameters ){
-  
-  for(;;){ 
-    ComputeRC4();
-    RCdata();
-  }
+void mlx_code( void * pvParameters )
+{
+  display.begin();
+  display.display_default();
+  mlx.begin();
 
-}
-
-
-
-void mlx_code( void * pvParameters ){
-  
-  Wire.begin(I2C_SDA, I2C_SCL); //Starts I2C connection
-  SetupLeftMLX();
-  SetupRightMLX();
-  
   for(;;){  
-    LoopLeftMLX();
-    vTaskDelay(5);
-    LoopRightMLX();
+    
+    mlx.process();
+    get_mlx_data();
+    compute_rc();
+    rc_data();
+    menu_loop();
+    Serial.println(page);
+    //Serial.println(uxTaskGetStackHighWaterMark(NULL));
+
+    delay(5);
   }
   
 }
-*/
 
-
-void setup_dualcore(){
-    xTaskCreatePinnedToCore(
-                    PXX_code,    //Task function. 
-                    "PXX",      //name of task. 
-                    1024,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    3,            //priority of the task 
-                    &PXX,       //Task handle to keep track of created task 
-                    0); 
-/*
-    xTaskCreatePinnedToCore(
-                    main_code,    //Task function. 
-                    "main",      //name of task. 
-                    10000,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    1,            //priority of the task 
-                    &main,       //Task handle to keep track of created task 
-                    1); 
-                    
-    xTaskCreatePinnedToCore(
-                    mlx_code,    //Task function. 
-                    "mlx",      //name of task. 
-                    10000,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    2,            //priority of the task 
-                    &mlx,       //Task handle to keep track of created task 
-                    1);     
-
-    xTaskCreatePinnedToCore(
-                    button_code,    //Task function. 
-                    "button",      //name of task. 
-                    10000,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    0,            //priority of the task 
-                    &button,       //Task handle to keep track of created task 
-                    1);    
-                  */                             
+void menu_code(void * pvParameters)
+{
+  for(;;)
+  {
+    navigation();
+    delay(100);
+  }
 }

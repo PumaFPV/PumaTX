@@ -144,7 +144,9 @@ void MLX::process_left(){
   {
       _throttle_reading = _throttle_reading - 65535;  
   }
-  //Serial.println(_throttle_reading);
+  Serial.println(_throttle_reading);
+
+  
   if(_yaw_reading > 40000)
   {
       _yaw_reading = _yaw_reading - 65535;  

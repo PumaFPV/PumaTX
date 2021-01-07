@@ -109,6 +109,7 @@ void get_mlx_data()
 {
   
   throttle.reading = mlx.get_throttle();
+  //Serial.println(mlx.get_throttle());
   yaw.reading = mlx.get_yaw();
   pitch.reading = mlx.get_pitch();
   roll.reading = mlx.get_roll();
