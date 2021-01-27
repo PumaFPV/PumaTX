@@ -18,9 +18,8 @@ display::display(uint8_t BL_pin)
 
 void display::begin()  //setup function. has to be called to init program
 {
-  ledcSetup(0, 5000, 8);
-  ledcAttachPin(_BL, 0);
-  ledcWrite(0, 255);
+  pinMode(_BL, OUTPUT);
+  digitalWrite(_BL, HIGH);
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
   Wire.write(0x12);
@@ -98,7 +97,6 @@ void display::begin()  //setup function. has to be called to init program
   }
   
   display_default();
-  
 }
 
 void display::set_left_graph(uint8_t bar, bool pic)	//left bar graph | pic is the outline
@@ -232,7 +230,7 @@ void display::draw_tx_battery_percentage(uint8_t display, char digit)  //draw to
   switch(display)
   {
     case 1: // tx battery  1
-      bitWrite(display_byte[65], 5, bitRead(segment, 0));  //a
+      bitWrite(display_byte[65], 4, bitRead(segment, 0));  //a
       bitWrite(display_byte[64], 0, bitRead(segment, 1));  //b
       bitWrite(display_byte[64], 2, bitRead(segment, 2));  //c
       bitWrite(display_byte[65], 5, bitRead(segment, 3));  //d
