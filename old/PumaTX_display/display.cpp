@@ -84,19 +84,25 @@ void display::begin()  //setup function. has to be called to init program
   
   Wire.beginTransmission(0x38);
   Wire.write(0x40);
+
+  display_default();
   
-  for(int i = 0; i < 69; i++)
+  for(int i = 0; i < 68; i++)
   {
-    Wire.write(0x00);
+    Wire.write(display_byte[i]);
   }
-  
+
+  Wire.write(0x00);
+
   Wire.endTransmission();  
+  /*
   for(int i = 0; i < 68; i++)
   {
     display_byte[i] = 0x00; 
   }
   
   display_default();
+  */
 }
 
 void display::set_left_graph(uint8_t bar, bool pic)	//left bar graph | pic is the outline
@@ -669,6 +675,83 @@ void display::set_text(String text, int scroll_speed)  //set text to display on 
 
 void display::update_display()	//update display, has to be called to update display.
 {
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x12);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xFE);
+  Wire.endTransmission();
+
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xE0);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xb9);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x80);
+  Wire.write(0xA8);
+  Wire.write(0x80);
+  Wire.write(0x46);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xD4);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x11);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x35);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xC8);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x14);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x00);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x4C);
+  Wire.endTransmission();
+  
+  Wire.beginTransmission(0x38);
+  Wire.write(0x40);
+  
+  for(int i = 0; i < 68; i++)
+  {
+    Wire.write(display_byte[i]);
+  }
+
+  Wire.write(0x00);
+
+  Wire.endTransmission();  
+
+  
+  /*
   Wire.beginTransmission(0x38);
   Wire.write(0x00);
   Wire.write(0x00);
@@ -688,6 +771,7 @@ void display::update_display()	//update display, has to be called to update disp
   }
   
   Wire.endTransmission();  
+  */
 }
 
 void display::draw_text(int display, int chara)	//draw to individual digit of 14 segment displays

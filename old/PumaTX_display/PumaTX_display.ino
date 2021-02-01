@@ -1,7 +1,7 @@
 #include "Wire.h"
 #include "display.h"
 
-#define BL 22
+#define BL PB5
 
 display display(BL);
 
@@ -9,12 +9,12 @@ int i;
 
 void setup()
 {
-  
+
   Serial.begin(115200);
 
-  delay(1000);
-  Wire.begin(23,18);
-  delay(1000);
+  //delay(1000);
+  Wire.begin();
+  //delay(1000);
   display.begin();  
 
   delay(6);
@@ -24,9 +24,8 @@ void setup()
 void loop()
 {
   
+  display.begin();
   
-    display.begin();
-    
   display.set_left_graph(3, 0);
   display.set_right_graph(2, 0);
   display.set_rc_rssi(i, 1);
@@ -52,6 +51,6 @@ void loop()
   Serial.println("loop");
   i++;
   
-  delay(1000);
+  delay(100);
 
 }
