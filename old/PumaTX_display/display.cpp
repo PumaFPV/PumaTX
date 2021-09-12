@@ -85,7 +85,7 @@ void display::begin()  //setup function. has to be called to init program
   Wire.beginTransmission(0x38);
   Wire.write(0x40);
 
-  display_default();
+  defaults();
   
   for(int i = 0; i < 68; i++)
   {
@@ -101,7 +101,7 @@ void display::begin()  //setup function. has to be called to init program
     display_byte[i] = 0x00; 
   }
   
-  display_default();
+  defaults();
   */
 }
 
@@ -653,7 +653,7 @@ void display::set_text(String text, int scroll_speed)  //set text to display on 
       {
         draw_text(i - j, text.charAt(i)); 
       }
-      update_display();
+      update();
       delay(scroll_speed);
     }
   }
@@ -673,7 +673,7 @@ void display::set_text(String text, int scroll_speed)  //set text to display on 
   }
 }
 
-void display::update_display()	//update display, has to be called to update display.
+void display::update()	//update display, has to be called to update display.
 {
   
   Wire.beginTransmission(0x38);
@@ -969,7 +969,7 @@ void display::set_name(String name, int scroll_speed)  //set text for rssi name 
       {
         draw_name(i - j, name.charAt(i)); 
       }
-      update_display();
+      update();
       delay(scroll_speed);
     }
   }
@@ -1124,7 +1124,7 @@ int display::char_to_14_segment(int digit)  //input char, output segment to turn
   return bit_14_digit[digit];
 }
 
-void display::display_default()  //display 0 everywhere
+void display::defaults()  //display 0 everywhere
 {
   display_byte[0] =  0b00000010;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: xxx | bit 5: feet on bottom right | bit 6: xxx | bit 7: meters on bottom right | bit 8: xxx  
   display_byte[1] =  0b11001111;  // bit 1: b 5th dist | bit 2: c 5th dist | bit 3: g 5th dist | bit 4: xxx | bit 5: a 5th dist | bit 6: e 5th dist | bit 7: f 5th dist | bit 8: d 5th dist

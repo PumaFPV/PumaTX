@@ -13,7 +13,7 @@ class display
 	public:
 		display(uint8_t BL_pin);
 		void begin();
-		void update_display();
+		void update();
 		
 		void set_left_graph(uint8_t bar, bool pic);
 		void set_right_graph(uint8_t bar, bool pic);
@@ -36,7 +36,8 @@ class display
 		void set_rec(bool rec);
 		void set_text(String text, int scroll_speed);
 		void set_name(String text, int scroll_speed);
-		
+		    void defaults();  //display 0 everywhere
+
 	private:
 		byte display_byte[68];
 		
@@ -54,7 +55,6 @@ class display
 		void draw_text(int display, int chara);	//draw to individual digit of 14 segment displays
 		void draw_name(int display, int chara);	//draw to individual digit of 14 segment displays
 		
-		void display_default();  //display 0 everywhere
 
     uint8_t _BL;
 };

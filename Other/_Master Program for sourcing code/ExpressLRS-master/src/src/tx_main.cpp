@@ -26,25 +26,6 @@ SX1280Driver Radio;
 #include "LQCALC.h"
 #include "LowPassFilter.h"
 
-#ifdef PLATFORM_ESP8266
-#include "soc/soc.h"
-#include "soc/rtc_cntl_reg.h"
-#endif
-
-#ifdef PLATFORM_ESP32
-#include "ESP32_WebUpdate.h"
-#endif
-
-#ifdef TARGET_R9M_TX
-#include "DAC.h"
-#include "button.h"
-button button;
-R9DAC R9DAC;
-#endif
-
-#if defined(TARGET_R9M_LITE_TX) || (TARGET_R9M_LITE_PRO_TX)
-#include "STM32_hwTimer.h"
-#endif
 const uint8_t thisCommit[6] = {LATEST_COMMIT};
 
 //// CONSTANTS ////
