@@ -1,5 +1,7 @@
 # PumaTX
 
+THIS README IS NOT UP TO DATE
+
 # Introduction:
 This is a try to build my own FPV controller based on ESP32 .
 I want to make an alternative to OpenTX (it won't be as versatile of course) based on a DJI Mavic controller GL200A.
