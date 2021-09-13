@@ -1,10 +1,8 @@
 /*
 ESP32 Dual core example code
 
-
-
 Serial.println(xPortGetCoreID());
-vTaskDelay
+vTaskDelay(100);
 
 TaskHandle_t Task1;
 
@@ -28,68 +26,80 @@ void Task1code( void * pvParameters ){
     delay(1000);
     digitalWrite(led1, LOW);
     delay(1000);
+    Serial.println(uxTaskGetStackHighWaterMark(NULL));
+
   } 
 }
 
 */
 
-TaskHandle_t pxx_dualcore;
 TaskHandle_t mlx_dualcore;
 TaskHandle_t button_dualcore;
 TaskHandle_t menu_dualcore;
-
-void pxx_code( void * pvParameters )
-{
-  byte flag1 = 0x00;
-  byte receiver_number = 0x12;
-  
-  for(;;){
-    prepare_pxx(channels, receiver_number, flag1, EU_10_mw);  //receive channels data and prepare then for PXX
-    delay(6);
-  }
-}
-
+TaskHandle_t rc_dualcore;
 
 
 void button_code( void * pvParameters )
 {
-  
   pin_mode_def(); //Defines every buttons
 
+  unsigned int previous_button_loop_time = 0;
   for(;;){
-    process_buttons();
-
+    if(millis() - previous_button_loop_time > 10)
+    {
+      process_buttons();
+      previous_button_loop_time = millis();
+    }
   }
 }
 
-
-
 void mlx_code( void * pvParameters )
 {
-  display.begin();
-  display.display_default();
   mlx.begin();
+  unsigned int previous_mlx_loop_millis = 0;
 
   for(;;){  
+    if(millis() - previous_mlx_loop_millis > 10)
+    {
+      mlx.process();
+      get_mlx_data();
     
-    mlx.process();
-    get_mlx_data();
-    compute_rc();
-    rc_data();
-    menu_loop();
-    Serial.println(page);
-    //Serial.println(uxTaskGetStackHighWaterMark(NULL));
-
-    delay(5);
+      previous_mlx_loop_millis = millis();
+    }
   }
   
 }
 
 void menu_code(void * pvParameters)
 {
+  display.begin();
+  display.display_default();
+  unsigned int previous_menu_loop_millis = 0;
+
   for(;;)
   {
-    navigation();
-    delay(100);
+    if(millis()- previous_menu_loop_millis > 40)
+    {
+      navigation();
+      menu_loop();
+      Serial.println(page);
+      previous_menu_loop_millis = millis();
+    }
+  }
+}
+
+void rc_code(void * pvParameters)
+{
+
+  unsigned int previous_rc_loop_millis = 0;
+
+  for(;;)
+  {
+    if(millis()- previous_rc_loop_millis > 40)
+    {
+      compute_rc();
+      rc_data();
+      previous_rc_loop_millis = millis();
+    }
   }
 }
