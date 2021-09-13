@@ -3,7 +3,7 @@
 #include "variables.h"
 
 #include "buttons.h"
-#include "computeRCdata.h"
+#include "rc.h"
 #include "menu.h"
 #include "dualcore.h"
 

@@ -10,7 +10,7 @@
 */
 
 #include "Arduino.h"
-#include "MLX.h"
+#include "mlx.h"
 #include <Wire.h>
 
 int _throttle_reading;

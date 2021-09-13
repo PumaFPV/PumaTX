@@ -22,7 +22,7 @@ class display
 		void set_tx_battery_bar(uint8_t bar, bool pic);
 		void set_tx_battery_percentage(uint8_t percentage, bool pic);
 		void set_drone_battery_bar(uint8_t bar, bool pic);
-    void set_drone_battery_percentage(uint8_t percentage, bool pic);  //drone battery percentage middle top
+    	void set_drone_battery_percentage(uint8_t percentage, bool pic);  //drone battery percentage middle top
     
 		void set_rpm(int rpm, bool pic); 
 		void set_speed(int speed, bool pic);

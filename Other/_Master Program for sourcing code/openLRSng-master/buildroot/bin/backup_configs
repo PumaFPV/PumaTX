@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-SOURCES_FOLDER=$(grep src_dir platformio.ini| awk '{print $NF}')
-
-cp $SOURCES_FOLDER/openLRSng.ino $SOURCES_FOLDER/openLRSng.default
