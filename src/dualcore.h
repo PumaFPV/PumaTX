@@ -39,32 +39,46 @@ TaskHandle_t menu_dualcore;
 TaskHandle_t rc_dualcore;
 
 
+
 void button_code( void * pvParameters )
 {
+  unsigned long previous_button_millis = 0;
+  const long button_interval = 10;
+
   pin_mode_def(); //Defines every buttons
 
-  unsigned int previous_button_loop_time = 0;
   for(;;){
-    if(millis() - previous_button_loop_time > 10)
+    unsigned long current_button_millis = millis();
+
+    if(current_button_millis - previous_button_millis >= button_interval)
     {
+      previous_button_millis = current_button_millis;
+
       process_buttons();
-      previous_button_loop_time = millis();
+
     }
   }
 }
 
+
+
 void mlx_code( void * pvParameters )
 {
+  unsigned long previous_mlx_millis = 0;
+  const long mlx_interval = 10;
+
   mlx.begin();
-  unsigned int previous_mlx_loop_millis = 0;
 
   for(;;){  
-    if(millis() - previous_mlx_loop_millis > 10)
+    unsigned long current_mlx_millis = millis();
+
+    if(current_mlx_millis - previous_mlx_millis >= mlx_interval)
     {
+      previous_mlx_millis = current_mlx_millis;
+     
       mlx.process();
       get_mlx_data();
     
-      previous_mlx_loop_millis = millis();
     }
   }
   
@@ -72,18 +86,22 @@ void mlx_code( void * pvParameters )
 
 void menu_code(void * pvParameters)
 {
+  unsigned long previous_menu_millis = 0;
+  const long menu_interval = 50;
+
   display.begin();
   display.display_default();
-  unsigned int previous_menu_loop_millis = 0;
 
   for(;;)
   {
-    if(millis()- previous_menu_loop_millis > 40)
+    unsigned long current_menu_millis = millis();
+
+    if(current_menu_millis - previous_menu_millis >= menu_interval)
     {
+      previous_menu_millis = current_menu_millis;
+
       navigation();
       menu_loop();
-      Serial.println(page);
-      previous_menu_loop_millis = millis();
     }
   }
 }
@@ -91,15 +109,19 @@ void menu_code(void * pvParameters)
 void rc_code(void * pvParameters)
 {
 
-  unsigned int previous_rc_loop_millis = 0;
+  unsigned long previous_rc_millis = 0;
+  const long rc_interval = 40;
 
   for(;;)
   {
-    if(millis()- previous_rc_loop_millis > 40)
+    unsigned long current_rc_millis = millis();
+
+    if(current_rc_millis - previous_rc_millis >= rc_interval)
     {
+      previous_rc_millis = current_rc_millis;
+
       compute_rc();
-      rc_data();
-      previous_rc_loop_millis = millis();
+      rc_data(); 
     }
   }
 }
