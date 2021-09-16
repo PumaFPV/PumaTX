@@ -1,3 +1,29 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP ESP32-D0WDQ6-V3
+D ESP32-D0WDQ6-V3
+F https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
+$ENDCMP
+#
+$CMP FT260
+D FT260Q-T
+F http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT260.pdf
+$ENDCMP
+#
+$CMP USB_A_3.0_female
+D 692122030100
+F https://www.we-online.com/katalog/datasheet/692122030100.pdf
+$ENDCMP
+#
+$CMP microUSB
+D 0475900001
+F https://www.molex.com/pdm_docs/sd/475900001_sd.pdf
+$ENDCMP
+#
+$CMP u.fl
+D U.FL-R-SMT-1(40)
+K ufl
+F https://www.hirose.com/product/document?clcode=CL0311-0300-2-40&productname=HRMP-U.FLJ(40)&series=U.FL&documenttype=Catalog&lang=en&documentid=D31697_en
+$ENDCMP
+#
 #End Doc Library

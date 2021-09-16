@@ -162,23 +162,6 @@ Text GLabel 3150 4700 3    50   Input ~ 0
 Text GLabel 2950 4700 3    50   Input ~ 0
 12
 $Comp
-L SamacSys_Parts:ESP32-D0WDQ6 IC?
-U 1 1 608B226F
-P 2150 2700
-F 0 "IC?" H 3994 2196 50  0000 L CNN
-F 1 "ESP32-D0WDQ6" H 3994 2105 50  0000 L CNN
-F 2 "QFN40P600X600X90-49N-D" H 3800 3400 50  0001 L CNN
-F 3 "https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" H 3800 3300 50  0001 L CNN
-F 4 "RF System on a Chip - SoC SMD IC ESP32-D0WDQ6, Dual Core MCU, WiFi & Bluetooth Combo, QFN48-pin, 6*6mm" H 3800 3200 50  0001 L CNN "Description"
-F 5 "0.9" H 3800 3100 50  0001 L CNN "Height"
-F 6 "356-ESP32-D0WDQ6" H 3800 3000 50  0001 L CNN "Mouser Part Number"
-F 7 "https://www.mouser.co.uk/ProductDetail/Espressif-Systems/ESP32-D0WDQ6?qs=chTDxNqvsykWgzfXx0gR%252BQ%3D%3D" H 3800 2900 50  0001 L CNN "Mouser Price/Stock"
-F 8 "Espressif Systems" H 3800 2800 50  0001 L CNN "Manufacturer_Name"
-F 9 "ESP32-D0WDQ6" H 3800 2700 50  0001 L CNN "Manufacturer_Part_Number"
-	1    2150 2700
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:+3V3 #PWR?
 U 1 1 608B9514
 P 3050 4700
@@ -527,6 +510,51 @@ F 1 "+3V3" H 2765 1973 50  0000 C CNN
 F 2 "" H 2750 1800 50  0001 C CNN
 F 3 "" H 2750 1800 50  0001 C CNN
 	1    2750 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 609445F5
+P 3050 1800
+F 0 "#PWR?" H 3050 1650 50  0001 C CNN
+F 1 "+3V3" H 3065 1973 50  0000 C CNN
+F 2 "" H 3050 1800 50  0001 C CNN
+F 3 "" H 3050 1800 50  0001 C CNN
+	1    3050 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:XRCGB40M000F4M02R0 Y?
+U 1 1 60986896
+P 5050 1500
+F 0 "Y?" H 6300 1765 50  0000 C CNN
+F 1 "XRCGB40M000F4M02R0" H 6300 1674 50  0000 C CNN
+F 2 "XRCGB40M000F4M02R0" H 7400 1600 50  0001 L CNN
+F 3 "https://www.murata.com/products/productdata/8801080279070/SPEC-XRCGB40M000F4M02R0.pdf?1517925609000" H 7400 1500 50  0001 L CNN
+F 4 "Crystal 40MHz +/-45ppm (Tol) +/-40ppm (Stability) 10pF 100Ohm 4-Pin SMD T/R" H 7400 1400 50  0001 L CNN "Description"
+F 5 "0.7" H 7400 1300 50  0001 L CNN "Height"
+F 6 "81-XRCGB40M000F4M02R" H 7400 1200 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/XRCGB40M000F4M02R0?qs=rrS6PyfT74fAOGFgWWmGFg%3D%3D" H 7400 1100 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Murata Electronics" H 7400 1000 50  0001 L CNN "Manufacturer_Name"
+F 9 "XRCGB40M000F4M02R0" H 7400 900 50  0001 L CNN "Manufacturer_Part_Number"
+	1    5050 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L SamacSys_Parts:ESP32-D0WDQ6 IC?
+U 1 1 60988AD7
+P 2150 2700
+F 0 "IC?" H 3994 2196 50  0000 L CNN
+F 1 "ESP32-D0WDQ6" H 3994 2105 50  0000 L CNN
+F 2 "QFN40P600X600X90-49N-D" H 3800 3400 50  0001 L CNN
+F 3 "https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" H 3800 3300 50  0001 L CNN
+F 4 "RF System on a Chip - SoC SMD IC ESP32-D0WDQ6, Dual Core MCU, WiFi & Bluetooth Combo, QFN48-pin, 6*6mm" H 3800 3200 50  0001 L CNN "Description"
+F 5 "0.9" H 3800 3100 50  0001 L CNN "Height"
+F 6 "356-ESP32-D0WDQ6" H 3800 3000 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.co.uk/ProductDetail/Espressif-Systems/ESP32-D0WDQ6?qs=chTDxNqvsykWgzfXx0gR%252BQ%3D%3D" H 3800 2900 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Espressif Systems" H 3800 2800 50  0001 L CNN "Manufacturer_Name"
+F 9 "ESP32-D0WDQ6" H 3800 2700 50  0001 L CNN "Manufacturer_Part_Number"
+	1    2150 2700
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC

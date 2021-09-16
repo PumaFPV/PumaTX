@@ -4,14 +4,14 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
+Title "PumaTX_MB_HW00"
+Date "2021-05-10"
+Rev "HW00"
 Comp ""
 Comment1 ""
 Comment2 ""
 Comment3 ""
-Comment4 ""
+Comment4 "Author: Nicolas de Grave"
 $EndDescr
 $Comp
 L Transistor_BJT:UMH3N Q?
@@ -556,5 +556,27 @@ F 8 "Espressif Systems" H 3800 2800 50  0001 L CNN "Manufacturer_Name"
 F 9 "ESP32-D0WDQ6" H 3800 2700 50  0001 L CNN "Manufacturer_Part_Number"
 	1    2150 2700
 	1    0    0    -1  
+$EndComp
+$Comp
+L PumaTx:ufl P?
+U 1 1 609A5838
+P 1750 1950
+F 0 "P?" H 1816 1659 50  0000 R CNN
+F 1 "ufl" H 1816 1750 50  0000 R CNN
+F 2 "" H 2050 2200 50  0001 C CNN
+F 3 "" H 2050 2200 50  0001 C CNN
+	1    1750 1950
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 609A684E
+P 1400 1950
+F 0 "#PWR?" H 1400 1700 50  0001 C CNN
+F 1 "GND" V 1405 1822 50  0000 R CNN
+F 2 "" H 1400 1950 50  0001 C CNN
+F 3 "" H 1400 1950 50  0001 C CNN
+	1    1400 1950
+	0    1    1    0   
 $EndComp
 $EndSCHEMATC
