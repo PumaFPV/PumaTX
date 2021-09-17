@@ -1,5 +1,9 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP EMH3
+F https://fscdn.rohm.com/en/products/databook/datasheet/discrete/transistor/digital/emh3t2r-e.pdf
+$ENDCMP
+#
 $CMP ESP32-D0WDQ6-V3
 D ESP32-D0WDQ6-V3
 F https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
