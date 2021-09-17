@@ -24,6 +24,11 @@ D 692122030100
 F https://www.we-online.com/katalog/datasheet/692122030100.pdf
 $ENDCMP
 #
+$CMP W25Q32JVZP
+D W25Q32JVZPIQ
+F https://www.winbond.com/resource-files/w25q32jv%20revg%2003272018%20plus.pdf
+$ENDCMP
+#
 $CMP microUSB
 D 0475900001
 F https://www.molex.com/pdm_docs/sd/475900001_sd.pdf
