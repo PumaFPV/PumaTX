@@ -1,12 +1,16 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP BGS12WN6
+F https://www.digikey.fr/product-detail/fr/infineon-technologies/BGS12WN6E6327XTSA1/448-BGS12WN6E6327XTSA1CT-ND/13617691
+$ENDCMP
+#
 $CMP EMH3
-F https://fscdn.rohm.com/en/products/databook/datasheet/discrete/transistor/digital/emh3t2r-e.pdf
+F https://www.digikey.fr/product-detail/fr/rohm-semiconductor/EMH3FHAT2R/846-EMH3FHAT2RCT-ND/10709496
 $ENDCMP
 #
 $CMP ESP32-D0WDQ6-V3
 D ESP32-D0WDQ6-V3
-F https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
+F https://www.digikey.fr/product-detail/fr/espressif-systems/ESP32-D0WDQ6-V3/1904-ESP32-D0WDQ6-V3CT-ND/11657618
 $ENDCMP
 #
 $CMP FPC_12pos_0.5mm
