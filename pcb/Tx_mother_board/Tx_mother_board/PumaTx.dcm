@@ -1,5 +1,9 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP AP7343
+F https://www.digikey.ch/product-detail/fr/diodes-incorporated/AP7343DQ-33W5-7/AP7343DQ-33W5-7DICT-ND/10231729
+$ENDCMP
+#
 $CMP BGS12WN6
 F https://www.digikey.fr/product-detail/fr/infineon-technologies/BGS12WN6E6327XTSA1/448-BGS12WN6E6327XTSA1CT-ND/13617691
 $ENDCMP
