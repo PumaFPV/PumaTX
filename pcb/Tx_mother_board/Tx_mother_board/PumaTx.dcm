@@ -8,6 +8,10 @@ $CMP BGS12WN6
 F https://www.digikey.fr/product-detail/fr/infineon-technologies/BGS12WN6E6327XTSA1/448-BGS12WN6E6327XTSA1CT-ND/13617691
 $ENDCMP
 #
+$CMP DPS310
+F https://www.digikey.ch/product-detail/de/infineon-technologies/DPS310XTSA1/DPS310XTSA1TR-ND/6099978?utm_campaign=buynow&utm_medium=aggregator&WT.z_cid=ref_findchips_standard&utm_source=findchips
+$ENDCMP
+#
 $CMP EMH3
 F https://www.digikey.fr/product-detail/fr/rohm-semiconductor/EMH3FHAT2R/846-EMH3FHAT2RCT-ND/10709496
 $ENDCMP
@@ -25,6 +29,10 @@ $ENDCMP
 $CMP FT260
 D FT260Q-T
 F http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT260.pdf
+$ENDCMP
+#
+$CMP MS560702BA03
+F https://www.digikey.ch/product-detail/en/te-connectivity-measurement-specialties/MS560702BA03-50/223-1198-1-ND/4700921
 $ENDCMP
 #
 $CMP USB_A_3.0_female
