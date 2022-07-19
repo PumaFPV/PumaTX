@@ -13,7 +13,7 @@ void setup()
   Serial.begin(115200);
 
   //delay(1000);
-  Wire.begin(17,13,400000);
+  Wire.begin(23,18,400000);
   //delay(1000);
   display.begin();  
   display.defaults();
@@ -26,7 +26,7 @@ void setup()
 
 void loop()
 {
-  /*
+  
   //display.begin();
   
   display.set_left_graph(6-i%6, 0);
@@ -54,6 +54,6 @@ void loop()
   Serial.println("loop");
   i++;
   
-  delay(100);
-*/
+  delay(50);
+
 }
