@@ -5712,7 +5712,7 @@
   (symbol (lib_id "power:GND") (at 350.52 180.34 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 03a2abf0-b1c4-4ff1-bca4-477950476495)
-    (property "Reference" "#PWR?" (id 0) (at 350.52 186.69 0)
+    (property "Reference" "#PWR0147" (id 0) (at 350.52 186.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 350.52 184.7834 0))
@@ -5996,7 +5996,7 @@
   (symbol (lib_id "power:GND") (at 124.46 121.92 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 1aa72bb8-70c4-4960-97a4-782664890b33)
-    (property "Reference" "#PWR?" (id 0) (at 124.46 128.27 0)
+    (property "Reference" "#PWR0132" (id 0) (at 124.46 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 124.46 126.3634 0))
@@ -6012,7 +6012,7 @@
   (symbol (lib_id "power:GND") (at 378.46 208.28 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 1af81b54-a61d-4897-ab07-ed3e249dffd4)
-    (property "Reference" "#PWR?" (id 0) (at 378.46 214.63 0)
+    (property "Reference" "#PWR0136" (id 0) (at 378.46 214.63 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 378.46 212.7234 0))
@@ -6028,7 +6028,7 @@
   (symbol (lib_id "power:VBUS") (at 370.84 114.3 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 1c7a1ed0-13be-44a8-9bb4-263e9eaeb02a)
-    (property "Reference" "#PWR?" (id 0) (at 370.84 118.11 0)
+    (property "Reference" "#PWR0149" (id 0) (at 370.84 118.11 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (id 1) (at 370.84 110.7242 0))
@@ -6186,7 +6186,7 @@
   (symbol (lib_id "Component lib:692122030100") (at 121.92 86.36 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 372c5fc4-7a9e-4057-8a64-9e0e7f375cb5)
-    (property "Reference" "J?" (id 0) (at 133.35 82.711 0))
+    (property "Reference" "J104" (id 0) (at 133.35 82.711 0))
     (property "Value" "692122030100" (id 1) (at 133.35 85.2479 0))
     (property "Footprint" "692122030100" (id 2) (at 163.83 81.28 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
@@ -6229,7 +6229,7 @@
   (symbol (lib_id "power:VBUS") (at 322.58 144.78 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 3b306b11-f72b-443c-a154-8fa02f28c510)
-    (property "Reference" "#PWR?" (id 0) (at 322.58 148.59 0)
+    (property "Reference" "#PWR0153" (id 0) (at 322.58 148.59 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (id 1) (at 322.58 139.7 0))
@@ -6296,7 +6296,7 @@
   (symbol (lib_id "Component lib:VSYS") (at 388.62 129.54 0) (unit 1)
     (in_bom no) (on_board no) (fields_autoplaced)
     (uuid 40c57841-d3c0-4287-a2df-03a3450569eb)
-    (property "Reference" "VSYS?" (id 0) (at 393.7 124.46 0)
+    (property "Reference" "#VSYS0104" (id 0) (at 393.7 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VSYS" (id 1) (at 389.9662 128.7038 0)
@@ -6427,7 +6427,7 @@
   (symbol (lib_id "power:GND") (at 342.9 152.4 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 4860d527-db24-4dad-9984-6a0bdc6d5f19)
-    (property "Reference" "#PWR?" (id 0) (at 342.9 158.75 0)
+    (property "Reference" "#PWR0151" (id 0) (at 342.9 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 342.9 156.8434 0))
@@ -6443,7 +6443,7 @@
   (symbol (lib_id "power:GND") (at 383.54 236.22 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 499faed8-3148-47d0-8855-c308248de35e)
-    (property "Reference" "#PWR?" (id 0) (at 383.54 242.57 0)
+    (property "Reference" "#PWR0141" (id 0) (at 383.54 242.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 383.54 240.6634 0))
@@ -6516,7 +6516,7 @@
   (symbol (lib_id "Component lib:VBAT") (at 350.52 124.46 0) (unit 1)
     (in_bom no) (on_board no)
     (uuid 4c3d7d96-48b0-4d81-9505-478153526a44)
-    (property "Reference" "VBAT?" (id 0) (at 355.6 119.38 0)
+    (property "Reference" "#VBAT0102" (id 0) (at 355.6 119.38 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBAT" (id 1) (at 347.98 119.38 0)
@@ -6534,7 +6534,7 @@
   (symbol (lib_id "Component lib:VSYS") (at 350.52 170.18 0) (unit 1)
     (in_bom no) (on_board no)
     (uuid 4eadb01a-5b35-4d1f-ae0f-ebad1da0491b)
-    (property "Reference" "VSYS?" (id 0) (at 355.6 165.1 0)
+    (property "Reference" "#VSYS0106" (id 0) (at 355.6 165.1 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VSYS" (id 1) (at 347.98 165.1 0)
@@ -6587,7 +6587,7 @@
   (symbol (lib_id "power:GND") (at 383.54 208.28 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 51116f1b-c3cc-40c9-afe5-4e3ede87f059)
-    (property "Reference" "#PWR?" (id 0) (at 383.54 214.63 0)
+    (property "Reference" "#PWR0137" (id 0) (at 383.54 214.63 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 383.54 212.7234 0))
@@ -6603,7 +6603,7 @@
   (symbol (lib_id "power:GND") (at 365.76 213.36 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 53fd6ee0-089d-45f9-8343-0adb26ebbb23)
-    (property "Reference" "#PWR?" (id 0) (at 365.76 219.71 0)
+    (property "Reference" "#PWR0142" (id 0) (at 365.76 219.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 365.76 217.8034 0))
@@ -6797,7 +6797,7 @@
   (symbol (lib_id "power:GND") (at 350.52 236.22 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 6d45c86a-b98d-4bc7-a688-3591adb75382)
-    (property "Reference" "#PWR?" (id 0) (at 350.52 242.57 0)
+    (property "Reference" "#PWR0140" (id 0) (at 350.52 242.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 350.52 240.6634 0))
@@ -6842,7 +6842,7 @@
   (symbol (lib_id "Component lib:VSYS") (at 154.94 91.44 0) (unit 1)
     (in_bom no) (on_board no) (fields_autoplaced)
     (uuid 7003ccc0-0638-4a1c-9690-4fb4a61b49ff)
-    (property "Reference" "VSYS?" (id 0) (at 160.02 86.36 0)
+    (property "Reference" "#VSYS0101" (id 0) (at 160.02 86.36 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VSYS" (id 1) (at 156.2862 90.6038 0)
@@ -6892,7 +6892,7 @@
   (symbol (lib_id "power:VBUS") (at 149.86 86.36 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 7b7fac09-92ea-4b74-a375-a60b0709cb60)
-    (property "Reference" "#PWR?" (id 0) (at 149.86 90.17 0)
+    (property "Reference" "#PWR0133" (id 0) (at 149.86 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (id 1) (at 149.86 82.7842 0))
@@ -7189,7 +7189,7 @@
   (symbol (lib_id "power:GND") (at 322.58 152.4 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 878de7c7-5b4a-42b7-a11c-d3050780dd36)
-    (property "Reference" "#PWR?" (id 0) (at 322.58 158.75 0)
+    (property "Reference" "#PWR0154" (id 0) (at 322.58 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 322.58 156.8434 0))
@@ -7237,7 +7237,7 @@
   (symbol (lib_id "power:GND") (at 177.8 127 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 8e05ed18-f188-454c-857c-41ce2c156923)
-    (property "Reference" "#PWR?" (id 0) (at 177.8 133.35 0)
+    (property "Reference" "#PWR0148" (id 0) (at 177.8 133.35 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 177.8 131.4434 0))
@@ -7269,7 +7269,7 @@
   (symbol (lib_id "power:GND") (at 370.84 147.32 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 9709ef06-8af5-4acc-ba34-36bf0df553ef)
-    (property "Reference" "#PWR?" (id 0) (at 370.84 153.67 0)
+    (property "Reference" "#PWR0155" (id 0) (at 370.84 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 370.84 151.7634 0))
@@ -7285,7 +7285,7 @@
   (symbol (lib_id "power:GND") (at 350.52 208.28 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 98198c9b-0fa5-4750-83e2-162d0599381f)
-    (property "Reference" "#PWR?" (id 0) (at 350.52 214.63 0)
+    (property "Reference" "#PWR0143" (id 0) (at 350.52 214.63 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 350.52 212.7234 0))
@@ -7358,7 +7358,7 @@
   (symbol (lib_id "power:GND") (at 378.46 236.22 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 9bcfacfa-4bc9-4f5a-a693-d7e77f9f0079)
-    (property "Reference" "#PWR?" (id 0) (at 378.46 242.57 0)
+    (property "Reference" "#PWR0139" (id 0) (at 378.46 242.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 378.46 240.6634 0))
@@ -7374,7 +7374,7 @@
   (symbol (lib_id "Connector:Conn_01x02_Male") (at 50.8 134.62 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 9cadc667-c8a5-4ecc-b568-9b5e8f16953d)
-    (property "Reference" "J106" (id 0) (at 50.8 129.54 0))
+    (property "Reference" "J107" (id 0) (at 50.8 129.54 0))
     (property "Value" "Conn_01x02_Male" (id 1) (at 55.88 132.08 0))
     (property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Horizontal" (id 2) (at 50.8 134.62 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -7389,7 +7389,7 @@
   (symbol (lib_id "Connector:Conn_01x02_Male") (at 76.2 134.62 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid a01cb8cb-953d-4bdd-9f5b-c457db217932)
-    (property "Reference" "J107" (id 0) (at 76.2 129.54 0))
+    (property "Reference" "J108" (id 0) (at 76.2 129.54 0))
     (property "Value" "Conn_01x02_Male" (id 1) (at 81.28 132.08 0))
     (property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Horizontal" (id 2) (at 76.2 134.62 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -7404,7 +7404,7 @@
   (symbol (lib_id "Component lib:VSYS") (at 350.52 198.12 0) (unit 1)
     (in_bom no) (on_board no)
     (uuid a0b8ab45-b33e-42a5-8d5e-eb61f8667c39)
-    (property "Reference" "VSYS?" (id 0) (at 355.6 193.04 0)
+    (property "Reference" "#VSYS0103" (id 0) (at 355.6 193.04 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VSYS" (id 1) (at 347.98 193.04 0)
@@ -7477,7 +7477,7 @@
   (symbol (lib_id "Component lib:VBAT") (at 342.9 144.78 0) (unit 1)
     (in_bom no) (on_board no)
     (uuid aa038d1a-95e0-42af-8b19-9ce20912a45f)
-    (property "Reference" "VBAT?" (id 0) (at 347.98 139.7 0)
+    (property "Reference" "#VBAT0103" (id 0) (at 347.98 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBAT" (id 1) (at 340.36 139.7 0)
@@ -7495,7 +7495,7 @@
   (symbol (lib_id "Component lib:VBAT") (at 177.8 106.68 0) (unit 1)
     (in_bom no) (on_board no)
     (uuid aa4b37d0-de21-49e4-a60d-a36a4900ab77)
-    (property "Reference" "VBAT?" (id 0) (at 182.88 101.6 0)
+    (property "Reference" "#VBAT0101" (id 0) (at 182.88 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBAT" (id 1) (at 175.26 101.6 0)
@@ -7529,7 +7529,7 @@
   (symbol (lib_id "power:GND") (at 38.1 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid adaa5179-155e-4fa6-9c6b-6de1ecef99d3)
-    (property "Reference" "#PWR?" (id 0) (at 38.1 67.31 0)
+    (property "Reference" "#PWR0134" (id 0) (at 38.1 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 38.1 65.4034 0))
@@ -7596,7 +7596,7 @@
   (symbol (lib_id "Connector:Conn_01x02_Male") (at 22.86 134.62 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid b8b33ecf-3e14-4fbf-8d0d-0128b810ab12)
-    (property "Reference" "J105" (id 0) (at 22.86 129.54 0))
+    (property "Reference" "J106" (id 0) (at 22.86 129.54 0))
     (property "Value" "Conn_01x02_Male" (id 1) (at 27.94 132.08 0))
     (property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Horizontal" (id 2) (at 22.86 134.62 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -7611,7 +7611,7 @@
   (symbol (lib_id "power:VBUS") (at 30.48 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid bb2cf24d-1f6a-4606-8b48-041cd9c0942d)
-    (property "Reference" "#PWR?" (id 0) (at 30.48 64.77 0)
+    (property "Reference" "#PWR0135" (id 0) (at 30.48 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (id 1) (at 30.48 57.3842 0))
@@ -7627,7 +7627,7 @@
   (symbol (lib_id "power:GND") (at 365.76 241.3 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid bd7336e7-d733-4278-8fef-433b894a0e2b)
-    (property "Reference" "#PWR?" (id 0) (at 365.76 247.65 0)
+    (property "Reference" "#PWR0138" (id 0) (at 365.76 247.65 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 365.76 245.7434 0))
@@ -7643,7 +7643,7 @@
   (symbol (lib_id "Component lib:VSYS") (at 332.74 144.78 0) (unit 1)
     (in_bom no) (on_board no)
     (uuid bff83ccc-66c9-4c72-a0c6-d73b3edd87a2)
-    (property "Reference" "VSYS?" (id 0) (at 337.82 139.7 0)
+    (property "Reference" "#VSYS0105" (id 0) (at 337.82 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VSYS" (id 1) (at 330.2 139.7 0)
@@ -7695,7 +7695,7 @@
   (symbol (lib_id "Component lib:VSYS") (at 350.52 226.06 0) (unit 1)
     (in_bom no) (on_board no)
     (uuid ca55c452-3182-49d3-b0d3-8103197903d6)
-    (property "Reference" "VSYS?" (id 0) (at 355.6 220.98 0)
+    (property "Reference" "#VSYS0102" (id 0) (at 355.6 220.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VSYS" (id 1) (at 347.98 220.98 0)
@@ -7791,7 +7791,7 @@
   (symbol (lib_id "power:GND") (at 365.76 185.42 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid d84d55f9-81e5-422e-8726-295511cd5050)
-    (property "Reference" "#PWR?" (id 0) (at 365.76 191.77 0)
+    (property "Reference" "#PWR0146" (id 0) (at 365.76 191.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 365.76 189.8634 0))
@@ -7893,7 +7893,7 @@
   (symbol (lib_id "power:GND") (at 332.74 152.4 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid e03b9c9a-a154-473e-bb54-b5c415aa4925)
-    (property "Reference" "#PWR?" (id 0) (at 332.74 158.75 0)
+    (property "Reference" "#PWR0152" (id 0) (at 332.74 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 332.74 156.8434 0))
@@ -7909,7 +7909,7 @@
   (symbol (lib_id "power:GND") (at 378.46 180.34 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid e5bc980b-c367-4e9a-ac2f-d6c849a47f98)
-    (property "Reference" "#PWR?" (id 0) (at 378.46 186.69 0)
+    (property "Reference" "#PWR0144" (id 0) (at 378.46 186.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 378.46 184.7834 0))
@@ -7941,7 +7941,7 @@
   (symbol (lib_id "power:GND") (at 383.54 180.34 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid e9e0e1c5-1384-4cf4-bdbe-7be186bc2f7b)
-    (property "Reference" "#PWR?" (id 0) (at 383.54 186.69 0)
+    (property "Reference" "#PWR0145" (id 0) (at 383.54 186.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 383.54 184.7834 0))
@@ -8055,7 +8055,7 @@
   (symbol (lib_id "power:GND") (at 355.6 111.76 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid f67d0e68-4c66-408b-ae6c-4c023a96e089)
-    (property "Reference" "#PWR?" (id 0) (at 355.6 118.11 0)
+    (property "Reference" "#PWR0150" (id 0) (at 355.6 118.11 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 355.6 116.2034 0))
@@ -8217,77 +8217,104 @@
     (path "/820809db-a4dd-4ded-a2a6-38a5954856d0"
       (reference "#PWR0131") (unit 1) (value "GND") (footprint "")
     )
-    (path "/03a2abf0-b1c4-4ff1-bca4-477950476495"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
     (path "/1aa72bb8-70c4-4960-97a4-782664890b33"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/1af81b54-a61d-4897-ab07-ed3e249dffd4"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/1c7a1ed0-13be-44a8-9bb4-263e9eaeb02a"
-      (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
-    )
-    (path "/3b306b11-f72b-443c-a154-8fa02f28c510"
-      (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
-    )
-    (path "/4860d527-db24-4dad-9984-6a0bdc6d5f19"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/499faed8-3148-47d0-8855-c308248de35e"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/51116f1b-c3cc-40c9-afe5-4e3ede87f059"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/53fd6ee0-089d-45f9-8343-0adb26ebbb23"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/6d45c86a-b98d-4bc7-a688-3591adb75382"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0132") (unit 1) (value "GND") (footprint "")
     )
     (path "/7b7fac09-92ea-4b74-a375-a60b0709cb60"
-      (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
-    )
-    (path "/878de7c7-5b4a-42b7-a11c-d3050780dd36"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/8e05ed18-f188-454c-857c-41ce2c156923"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/9709ef06-8af5-4acc-ba34-36bf0df553ef"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/98198c9b-0fa5-4750-83e2-162d0599381f"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/9bcfacfa-4bc9-4f5a-a693-d7e77f9f0079"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0133") (unit 1) (value "VBUS") (footprint "")
     )
     (path "/adaa5179-155e-4fa6-9c6b-6de1ecef99d3"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0134") (unit 1) (value "GND") (footprint "")
     )
     (path "/bb2cf24d-1f6a-4606-8b48-041cd9c0942d"
-      (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
+      (reference "#PWR0135") (unit 1) (value "VBUS") (footprint "")
+    )
+    (path "/1af81b54-a61d-4897-ab07-ed3e249dffd4"
+      (reference "#PWR0136") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/51116f1b-c3cc-40c9-afe5-4e3ede87f059"
+      (reference "#PWR0137") (unit 1) (value "GND") (footprint "")
     )
     (path "/bd7336e7-d733-4278-8fef-433b894a0e2b"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0138") (unit 1) (value "GND") (footprint "")
     )
-    (path "/d84d55f9-81e5-422e-8726-295511cd5050"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    (path "/9bcfacfa-4bc9-4f5a-a693-d7e77f9f0079"
+      (reference "#PWR0139") (unit 1) (value "GND") (footprint "")
     )
-    (path "/e03b9c9a-a154-473e-bb54-b5c415aa4925"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    (path "/6d45c86a-b98d-4bc7-a688-3591adb75382"
+      (reference "#PWR0140") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/499faed8-3148-47d0-8855-c308248de35e"
+      (reference "#PWR0141") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/53fd6ee0-089d-45f9-8343-0adb26ebbb23"
+      (reference "#PWR0142") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/98198c9b-0fa5-4750-83e2-162d0599381f"
+      (reference "#PWR0143") (unit 1) (value "GND") (footprint "")
     )
     (path "/e5bc980b-c367-4e9a-ac2f-d6c849a47f98"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0144") (unit 1) (value "GND") (footprint "")
     )
     (path "/e9e0e1c5-1384-4cf4-bdbe-7be186bc2f7b"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0145") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/d84d55f9-81e5-422e-8726-295511cd5050"
+      (reference "#PWR0146") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/03a2abf0-b1c4-4ff1-bca4-477950476495"
+      (reference "#PWR0147") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/8e05ed18-f188-454c-857c-41ce2c156923"
+      (reference "#PWR0148") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/1c7a1ed0-13be-44a8-9bb4-263e9eaeb02a"
+      (reference "#PWR0149") (unit 1) (value "VBUS") (footprint "")
     )
     (path "/f67d0e68-4c66-408b-ae6c-4c023a96e089"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0150") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/4860d527-db24-4dad-9984-6a0bdc6d5f19"
+      (reference "#PWR0151") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/e03b9c9a-a154-473e-bb54-b5c415aa4925"
+      (reference "#PWR0152") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/3b306b11-f72b-443c-a154-8fa02f28c510"
+      (reference "#PWR0153") (unit 1) (value "VBUS") (footprint "")
+    )
+    (path "/878de7c7-5b4a-42b7-a11c-d3050780dd36"
+      (reference "#PWR0154") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/9709ef06-8af5-4acc-ba34-36bf0df553ef"
+      (reference "#PWR0155") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/aa4b37d0-de21-49e4-a60d-a36a4900ab77"
+      (reference "#VBAT0101") (unit 1) (value "VBAT") (footprint "")
+    )
+    (path "/4c3d7d96-48b0-4d81-9505-478153526a44"
+      (reference "#VBAT0102") (unit 1) (value "VBAT") (footprint "")
+    )
+    (path "/aa038d1a-95e0-42af-8b19-9ce20912a45f"
+      (reference "#VBAT0103") (unit 1) (value "VBAT") (footprint "")
+    )
+    (path "/7003ccc0-0638-4a1c-9690-4fb4a61b49ff"
+      (reference "#VSYS0101") (unit 1) (value "VSYS") (footprint "")
+    )
+    (path "/ca55c452-3182-49d3-b0d3-8103197903d6"
+      (reference "#VSYS0102") (unit 1) (value "VSYS") (footprint "")
+    )
+    (path "/a0b8ab45-b33e-42a5-8d5e-eb61f8667c39"
+      (reference "#VSYS0103") (unit 1) (value "VSYS") (footprint "")
+    )
+    (path "/40c57841-d3c0-4287-a2df-03a3450569eb"
+      (reference "#VSYS0104") (unit 1) (value "VSYS") (footprint "")
+    )
+    (path "/bff83ccc-66c9-4c72-a0c6-d73b3edd87a2"
+      (reference "#VSYS0105") (unit 1) (value "VSYS") (footprint "")
+    )
+    (path "/4eadb01a-5b35-4d1f-ae0f-ebad1da0491b"
+      (reference "#VSYS0106") (unit 1) (value "VSYS") (footprint "")
     )
     (path "/414d9efa-66dc-4faa-8792-96641ba2ca35"
       (reference "C101") (unit 1) (value "2n2") (footprint "Capacitor_SMD:C_0402_1005Metric")
@@ -8361,23 +8388,23 @@
     (path "/117c4cc5-f22d-4b98-bf1b-3556535ba468"
       (reference "J103") (unit 1) (value "500334-0160") (footprint "Component_lib:5003340160")
     )
+    (path "/372c5fc4-7a9e-4057-8a64-9e0e7f375cb5"
+      (reference "J104") (unit 1) (value "692122030100") (footprint "692122030100")
+    )
     (path "/a607cc47-80ac-41f1-9d09-a59674f6cc61"
       (reference "J105") (unit 1) (value "53398-0667") (footprint "533980667")
     )
     (path "/b8b33ecf-3e14-4fbf-8d0d-0128b810ab12"
-      (reference "J105") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Horizontal")
-    )
-    (path "/9cadc667-c8a5-4ecc-b568-9b5e8f16953d"
       (reference "J106") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Horizontal")
     )
-    (path "/a01cb8cb-953d-4bdd-9f5b-c457db217932"
+    (path "/9cadc667-c8a5-4ecc-b568-9b5e8f16953d"
       (reference "J107") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Horizontal")
+    )
+    (path "/a01cb8cb-953d-4bdd-9f5b-c457db217932"
+      (reference "J108") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Horizontal")
     )
     (path "/c5566329-24f5-4e1d-9e17-e3861fc14f38"
       (reference "J410") (unit 1) (value "U.FL-R-SMT-1_40_") (footprint "Component_lib:u.fl")
-    )
-    (path "/372c5fc4-7a9e-4057-8a64-9e0e7f375cb5"
-      (reference "J?") (unit 1) (value "692122030100") (footprint "692122030100")
     )
     (path "/472eb06a-2d69-471e-a5a5-cb22b44ec73d"
       (reference "Q200") (unit 1) (value "UMH3NTN") (footprint "Component_lib:UMH3NTN")
@@ -8429,33 +8456,6 @@
     )
     (path "/65501536-4539-4d59-9ac8-b06e4c033382"
       (reference "U530") (unit 1) (value "MIC5528-3.3YMT-T5") (footprint "SON40P120X120X60-7N-D")
-    )
-    (path "/4c3d7d96-48b0-4d81-9505-478153526a44"
-      (reference "VBAT?") (unit 1) (value "VBAT") (footprint "")
-    )
-    (path "/aa038d1a-95e0-42af-8b19-9ce20912a45f"
-      (reference "VBAT?") (unit 1) (value "VBAT") (footprint "")
-    )
-    (path "/aa4b37d0-de21-49e4-a60d-a36a4900ab77"
-      (reference "VBAT?") (unit 1) (value "VBAT") (footprint "")
-    )
-    (path "/40c57841-d3c0-4287-a2df-03a3450569eb"
-      (reference "VSYS?") (unit 1) (value "VSYS") (footprint "")
-    )
-    (path "/4eadb01a-5b35-4d1f-ae0f-ebad1da0491b"
-      (reference "VSYS?") (unit 1) (value "VSYS") (footprint "")
-    )
-    (path "/7003ccc0-0638-4a1c-9690-4fb4a61b49ff"
-      (reference "VSYS?") (unit 1) (value "VSYS") (footprint "")
-    )
-    (path "/a0b8ab45-b33e-42a5-8d5e-eb61f8667c39"
-      (reference "VSYS?") (unit 1) (value "VSYS") (footprint "")
-    )
-    (path "/bff83ccc-66c9-4c72-a0c6-d73b3edd87a2"
-      (reference "VSYS?") (unit 1) (value "VSYS") (footprint "")
-    )
-    (path "/ca55c452-3182-49d3-b0d3-8103197903d6"
-      (reference "VSYS?") (unit 1) (value "VSYS") (footprint "")
     )
   )
 )
