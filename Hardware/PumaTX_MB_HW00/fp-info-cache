@@ -1,4 +1,4 @@
-20411755256651712
+20429312421787524
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -6265,6 +6265,27 @@ Connector
 5
 5
 Component_lib
+533980667
+53398-0667-1
+Connector
+0
+8
+8
+Component_lib
+692122030100
+692122030100
+Connector
+0
+11
+11
+Component_lib
+5003340160
+500334-0160-2
+Connector
+0
+16
+16
+Component_lib
 5051101292
 505110-1292-1
 Connector
@@ -6321,6 +6342,20 @@ Integrated Circuit
 49
 49
 Component_lib
+FH12-12S-0.5SH_55_
+FH12-12S-0.5SH(55)
+Connector
+0
+14
+14
+Component_lib
+FH12A26S05SH55
+FH12A-26S-0.5SH(55)-1
+Connector
+0
+28
+28
+Component_lib
 FH4020S05SV
 FH40-20S-0.5SV-3
 Connector
@@ -6341,6 +6376,20 @@ Connector
 0
 61
 61
+Component_lib
+GL200A_BUZZER
+
+
+0
+2
+2
+Component_lib
+GL200A_HAPTIC_MOTOR
+
+
+0
+2
+2
 Component_lib
 I-PEX_20533-040E
 
@@ -6376,6 +6425,13 @@ Integrated Circuit
 0
 8
 8
+Component_lib
+QFN50P300X300X100-17N-D
+BQ24075RGTR
+Integrated Circuit
+0
+17
+17
 Component_lib
 QFN50P400X400X80-25N-D
 QFN-24 (4x4 mm)
@@ -6446,6 +6502,13 @@ Connector
 0
 12
 12
+Component_lib
+SON40P120X120X60-7N-D
+MIC5528-3.3YMT-T5   6pin
+Integrated Circuit
+0
+7
+7
 Component_lib
 SON65P200X200X80-7N
 WDFNW6 2x2, 0.65P CASE 511DW ISSUE B-1
@@ -6523,6 +6586,13 @@ TSSOP 48P
 0
 48
 48
+Component_lib
+UMH3NTN
+UMT6
+Transistor
+0
+6
+6
 Component_lib
 puma_logo
 
@@ -50967,20 +51037,6 @@ Diode SOD923
 2
 2
 Diode_SMD
-D_SOT-23_ANK
-SOT-23, Single Diode
-SOT-23
-0
-3
-2
-Diode_SMD
-D_SOT-23_NKA
-SOT-23, Single Diode
-SOT-23
-0
-3
-2
-Diode_SMD
 D_TUMD2
 ROHM - TUMD2
 TUMD2
@@ -75382,6 +75438,27 @@ TO-264-5 Vertical RM 3.81mm
 0
 5
 5
+PiHAT
+MountingHole_2.7mm_M2.5_uHAT_RPi
+Mounting Hole 2.7mm, no annular, M2.5
+mounting hole 2.7mm no annular m2.5
+0
+0
+0
+PiHAT
+MountingHole_2.75mm
+
+mounting hole 2.75mm no annular
+0
+0
+0
+PiHAT
+PinSocket_2x20_P2.54mm_Vertical_Centered_Anchor
+Through hole straight socket strip, 2x20, 2.54mm pitch, double cols (from Kicad 4.0.7), script generated
+Through hole socket strip THT 2x20 2.54mm double row
+0
+40
+40
 Potentiometer_SMD
 Potentiometer_ACP_CA6-VSMD_Vertical
 Potentiometer, vertical, ACP CA6-VSMD, http://www.acptechnologies.com/wp-content/uploads/2017/06/01-ACP-CA6.pdf
