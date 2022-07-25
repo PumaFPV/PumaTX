@@ -5741,6 +5741,10 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid f228c9b5-67b1-4bc9-8419-5821a43237dc)
   )
+  (text "Display draws 80mA on 3V3" (at 203.2 81.28 90)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid fe3f730f-c3e6-4909-877a-e20252d22f0e)
+  )
 
   (label "MOSI" (at 182.88 190.5 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
