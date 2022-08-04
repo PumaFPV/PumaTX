@@ -1,0 +1,24 @@
+{
+    "files.associations": {
+        "type_traits": "cpp",
+        "*.tcc": "cpp",
+        "cmath": "cpp",
+        "random": "cpp",
+        "functional": "cpp",
+        "limits": "cpp",
+        "tuple": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "new": "cpp",
+        "typeinfo": "cpp",
+        "algorithm": "cpp",
+        "string": "cpp",
+        "array": "cpp",
+        "utility": "cpp",
+        "system_error": "cpp",
+        "crsf.c": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}
