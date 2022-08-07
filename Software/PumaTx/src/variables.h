@@ -7,8 +7,8 @@
 //--------------------------------------------------Include libraries--------------------------------------------------
 #include <Arduino.h>
 #include <Wire.h>
-#include "MLX.h"
-#include "display.h"
+#include "mlx.h"
+#include "GL200ADisplay.h"
 
 //--------------------------------------------------Define--------------------------------------------------
 #define I2C_SDA 4

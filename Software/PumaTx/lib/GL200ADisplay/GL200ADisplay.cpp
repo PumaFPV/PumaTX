@@ -8,7 +8,7 @@
 */
 
 #include "Arduino.h"
-#include "display.h"
+#include "GL200ADisplay.h"
 #include "Wire.h"
 
 display::display(uint8_t BL_pin)
