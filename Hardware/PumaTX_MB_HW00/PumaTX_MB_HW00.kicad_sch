@@ -9948,7 +9948,7 @@
     (property "Value" "100n" (id 1) (at 84.201 363.6522 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (id 2) (at 82.2452 365.76 0)
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (id 2) (at 82.2452 365.76 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 81.28 361.95 0)
@@ -12517,7 +12517,7 @@
     (property "Value" "100n" (id 1) (at 254.381 307.7722 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (id 2) (at 252.4252 309.88 0)
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (id 2) (at 252.4252 309.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 251.46 306.07 0)
@@ -14379,7 +14379,7 @@
       (reference "C307") (unit 1) (value "C") (footprint "Capacitor_SMD:C_0402_1005Metric")
     )
     (path "/21165a41-465d-422c-a6c6-98e661168a36"
-      (reference "C350") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0402_1005Metric")
+      (reference "C350") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/baaa99be-d98b-4ae1-98d2-b25c1faf1791"
       (reference "C351") (unit 1) (value "1u") (footprint "Capacitor_SMD:C_0402_1005Metric")
@@ -14427,7 +14427,7 @@
       (reference "C420") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/ac267b7d-699c-492f-952c-5333be753890"
-      (reference "C450") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0402_1005Metric")
+      (reference "C450") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/d850612a-e17f-44ca-bf5e-25c8066428d5"
       (reference "C451") (unit 1) (value "1u") (footprint "Capacitor_SMD:C_0402_1005Metric")
