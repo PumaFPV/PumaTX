@@ -34,14 +34,14 @@ uint32_t tickInterval = 2000000; // 2 sec. to check if rx or tx connect/disconne
 
 uint16_t rates[] = {0, 25, 50, 100, 150, 200};
 
-void crsfdevice_init()
-{
-    next_param = 1;
-    next_chunk = 0;
-    recv_param_ptr = recv_param_buffer;
-    params_loaded = 0;
-    // CBUF_Init(send_buf);
-}
+// void crsfdevice_init()
+// {
+//     next_param = 1;
+//     next_chunk = 0;
+//     recv_param_ptr = recv_param_buffer;
+//     params_loaded = 0;
+//     // CBUF_Init(send_buf);
+// }
 
 void check_link_state(uint32_t currentMicros)
 {

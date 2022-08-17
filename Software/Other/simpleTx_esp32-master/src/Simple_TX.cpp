@@ -43,7 +43,10 @@
 //#include "oled.h"
 #include "crsf_protocol.h"
 #include "halfduplex.h"
-#include "uart.h"
+extern HardwareSerial elrs;
+extern HardwareSerial dbout;
+HardwareSerial dbout(0);
+HardwareSerial elrs(1);
 #include "menus.h"
 #include "gpio.h"
 #include "ui_buttons.h"
@@ -136,7 +139,10 @@ void ElrsTask(void *pvParameters)
   dbout.write("starting elrs\n");
   // digitalWrite(DIGITAL_PIN_LED, LOW); //LED ON
   device_idx = 0;
-  crsfdevice_init();
+    next_param = 1;
+    next_chunk = 0;
+    recv_param_ptr = recv_param_buffer;
+    params_loaded = 0;
   delay(2000);
 
   for (;;)
