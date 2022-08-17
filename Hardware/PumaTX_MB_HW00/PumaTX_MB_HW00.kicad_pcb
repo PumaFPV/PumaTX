@@ -1,12 +1,14 @@
 (kicad_pcb (version 20211014) (generator pcbnew)
 
   (general
-    (thickness 1.6)
+    (thickness 4.69)
   )
 
   (paper "A4")
   (layers
     (0 "F.Cu" signal)
+    (1 "In1.Cu" signal)
+    (2 "In2.Cu" signal)
     (31 "B.Cu" signal)
     (32 "B.Adhes" user "B.Adhesive")
     (33 "F.Adhes" user "F.Adhesive")
@@ -38,6 +40,23 @@
   )
 
   (setup
+    (stackup
+      (layer "F.SilkS" (type "Top Silk Screen"))
+      (layer "F.Paste" (type "Top Solder Paste"))
+      (layer "F.Mask" (type "Top Solder Mask") (thickness 0.01))
+      (layer "F.Cu" (type "copper") (thickness 0.035))
+      (layer "dielectric 1" (type "core") (thickness 1.51) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
+      (layer "In1.Cu" (type "copper") (thickness 0.035))
+      (layer "dielectric 2" (type "prepreg") (thickness 1.51) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
+      (layer "In2.Cu" (type "copper") (thickness 0.035))
+      (layer "dielectric 3" (type "core") (thickness 1.51) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
+      (layer "B.Cu" (type "copper") (thickness 0.035))
+      (layer "B.Mask" (type "Bottom Solder Mask") (thickness 0.01))
+      (layer "B.Paste" (type "Bottom Solder Paste"))
+      (layer "B.SilkS" (type "Bottom Silk Screen"))
+      (copper_finish "None")
+      (dielectric_constraints no)
+    )
     (pad_to_mask_clearance 0)
     (pcbplotparams
       (layerselection 0x00010fc_ffffffff)
@@ -527,7 +546,7 @@
 
   (footprint "Component_lib:S1GHE" (layer "F.Cu")
     (tedit 0) (tstamp 0c619c2c-3ea0-4b84-949f-ac4cad0c32b7)
-    (at 230.39 30.528)
+    (at 193.162 112.1)
     (descr "S1GHE-2")
     (tags "Diode")
     (property "Description" "ON SEMICONDUCTOR - S1GHE - RECTIFIER, AEC-Q101, 400V, 1A, SOD-323HE")
@@ -806,7 +825,7 @@
 
   (footprint "Package_TO_SOT_SMD:SOT-23" (layer "F.Cu")
     (tedit 5FA16958) (tstamp 1e476de9-d36b-4568-bfd3-1a8a8e13fb64)
-    (at 224.015 41.865)
+    (at 202.8625 108.15)
     (descr "SOT, 3 Pin (https://www.jedec.org/system/files/docs/to-236h.pdf variant AB), generated with kicad-footprint-generator ipc_gullwing_generator.py")
     (tags "SOT TO_SOT_SMD")
     (property "Sheetfile" "PumaTX_MB_HW00.kicad_sch")
@@ -1367,7 +1386,7 @@
 
   (footprint "Component_lib:S1GHE" (layer "F.Cu")
     (tedit 0) (tstamp 3d3bdc77-9513-4e96-b96c-b3aa08fbe21a)
-    (at 205.91 52.138)
+    (at 174.491 116.65)
     (descr "S1GHE-2")
     (tags "Diode")
     (property "Description" "ON SEMICONDUCTOR - S1GHE - RECTIFIER, AEC-Q101, 400V, 1A, SOD-323HE")
@@ -2060,7 +2079,7 @@
 
   (footprint "Component_lib:SM02B-SURS-TF" (layer "F.Cu")
     (tedit 615B6A51) (tstamp 66267c4e-4992-47ae-86cb-18360f30a498)
-    (at 224.37 36.84)
+    (at 179.6 114.5)
     (property "Sheetfile" "PumaTX_MB_HW00.kicad_sch")
     (property "Sheetname" "")
     (path "/28d33341-a524-4d08-afe1-ab885b6e6631")
@@ -2633,7 +2652,7 @@
 
   (footprint "Component_lib:SON40P120X120X60-7N-D" (layer "F.Cu")
     (tedit 0) (tstamp a03ce8f4-4db3-4141-a40a-bcf1c21f624f)
-    (at 228.185 45.54)
+    (at 193 108.25)
     (descr "MIC5528-3.3YMT-T5   6pin")
     (tags "Integrated Circuit")
     (property "Description" "LDO Voltage Regulators Single, 500mA LDO w/ Auto Discharge & Internal Enable Pulldown")
@@ -2775,7 +2794,7 @@
 
   (footprint "Package_TO_SOT_SMD:SOT-23" (layer "F.Cu")
     (tedit 5FA16958) (tstamp a3685f5e-5db1-4f2b-9f4c-038778b12a22)
-    (at 235.915 30.565)
+    (at 184.65 114.95)
     (descr "SOT, 3 Pin (https://www.jedec.org/system/files/docs/to-236h.pdf variant AB), generated with kicad-footprint-generator ipc_gullwing_generator.py")
     (tags "SOT TO_SOT_SMD")
     (property "Sheetfile" "PumaTX_MB_HW00.kicad_sch")
@@ -2948,7 +2967,7 @@
 
   (footprint "Component_lib:ANTC3216X140N" (layer "F.Cu")
     (tedit 0) (tstamp b048d278-1a2b-43f2-b31c-660b40f45134)
-    (at 216.525 43.335)
+    (at 190.4 117.15)
     (descr "2450AT18A100E")
     (tags "Antenna")
     (property "Description" "Antennas 2.45GHz ANTENNA")
@@ -3656,7 +3675,7 @@
 
   (footprint "Component_lib:NX2016SA32MEXS00ACS06465" (layer "F.Cu")
     (tedit 0) (tstamp c3bad9d9-eadc-4eb3-8c85-9c2fcd3c8bca)
-    (at 211.64 50.91)
+    (at 165.1 92.6)
     (descr "NX2016SA-32M-EXS00A-CS06465-2")
     (tags "Crystal or Oscillator")
     (property "Description" "CRYSTAL 52MHZ 8PF SMD")
@@ -3863,7 +3882,7 @@
 
   (footprint "Component_lib:SP0503BAHTG" (layer "F.Cu")
     (tedit 0) (tstamp cebad6aa-9e41-42de-aa91-d746b4157308)
-    (at 205.15 46)
+    (at 115.1 117.15)
     (descr "SP0503BAHTG-1")
     (tags "TVS Diode (Uni-directional)")
     (property "Description" "ESD Suppressors / TVS Diodes TVS AVAL DIODE SMT")
