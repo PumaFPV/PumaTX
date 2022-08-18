@@ -1,4 +1,4 @@
-20432630743162805
+20435955805100367
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -6461,6 +6461,13 @@ Integrated Circuit
 25
 25
 Component_lib
+S1GHE
+S1GHE-2
+Diode
+0
+2
+2
+Component_lib
 SKRPABE010
 SKRPABE010-1
 Switch
@@ -6579,6 +6586,13 @@ Integrated Circuit
 0
 8
 8
+Component_lib
+SP0503BAHTG
+SP0503BAHTG-1
+TVS Diode (Uni-directional)
+0
+4
+4
 Component_lib
 SS430350LDKTR
 SS4-30-3.50-L-D-K-TR-2
