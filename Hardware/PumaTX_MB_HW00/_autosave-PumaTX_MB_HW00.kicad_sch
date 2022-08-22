@@ -8977,7 +8977,7 @@
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 70f6f3b4-336e-41a0-bc15-59c49444677f)
   )
-  (label "SYS" (at 449.58 269.24 0)
+  (label "VSYS" (at 449.58 269.24 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 71e5bc6a-51a3-4837-b6b2-8a161a86c6ff)
   )
