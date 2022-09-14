@@ -1,4 +1,4 @@
-20435955805100367
+20437664272724303
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -6439,6 +6439,13 @@ Crystal or Oscillator
 0
 4
 4
+Component_lib
+QFN40P300X400X100-25N-D
+QFN-24 (3mmx4mm)
+Integrated Circuit
+0
+25
+25
 Component_lib
 QFN50P300X300X100-17N-D
 BQ24075RGTR
