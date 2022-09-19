@@ -12668,7 +12668,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 454.66 289.56 180) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 8e8d6967-c28f-4347-b73f-8663913e0b5c)
-    (property "Reference" "TP501" (id 0) (at 462.28 294.64 0)
+    (property "Reference" "TP502" (id 0) (at 462.28 294.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "BQ_CHG" (id 1) (at 464.82 292.1 0)
@@ -15519,7 +15519,7 @@
       (reference "TP501") (unit 1) (value "BQ_PGOOD") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/8e8d6967-c28f-4347-b73f-8663913e0b5c"
-      (reference "TP501") (unit 1) (value "BQ_CHG") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+      (reference "TP502") (unit 1) (value "BQ_CHG") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/33a91be5-857f-43ec-83b3-813194ea775b"
       (reference "U200") (unit 1) (value "CP2105-F01-GMR") (footprint "Component_lib:QFN50P400X400X80-25N-D")
