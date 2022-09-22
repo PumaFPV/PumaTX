@@ -1,5 +1,5 @@
 /*
-	MLX.cpp - Library for reading 2 mlx30393 hall sensors
+	MLX.cpp - Library for reading 2   hall sensors
 	0x0C is Left gimbal
 	0x0D is Right gimbal
 	

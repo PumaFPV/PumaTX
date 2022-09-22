@@ -11,8 +11,33 @@
 #include "GL200ADisplay.h"
 
 //--------------------------------------------------Define--------------------------------------------------
-#define I2C_SDA 4
-#define I2C_SCL 13
+#define LEFT_POT 36
+#define PHOTO 37
+#define RECORD 38
+#define DOWN 39
+#define ON_OFF 34
+#define C2 35
+#define RIGHT_POT 32
+#define BATTERY_VOLTAGE 33
+#define PUMATX_SDA 25
+#define PUMATX_SCL 26
+#define DISPLAY_SCL 27
+#define DISPLAY_SDA 14
+#define HAPTIC_PWM 12
+#define CRSF 13
+#define PAUSE 15
+#define LED 2
+#define PUMATX_GPIO0 0
+#define DISPLAY_BACKLIGHT 4
+#define RTH 16
+#define UP 5
+#define OK 18
+#define C1 23
+#define LEFT 19
+#define RIGHT 22
+#define RX_PUMATX_DEBUG 3
+#define TX_PUMATX_DEBUG 1
+#define SPORT 21
 
 //--------------------------------------------------Initialize libraries--------------------------------------------------
 MLX mlx(0x0C, 0x0D);  //Left, Right
@@ -102,6 +127,9 @@ Button pwr = {27, 1, 1, 1, 0};
 Button arm = {15, 1, LOWER_CHAN, 1, 0};
 Button pre = {23, 1, LOWER_CHAN, 1, 0};
 Button led = {22, 1, 1, 1, 0};   
+Button c1 = {5, 1, LOWER_CHAN, 1, 0};
+Button c2 = {5, 1, LOWER_CHAN, 1, 0};
+
 
 //--------------------------------------------------ADC struct--------------------------------------------------
 ADC voltage = {33, 0.00, 0, 0, 0}; //GPIO35
