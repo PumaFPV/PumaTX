@@ -10,7 +10,7 @@
 
 class MLX {
   public:
-    MLX(int left_addr, int right_addr);
+    MLX(TwoWire mlxI2C, int left_addr, int right_addr);
     void begin();
     void begin(bool init);
     void begin_right();
@@ -24,6 +24,7 @@ class MLX {
     volatile int get_roll();
   
   private:  //Put here variables (in pin for example)
+    TwoWire mlxI2C;
     int _throttle_reading;
     int _yaw_reading; 
     int _pitch_reading;

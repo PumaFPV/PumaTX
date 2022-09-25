@@ -10,8 +10,10 @@
 void setup() 
 {
   Serial.begin(115200); //Starts Serial connection
-  Wire.begin(I2C_SDA, I2C_SCL); //Starts I2C connection
+  Wire.begin(PUMATX_SDA, PUMATX_SCL); //Starts I2C connection
             
+
+
     xTaskCreatePinnedToCore(
                     mlx_code,    //Task function. 
                     "mlx reading",      //name of task. 

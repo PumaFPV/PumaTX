@@ -1,6 +1,6 @@
 /*
 	display.cpp - Library made to write to a DJI Mavic Pro controller (GL200A) display using I2C
-	dont forget to initialise I2C with this command:   Wire.begin(I2C_SDA, I2C_SCL);
+	dont forget to initialise I2C with this command:   _displayI2C.begin(I2C_SDA, I2C_SCL);
 
   Display pinout on the ribbon cable (take reference from the 2 no connected pads): 1-BL | 2-Gnd | 3-Gnd | 4-NC  | 5-Gnd | 6-NC | 7-3.3v | 8-SCL | 9-SDA | 10-Gnd | 11-NC | 12-NC
 	
@@ -11,87 +11,88 @@
 #include "GL200ADisplay.h"
 #include "Wire.h"
 
-display::display(uint8_t BL_pin)
+GL200ADisplay::GL200ADisplay(TwoWire displayI2C, uint8_t BL_pin)
 {
+  _displayI2C = displayI2C;
 	_BL_pin = BL_pin;
 }
 
-void display::begin()  //setup function. has to be called to init program
+void GL200ADisplay::begin()  //setup function. has to be called to init program
 {
   ledcSetup(0, 5000, 8);
   ledcAttachPin(_BL_pin, 0);
   ledcWrite(0, 255);
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x12);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x12);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0xFE);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0xFE);
+  _displayI2C.endTransmission();
 
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0xE0);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0xE0);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0xb9);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0xb9);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x80);
-  Wire.write(0xA8);
-  Wire.write(0x80);
-  Wire.write(0x46);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x80);
+  _displayI2C.write(0xA8);
+  _displayI2C.write(0x80);
+  _displayI2C.write(0x46);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0xD4);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0xD4);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x11);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x11);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x35);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x35);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0xC8);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0xC8);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x14);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x14);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x00);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x00);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x4C);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x4C);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x40);
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x40);
   
   for(int i = 0; i < 69; i++)
   {
-    Wire.write(0x00);
+    _displayI2C.write(0x00);
   }
   
-  Wire.endTransmission();  
+  _displayI2C.endTransmission();  
   for(int i = 0; i < 68; i++)
   {
     display_byte[i] = 0x00; 
@@ -101,7 +102,7 @@ void display::begin()  //setup function. has to be called to init program
   
 }
 
-void display::set_left_graph(uint8_t bar, bool pic)	//left bar graph | pic is the outline
+void GL200ADisplay::set_left_graph(uint8_t bar, bool pic)	//left bar graph | pic is the outline
 {
   byte left_graph = 0b000000;
 
@@ -124,7 +125,7 @@ void display::set_left_graph(uint8_t bar, bool pic)	//left bar graph | pic is th
 }
 
 
-void display::set_right_graph(uint8_t bar, bool pic)	//right bar graph | pic is the outline
+void GL200ADisplay::set_right_graph(uint8_t bar, bool pic)	//right bar graph | pic is the outline
 {
   byte right_graph = 0b000000;
 
@@ -146,7 +147,7 @@ void display::set_right_graph(uint8_t bar, bool pic)	//right bar graph | pic is 
   bitWrite(display_byte[18], 4, pic);
 }
 
-void display::set_rc_rssi(uint8_t bar, bool pic)	//bar rssi for tx (upper right) | pic is top right radio + bottom rssi bar
+void GL200ADisplay::set_rc_rssi(uint8_t bar, bool pic)	//bar rssi for tx (upper right) | pic is top right radio + bottom rssi bar
 {
   byte rc_rssi = 0b00000;
 
@@ -172,7 +173,7 @@ void display::set_rc_rssi(uint8_t bar, bool pic)	//bar rssi for tx (upper right)
    
 }
 
-void display::set_named_rssi(uint8_t bar, bool pic)	//bar rssi for named (upper left) | pic
+void GL200ADisplay::set_named_rssi(uint8_t bar, bool pic)	//bar rssi for named (upper left) | pic
 {
   byte named_rssi_top =    0b00000;
   byte named_rssi_bottom = 0b00000;
@@ -195,7 +196,7 @@ void display::set_named_rssi(uint8_t bar, bool pic)	//bar rssi for named (upper 
   bitWrite(display_byte[40], 5, bitRead(named_rssi_bottom, 4));  //5th
 }
 
-void display::set_tx_battery_bar(uint8_t bar, bool pic)	//tx bar battery middle left 
+void GL200ADisplay::set_tx_battery_bar(uint8_t bar, bool pic)	//tx bar battery middle left 
 {
   byte tx_battery = 0b000;
   
@@ -211,7 +212,7 @@ void display::set_tx_battery_bar(uint8_t bar, bool pic)	//tx bar battery middle 
   bitWrite(display_byte[65], 1, pic);
 }
 
-void display::set_tx_battery_percentage(uint8_t percentage, bool pic)  //tx battery percentage middle left
+void GL200ADisplay::set_tx_battery_percentage(uint8_t percentage, bool pic)  //tx battery percentage middle left
 {
   uint8_t tx_battery_percentage_100 = percentage / 100;
   uint8_t tx_battery_percentage_10 = (percentage - tx_battery_percentage_100 * 100 ) / 10;
@@ -224,7 +225,7 @@ void display::set_tx_battery_percentage(uint8_t percentage, bool pic)  //tx batt
   bitWrite(display_byte[66], 5, pic);
 }
 
-void display::draw_tx_battery_percentage(uint8_t display, char digit)  //draw to individual digit of battery percentage
+void GL200ADisplay::draw_tx_battery_percentage(uint8_t display, char digit)  //draw to individual digit of battery percentage
 {
   byte segment = char_to_7_segment(digit);
   
@@ -251,7 +252,7 @@ void display::draw_tx_battery_percentage(uint8_t display, char digit)  //draw to
   }
 }
 
-void display::set_drone_battery_bar(uint8_t bar, bool pic)  //drone bar battery middle top 
+void GL200ADisplay::set_drone_battery_bar(uint8_t bar, bool pic)  //drone bar battery middle top 
 {
   byte drone_battery = 0b000;
 
@@ -267,7 +268,7 @@ void display::set_drone_battery_bar(uint8_t bar, bool pic)  //drone bar battery 
   bitWrite(display_byte[32], 3, pic);
 }
 
-void display::set_drone_battery_percentage(uint8_t percentage, bool pic)  //drone battery percentage middle top
+void GL200ADisplay::set_drone_battery_percentage(uint8_t percentage, bool pic)  //drone battery percentage middle top
 {
   uint8_t drone_battery_percentage_hundred = percentage / 100;
   uint8_t drone_battery_percentage_10 = (percentage - drone_battery_percentage_hundred * 100 ) / 10;
@@ -280,7 +281,7 @@ void display::set_drone_battery_percentage(uint8_t percentage, bool pic)  //dron
   bitWrite(display_byte[29], 2, pic);
 }
 
-void display::draw_drone_battery_percentage(uint8_t display, char digit)  //draw to individual digit of drone percentage
+void GL200ADisplay::draw_drone_battery_percentage(uint8_t display, char digit)  //draw to individual digit of drone percentage
 {
   byte segment = char_to_7_segment(digit);
   
@@ -307,7 +308,7 @@ void display::draw_drone_battery_percentage(uint8_t display, char digit)  //draw
   }
 }
 
-void display::set_rpm(int rpm, bool pic)  //set rpm value on upper right corner. if value > 1999 than x10 is on. value above 19990 wont work
+void GL200ADisplay::set_rpm(int rpm, bool pic)  //set rpm value on upper right corner. if value > 1999 than x10 is on. value above 19990 wont work
 {
   bool rpm10 = 0;
   
@@ -337,7 +338,7 @@ void display::set_rpm(int rpm, bool pic)  //set rpm value on upper right corner.
   bitWrite(display_byte[15], 6, pic);
 }
 
-void display::draw_rpm(uint8_t display, char digit)  //draw to individual digit of rpm
+void GL200ADisplay::draw_rpm(uint8_t display, char digit)  //draw to individual digit of rpm
 {
 
   byte segment = char_to_7_segment(digit);
@@ -374,7 +375,7 @@ void display::draw_rpm(uint8_t display, char digit)  //draw to individual digit 
   }
 }
 
-void display::set_speed(int speed, bool pic)	//set speed value, input 999 output 99.9, input 1000 output 100 | pic is kmh no support for mph yet
+void GL200ADisplay::set_speed(int speed, bool pic)	//set speed value, input 999 output 99.9, input 1000 output 100 | pic is kmh no support for mph yet
 {
 
   int speed_1    = 0;
@@ -406,7 +407,7 @@ void display::set_speed(int speed, bool pic)	//set speed value, input 999 output
   bitWrite(display_byte[57], 6, dot);
 }
 
-void display::draw_speed(uint8_t display, char digit)  //draw to individual digit of speed
+void GL200ADisplay::draw_speed(uint8_t display, char digit)  //draw to individual digit of speed
 {
   byte segment = char_to_7_segment(digit);
   
@@ -442,7 +443,7 @@ void display::draw_speed(uint8_t display, char digit)  //draw to individual digi
   }
 }
 
-void display::set_distance(int distance, bool pic)	//set distance, 5 digit max | pic is distance on bottom right | only meter yet (turned on by pic)
+void GL200ADisplay::set_distance(int distance, bool pic)	//set distance, 5 digit max | pic is distance on bottom right | only meter yet (turned on by pic)
 {
   int distance_1 = 0;
   int distance_10 = 0;
@@ -465,7 +466,7 @@ void display::set_distance(int distance, bool pic)	//set distance, 5 digit max |
   bitWrite(display_byte[0], 1, pic);
 }
 
-void display::draw_distance(uint8_t display, char digit)  //draw to individual digit of distance
+void GL200ADisplay::draw_distance(uint8_t display, char digit)  //draw to individual digit of distance
 {
   byte segment = char_to_7_segment(digit);
  
@@ -478,7 +479,7 @@ void display::draw_distance(uint8_t display, char digit)  //draw to individual d
   bitWrite(display_byte[display], 5, bitRead(segment, 6));  //g
 }
 
-void display::set_altitude(int altitude, bool pic)	//set altitude, 4 digit max | pic is altitude on middle bottom | only meter yet (turn on by pic)
+void GL200ADisplay::set_altitude(int altitude, bool pic)	//set altitude, 4 digit max | pic is altitude on middle bottom | only meter yet (turn on by pic)
 {
   int altitude_1 = 0;
   int altitude_10 = 0;
@@ -506,7 +507,7 @@ void display::set_altitude(int altitude, bool pic)	//set altitude, 4 digit max |
   bitWrite(display_byte[9], 4, negative);
 }
 
-void display::draw_altitude(uint8_t display, char digit)  //draw to individual digit of altitude
+void GL200ADisplay::draw_altitude(uint8_t display, char digit)  //draw to individual digit of altitude
 {
   byte segment = char_to_7_segment(digit);
  
@@ -519,7 +520,7 @@ void display::draw_altitude(uint8_t display, char digit)  //draw to individual d
   bitWrite(display_byte[display + 6], 5, bitRead(segment, 6));  //g
 }
 
-void display::set_clearance(int clearance, bool pic)		//set clearance, 3 digit max, input 123 output 12, input 12 output 1.2 | pic is clearance, meter, triangle, saw teeth
+void GL200ADisplay::set_clearance(int clearance, bool pic)		//set clearance, 3 digit max, input 123 output 12, input 12 output 1.2 | pic is clearance, meter, triangle, saw teeth
 {
   int clearance_1 = 0;
   int clearance_10 = 0;
@@ -548,7 +549,7 @@ void display::set_clearance(int clearance, bool pic)		//set clearance, 3 digit m
   bitWrite(display_byte[11], 4, pic);  //saw teeth
 }
 
-void display::draw_clearance(uint8_t display, char digit)  //draw to individual digit of clearance
+void GL200ADisplay::draw_clearance(uint8_t display, char digit)  //draw to individual digit of clearance
 {
   byte segment = char_to_7_segment(digit);
  
@@ -562,7 +563,7 @@ void display::draw_clearance(uint8_t display, char digit)  //draw to individual 
 
 }
 
-void display::set_ev(int ev, bool pic)  //set ev, 3 digit max, 2 if using + or - | pic is ev | dot kinda supported
+void GL200ADisplay::set_ev(int ev, bool pic)  //set ev, 3 digit max, 2 if using + or - | pic is ev | dot kinda supported
 {
   int ev_1   = 0;
   int ev_10  = 0;
@@ -582,7 +583,7 @@ void display::set_ev(int ev, bool pic)  //set ev, 3 digit max, 2 if using + or -
   bitWrite(display_byte[60], 5, pic);
 }
 
-void display::draw_ev(uint8_t display, char digit) //draw to individual digit of ev 
+void GL200ADisplay::draw_ev(uint8_t display, char digit) //draw to individual digit of ev 
 {
   byte segment = char_to_7_segment(digit);
   
@@ -618,27 +619,27 @@ void display::draw_ev(uint8_t display, char digit) //draw to individual digit of
   }
 }
 
-void display::set_sd(bool sd)	//turn on sd logo mid right
+void GL200ADisplay::set_sd(bool sd)	//turn on sd logo mid right
 {
   bitWrite(display_byte[60], 7, sd);
 }
 
-void display::set_sport(bool sport)  //turn on sport logo full right
+void GL200ADisplay::set_sport(bool sport)  //turn on sport logo full right
 {
   bitWrite(display_byte[60], 3, sport);
 }
 
-void display::set_vision(bool vision)  //turn on vision mid left
+void GL200ADisplay::set_vision(bool vision)  //turn on vision mid left
 {
   bitWrite(display_byte[64], 3, vision);
 }
 
-void display::set_rec(bool rec)  //turn on rec 
+void GL200ADisplay::set_rec(bool rec)  //turn on rec 
 {
   bitWrite(display_byte[63], 7, rec);
 }
 
-void display::set_text(String text, int scroll_speed)  //set text to display on the 11 14 segment display. if size of text > 11 the text will scroll automaticly | scroll speed is in ms 
+void GL200ADisplay::set_text(String text, int scroll_speed)  //set text to display on the 11 14 segment display. if size of text > 11 the text will scroll automaticly | scroll speed is in ms 
 {
   if(text.length() > 11)
   {
@@ -668,7 +669,7 @@ void display::set_text(String text, int scroll_speed)  //set text to display on 
   }
 }
 
-void display::set_text(String text)  //set text to display on the 11 14 segment display. if size of text > 11 the text will scroll automaticly | scroll speed is in ms 
+void GL200ADisplay::set_text(String text)  //set text to display on the 11 14 segment display. if size of text > 11 the text will scroll automaticly | scroll speed is in ms 
 {
   int scroll_speed = 400;
   if(text.length() > 11)
@@ -699,30 +700,30 @@ void display::set_text(String text)  //set text to display on the 11 14 segment 
   }
 }
 
-void display::update()	//update display, has to be called to update display.
+void GL200ADisplay::update()	//update display, has to be called to update display.
 {
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x00);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x00);
+  _displayI2C.endTransmission();
   
-  Wire.beginTransmission(0x38);
-  Wire.write(0x00);
-  Wire.write(0x4C);
-  Wire.endTransmission();
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x00);
+  _displayI2C.write(0x4C);
+  _displayI2C.endTransmission();
 
-  Wire.beginTransmission(0x38);
-  Wire.write(0x40);
+  _displayI2C.beginTransmission(0x38);
+  _displayI2C.write(0x40);
     
   for(int i = 0; i < 68; i++)
   {
-    Wire.write(display_byte[i]);
+    _displayI2C.write(display_byte[i]);
   }
   
-  Wire.endTransmission();  
+  _displayI2C.endTransmission();  
 }
 
-void display::draw_text(int display, int chara)	//draw to individual digit of 14 segment displays
+void GL200ADisplay::draw_text(int display, int chara)	//draw to individual digit of 14 segment displays
 {
   int segment = char_to_14_segment(chara);
   switch(display)
@@ -906,7 +907,7 @@ void display::draw_text(int display, int chara)	//draw to individual digit of 14
   }
 }
 
-void display::set_name(String name, int scroll_speed)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
+void GL200ADisplay::set_name(String name, int scroll_speed)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
 {
   if(name.length() > 4)
   {
@@ -936,7 +937,7 @@ void display::set_name(String name, int scroll_speed)  //set text for rssi name 
   }
 }
 
-void display::set_name(String name)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
+void GL200ADisplay::set_name(String name)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
 {
   int scroll_speed = 400;
   if(name.length() > 4)
@@ -967,7 +968,7 @@ void display::set_name(String name)  //set text for rssi name 4 14 segment displ
   }
 }
 
-void display::draw_name(int display, int chara)	//draw to individual digit of 14 segment displays
+void GL200ADisplay::draw_name(int display, int chara)	//draw to individual digit of 14 segment displays
 {
   int segment = char_to_14_segment(chara);
   switch(display)
@@ -1039,14 +1040,14 @@ void display::draw_name(int display, int chara)	//draw to individual digit of 14
   }
 }
 
-byte display::char_to_7_segment(char digit) //input number, output segment to turn on. order is 0bgfedcba
+byte GL200ADisplay::char_to_7_segment(char digit) //input number, output segment to turn on. order is 0bgfedcba
 {
   byte bit_7_digit[] = {63,6,91,79,102,109,125,7,127,111};
 
   return bit_7_digit[digit];
 }
 
-int display::char_to_14_segment(int digit)  //input char, output segment to turn on. order is 0bnmlkjihgfedcba
+int GL200ADisplay::char_to_14_segment(int digit)  //input char, output segment to turn on. order is 0bnmlkjihgfedcba
 {
   if(digit == 32)
   {
@@ -1102,7 +1103,7 @@ int display::char_to_14_segment(int digit)  //input char, output segment to turn
   return bit_14_digit[digit];
 }
 
-void display::display_default()  //display 0 everywhere
+void GL200ADisplay::display_default()  //display 0 everywhere
 {
   display_byte[0] =  0b00000010;  // bit 1: xxx | bit 2: xxx | bit 3: xxx | bit 4: xxx | bit 5: feet on bottom right | bit 6: xxx | bit 7: meters on bottom right | bit 8: xxx  
   display_byte[1] =  0b11001111;  // bit 1: b 5th dist | bit 2: c 5th dist | bit 3: g 5th dist | bit 4: xxx | bit 5: a 5th dist | bit 6: e 5th dist | bit 7: f 5th dist | bit 8: d 5th dist

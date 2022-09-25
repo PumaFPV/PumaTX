@@ -8,10 +8,10 @@
 
 #include "Arduino.h"
 
-class display
+class GL200ADisplay
 {
 	public:
-		display(uint8_t BL_pin);
+		GL200ADisplay(TwoWire displayI2C, uint8_t BL_pin);
 		void begin();
 		void update();
 		
@@ -35,9 +35,9 @@ class display
 		void set_vision(bool vision);
 		void set_rec(bool rec);
 		void set_text(String text, int scroll_speed);
-    void set_text(String text);
+    		void set_text(String text);
 		void set_name(String text, int scroll_speed);
-    void set_name(String text);
+   			void set_name(String text);
     
 		void display_default();  //display 0 everywhere
 
@@ -58,7 +58,7 @@ class display
 		void draw_text(int display, int chara);	//draw to individual digit of 14 segment displays
 		void draw_name(int display, int chara);	//draw to individual digit of 14 segment displays
 		
-    uint8_t _BL_pin;
+    	uint8_t _BL_pin;
 };
 
 #endif

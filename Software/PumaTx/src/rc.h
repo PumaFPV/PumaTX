@@ -108,8 +108,6 @@ void compute_rc()
     
 }
 
-
-
 void rc_data()
 {
 
@@ -117,12 +115,12 @@ void rc_data()
     channels[1] = pitch.output;     //E
     channels[2] = roll.output;      //A
     channels[3] = yaw.output;       //R
-    channels[4] = arm.output;  //mode
-    channels[5] = rightpot.output;   //pot
+    channels[4] = arm.output;       //mode
+    channels[5] = rightpot.output;  //pot
     channels[6] = pre.output;       //arm
     channels[7] = rth.output;       //pre
-    channels[8] = leftpot.output;       //rth
-    channels[9] = pre.output;     //play    
+    channels[8] = leftpot.output;   //rth
+    channels[9] = pre.output;       //play    
     channels[10]= c1.output;
     channels[11]= c2.output;
     channels[12]= 1024;
@@ -133,11 +131,9 @@ void rc_data()
 
 void get_mlx_data()
 {
-  
   throttle.reading = mlx.get_throttle();
-  //Serial.println(mlx.get_throttle());
-  yaw.reading = mlx.get_yaw();
-  pitch.reading = mlx.get_pitch();
-  roll.reading = mlx.get_roll();
   
+  yaw.reading =      mlx.get_yaw();
+  pitch.reading =    mlx.get_pitch();
+  roll.reading =     mlx.get_roll();
 }  
