@@ -40,13 +40,12 @@
 #define SPORT 21
 
 //--------------------------------------------------Initialize libraries--------------------------------------------------
-TwoWire mlxI2C = TwoWire(0);
-TwoWire displayI2C = TwoWire(1);
+TwoWire *mlxI2C = &Wire;
+TwoWire *displayI2C = &Wire1;
 
 MLX mlx(mlxI2C, 0x0C, 0x0D);  //Left, Right
 
 GL200ADisplay display(displayI2C, 22);
-
 
 //--------------------------------------------------Structs--------------------------------------------------
 struct Channel

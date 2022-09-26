@@ -11,6 +11,8 @@
 #include "GL200ADisplay.h"
 #include "Wire.h"
 
+TwoWire _displayI2C;
+
 GL200ADisplay::GL200ADisplay(TwoWire displayI2C, uint8_t BL_pin)
 {
   _displayI2C = displayI2C;

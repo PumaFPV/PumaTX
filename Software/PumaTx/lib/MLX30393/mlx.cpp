@@ -19,6 +19,7 @@ int _pitch_reading;
 int _roll_reading;
 int _left_addr;
 int _right_addr;
+TwoWire _mlxI2C;
 
 MLX::MLX(TwoWire mlxI2C, int left_addr, int right_addr)
 {    
@@ -52,7 +53,7 @@ void MLX::begin_left() //0x0C
   _mlxI2C.write(0x5C);   // Set AL = 0x5C, Hall plate spinning rate = DEFAULT, GAIN_SEL = 5
   _mlxI2C.write(0x00);   // Select address register, (0x00 << 2)
   _mlxI2C.endTransmission();   // Stop I2C Transmission
-  _mlxI2C.requesFrom(_left_addr, 1);    // Request 1 byte of data
+  _mlxI2C.requestFrom(_left_addr, 1);    // Request 1 byte of data
  
   if(_mlxI2C.available() == 1){   // Read status byte
     unsigned int c = _mlxI2C.read();
