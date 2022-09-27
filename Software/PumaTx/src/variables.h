@@ -11,41 +11,54 @@
 #include "GL200ADisplay.h"
 
 //--------------------------------------------------Define--------------------------------------------------
-#define LEFT_POT 36
+//----------GPI
+//--RC
 #define PHOTO 37
+#define LEFT_POT 36
 #define RECORD 38
-#define DOWN 39
-#define ON_OFF 34
-#define C2 35
 #define RIGHT_POT 32
+#define RTH 16
+#define ON_OFF 34
+#define C1 23
+#define C2 35
+#define SPORT 21
+//---Navigation
+#define PAUSE 15
+#define UP 5
+#define RIGHT 22
+#define DOWN 39
+#define LEFT 19
+#define OK 18
+
+//----------GPO
+#define LED 2
+#define DISPLAY_BACKLIGHT 4
+
+//----------ADC
 #define BATTERY_VOLTAGE 33
+
+//----------PWM
+#define HAPTIC_PWM 12
+
+//----------Peripherals
+//---UART
+#define RX_PUMATX_DEBUG 3
+#define TX_PUMATX_DEBUG 1
+#define CRSF 13
+//---I2C
 #define PUMATX_SDA 25
 #define PUMATX_SCL 26
 #define DISPLAY_SCL 27
 #define DISPLAY_SDA 14
-#define HAPTIC_PWM 12
-#define CRSF 13
-#define PAUSE 15
-#define LED 2
-#define PUMATX_GPIO0 0
-#define DISPLAY_BACKLIGHT 4
-#define RTH 16
-#define UP 5
-#define OK 18
-#define C1 23
-#define LEFT 19
-#define RIGHT 22
-#define RX_PUMATX_DEBUG 3
-#define TX_PUMATX_DEBUG 1
-#define SPORT 21
+
 
 //--------------------------------------------------Initialize libraries--------------------------------------------------
 TwoWire *mlxI2C = &Wire;
 TwoWire *displayI2C = &Wire1;
 
-MLX mlx(mlxI2C, 0x0C, 0x0D);  //Left, Right
+MLX mlx(/*mlxI2C,*/ 0x0C, 0x0D);  //Left, Right
 
-GL200ADisplay display(displayI2C, 22);
+GL200ADisplay display(/*displayI2C,*/ 22);
 
 //--------------------------------------------------Structs--------------------------------------------------
 struct Channel
@@ -56,7 +69,7 @@ struct Channel
     int trim;   //MLX scale
     int intermediate;  //Used to do some computation 
     int output; //from -100 to 100
-    bool Reverse;
+    bool reverse;
 };
 
 struct Button
@@ -65,7 +78,7 @@ struct Button
     bool state;  //what state the button is
     int output; //from -100 to 100
     bool prev;   //previous state
-    unsigned long current_time; 
+    unsigned long currentTime; 
 };
 
 struct ADC
@@ -74,7 +87,7 @@ struct ADC
     float state;    //What state the analog device is at
     int process;
     int output; //from -100 to 100
-    unsigned long current_time;
+    unsigned long currentTime;
     int intermediate;
 };
 
@@ -120,29 +133,29 @@ Channel roll = {
 };
 
 //--------------------------------------------------Button struct--------------------------------------------------
-Button right = {25, 1, 1, 1, 0};
-Button left = {26, 1, 1, 1, 0};
-Button up = {14, 1, 1, 1, 0};
-Button down = {12, 1, 1, 1, 0};
-Button ok = {19, 1, 1, 1, 0};
-Button rth = {18, 1, LOWER_CHAN, 1, 0};
-Button play = {5, 1, LOWER_CHAN, 1, 0};
-Button pwr = {27, 1, 1, 1, 0};  
-Button arm = {15, 1, LOWER_CHAN, 1, 0};
-Button pre = {23, 1, LOWER_CHAN, 1, 0};
-Button led = {22, 1, 1, 1, 0};   
-Button c1 = {5, 1, LOWER_CHAN, 1, 0};
-Button c2 = {5, 1, LOWER_CHAN, 1, 0};
+Button right = {RIGHT, 1, 1, 1, 0};
+Button left = {LEFT, 1, 1, 1, 0};
+Button up = {UP, 1, 1, 1, 0};
+Button down = {DOWN, 1, 1, 1, 0};
+Button ok = {OK, 1, 1, 1, 0};
+Button rth = {RTH, 1, LOWER_CHAN, 1, 0};
+Button play = {PAUSE, 1, LOWER_CHAN, 1, 0};
+Button pwr = {ON_OFF, 1, 1, 1, 0};  
+Button arm = {PHOTO, 1, LOWER_CHAN, 1, 0};
+Button pre = {RECORD, 1, LOWER_CHAN, 1, 0};
+Button led = {LED, 1, 1, 1, 0};   
+Button c1 = {C1, 1, LOWER_CHAN, 1, 0};
+Button c2 = {C2, 1, LOWER_CHAN, 1, 0};
 
 
 //--------------------------------------------------ADC struct--------------------------------------------------
-ADC voltage = {33, 0.00, 0, 0, 0}; //GPIO35
-ADC leftpot = {35, 0, 0, 0, 0};  //GPIO34
-ADC rightpot = {32, 0, 0, 0, 0}; //GPIO39
+ADC voltage = {BATTERY_VOLTAGE, 0.00, 0, 0, 0}; 
+ADC leftPot = {LEFT_POT, 0, 0, 0, 0};  
+ADC rightPot = {RIGHT_POT, 0, 0, 0, 0}; 
 
 //--------------------------------------------------Variables--------------------------------------------------
-unsigned long debouncedelay = 200;
-unsigned long currenttime = 0;
+unsigned long debounceDelay = 200;
+unsigned long currentTime = 0;
 
 volatile int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
 

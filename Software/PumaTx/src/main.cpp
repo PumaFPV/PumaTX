@@ -5,51 +5,91 @@
 #include "buttons.h"
 #include "rc.h"
 #include "menu.h"
-#include "dualcore.h"
+//#include "dualcore.h"
+
+
+
+//-----MLX
+unsigned long previousMlxMillis = 0;
+const long mlxInterval = 10;  
+
+//-----Button
+unsigned long previousButtonMillis = 0;
+const long buttonInterval = 10;
+
+//-----Display / Menu
+unsigned long previousMenuMillis = 0;
+const long menuInterval = 50;
+
+//-----RC
+unsigned long previousRcMillis = 0;
+const long rcInterval = 40;
+
+HardwareSerial debug = Serial(0);
+HardwareSerial crsf = Serial(1);
 
 void setup() 
 {
   Serial.begin(115200); //Starts Serial connection
+  crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
   Wire.begin(PUMATX_SDA, PUMATX_SCL); //Starts I2C connection
-            
-
-
-    xTaskCreatePinnedToCore(
-                    mlx_code,    //Task function. 
-                    "mlx reading",      //name of task. 
-                    1800,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    2,            //priority of the task 
-                    &mlx_dualcore,       //Task handle to keep track of created task 
-                    1);     //Core
   
-    xTaskCreatePinnedToCore(
-                    button_code,    //Task function. 
-                    "button reading",      //name of task. 
-                    2000,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    1,            //priority of the task 
-                    &button_dualcore,       //Task handle to keep track of created task 
-                    1);     //Core
-                    
-    xTaskCreatePinnedToCore(
-                    menu_code,    //Task function. 
-                    "menu",      //name of task. 
-                    2000,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    1,            //priority of the task 
-                    &menu_dualcore,       //Task handle to keep track of created task 
-                    1);     //Core
-    
-    xTaskCreatePinnedToCore(
-                    rc_code,    //Task function. 
-                    "rc",      //name of task. 
-                    2000,        //Stack size of task 
-                    NULL,         //parameter of the task 
-                    1,            //priority of the task 
-                    &rc_dualcore,       //Task handle to keep track of created task 
-                    1);     //Core
+  //-----MLX
+  mlx.begin();
+
+  //-----Button
+  pinModeDef(); //Defines every buttons
+
+  //-----RC
+
+
+  //-----Display / Menu
+  display.begin();
+  display.displayDefault();
 
 }
 
-void loop(){}
+
+void loop()
+{
+  unsigned long currentMlxMillis = millis();
+  unsigned long currentButtonMillis = millis();
+  unsigned long currentMenuMillis = millis();
+  unsigned long currentRcMillis = millis();
+
+  //-----MLX
+  if(currentMlxMillis - previousMlxMillis >= mlxInterval)
+  {
+    previousMlxMillis = currentMlxMillis;
+    
+    mlx.process();
+    getMlxData();  
+  }
+
+  //-----Button
+  if(currentButtonMillis - previousButtonMillis >= buttonInterval)
+  {
+    previousButtonMillis = currentButtonMillis;
+
+    processButtons();
+  }
+
+  //-----RC
+  if(currentRcMillis - previousRcMillis >= rcInterval)
+  {
+    previousRcMillis = currentRcMillis;
+
+    computeRc();
+    rcData(); 
+  } 
+
+  //-----Display / Menu
+  if(currentMenuMillis - previousMenuMillis >= menuInterval)
+  {
+    previousMenuMillis = currentMenuMillis;
+
+    navigation();
+    menuLoop();
+  }  
+
+}

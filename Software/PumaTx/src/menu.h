@@ -20,84 +20,84 @@
 volatile int page = 0;
 volatile int line = 0;
 
-void menu_loop();
+void menuLoop();
 
-void telem_page();
-void telem_line_1();
-void telem_line_2();
-void telem_line_3();
-void telem_line_4();
+void telemPage();
+void telemLine_1();
+void telemLine_2();
+void telemLine_3();
+void telemLine_4();
 
-void rc_config_page();
-void rc_config_line_1();
-void rc_config_line_2();
-void rc_config_line_3();
+void rcConfigPage();
+void rcConfigLine_1();
+void rcConfigLine_2();
+void rcConfigLine_3();
 
-void rf_config_page();
-void rf_config_line_1();
-void rf_config_line_2();
-void rf_config_line_3();
-void rf_config_line_4();
-void rf_config_line_5();
+void rfConfigPage();
+void rfConfigLine_1();
+void rfConfigLine_2();
+void rfConfigLine_3();
+void rfConfigLine_4();
+void rfConfigLine_5();
 
 void navigation();
 
-void menu_loop()
+void menuLoop()
 {
   switch(page)
   {
     case 0:
       Serial.println("  pumatx  ");
-      display.set_text("  pumatx  ");
+      display.setText("  pumatx  ");
       display.update();
       break;
    
     case 1: //Telem
       Serial.println("telem");   
-      display.set_text("telem");
+      display.setText("telem");
       display.update();
       if(ok.state)  //if selected
       {
-        telem_page();   
+        telemPage();   
       }
       break;
       
     case 2: //RC Config
       Serial.println("rc config");
-      display.set_text("rc config");
+      display.setText("rc config");
       display.update();
-      rc_config_page();
+      rcConfigPage();
       break;
       
     case 3: //RF Config
       Serial.println("rf config");    
-      display.set_text("rf config");
+      display.setText("rf config");
       display.update();
-      rf_config_page();
+      rfConfigPage();
       break;
   }
 }
 
 
 
-void telem_page()
+void telemPage()
 {
   switch(line)
   {
     case 1:
-      telem_line_1();
+      telemLine_1();
       break;
       
     case 2:
-      telem_line_2();
+      telemLine_2();
       break;
-      
+    
     case 3:
-      telem_line_3();
+      telemLine_3();
       break;
       
     case 4:
-      telem_line_4();
+      telemLine_4();
       break;
   }
 }
@@ -105,74 +105,74 @@ void telem_page()
 void telem_line_1()
 {
   Serial.println("telem page 1");
-  display.set_name("line");
-  display.set_named_rssi(1, 4);
-  display.set_text("telem page 1");
+  display.setName("line");
+  display.setNamedRssi(1, 4);
+  display.setText("telem page 1");
 }
 
 void telem_line_2()
 {
   Serial.println("telem page 2");
-  display.set_name("line");
-  display.set_named_rssi(2, 4);
-  display.set_text("telem page 2");
+  display.setName("line");
+  display.setNamedRssi(2, 4);
+  display.setText("telem page 2");
 }
 
 void telem_line_3()
 {
   Serial.println("telem page 3");
-  display.set_name("line");
-  display.set_named_rssi(3, 4);
-  display.set_text("telem page 3");
+  display.setName("line");
+  display.setNamedRssi(3, 4);
+  display.setText("telem page 3");
 }
 
 void telem_line_4()
 {
   Serial.println("telem page 4");
-  display.set_name("line");
-  display.set_named_rssi(4, 4);
-  display.set_text("telem page 4");
+  display.setName("line");
+  display.setNamedRssi(4, 4);
+  display.setText("telem page 4");
 }
 
 
 
-void rc_config_page()
+void rcConfigPage()
 {
   switch(line)
   {
     case 1:
-      rc_config_line_1();
+      rcConfigLine_1();
     case 2:
-      rc_config_line_2();
+      rcConfigLine_2();
     case 3:
-      rc_config_line_3();
+      rcConfigLine_3();
   }
 }
 
-void rc_config_line_1()
+void rcConfigLine_1()
 {
-  display.set_name("line");
-  display.set_named_rssi(1, 3);
-  display.set_text("rc1");
+  display.setName("line");
+  display.setNamedRssi(1, 3);
+  display.setText("rc1");
 }
 
-void rc_config_line_2()
+void rcConfigLine_2()
 {
-  display.set_name("line");
-  display.set_named_rssi(2, 3);
-  display.set_text("rc2");
+  display.setName("line");
+  display.setNamedRssi(2, 3);
+  display.setText("rc2");
 }
 
-void rc_config_line_3()
+void rcConfigLine_3()
 {
-  display.set_name("line");
-  display.set_named_rssi(3, 3);
-  display.set_text("rc3");
+  display.setName("line");
+  display.setNamedRssi(3, 3);
+  display.setText("rc3");
 }
 
 
 
-void rf_config_page()
+void rfConfigPage()
 {
   Serial.print("line: ");
   Serial.println(line);
@@ -180,56 +180,56 @@ void rf_config_page()
   switch(line)
   {
     case 1:
-      rf_config_line_1();
+      rfConfigLine_1();
     case 2:
-      rf_config_line_2();
+      rfConfigLine_2();
     case 3:
-      rf_config_line_3();
+      rfConfigLine_3();
     case 4:
-      rf_config_line_4();
+      rfConfigLine_4();
     case 5:
-      rf_config_line_5(); 
+      rfConfigLine_5(); 
   }
 }
 
-void rf_config_line_1()
+void rfConfigLine_1()
 {
   Serial.println("rf_config_line_1");
-  display.set_name("line");
-  display.set_named_rssi(1, 5);
-  display.set_text("rf1");
+  display.setName("line");
+  display.setNamedRssi(1, 5);
+  display.setText("rf1");
 }
 
-void rf_config_line_2()
+void rfConfigLine_2()
 {
   Serial.println("rf_config_line_2");
-  display.set_name("line");
-  display.set_named_rssi(2, 5);
-  display.set_text("rf2");
+  display.setName("line");
+  display.setNamedRssi(2, 5);
+  display.setText("rf2");
 }
 
-void rf_config_line_3()
+void rfConfigLine_3()
 {
   Serial.println("rf_config_line_3");
-  display.set_name("line");
-  display.set_named_rssi(3, 5);
-  display.set_text("rf3");
+  display.setName("line");
+  display.setNamedRssi(3, 5);
+  display.setText("rf3");
 }
 
-void rf_config_line_4()
+void rfConfigLine_4()
 {
   Serial.println("rf_config_line_4");
-  display.set_name("line");
-  display.set_named_rssi(4, 5);
-  display.set_text("rf4");
+  display.setName("line");
+  display.setNamedRssi(4, 5);
+  display.setText("rf4");
 }
 
-void rf_config_line_5()
+void rfConfigLine_5()
 {
   Serial.println("rf_config_line_5");
-  display.set_name("line");
-  display.set_named_rssi(5, 5);
-  display.set_text("rf5");
+  display.setName("line");
+  display.setNamedRssi(5, 5);
+  display.setText("rf5");
 }
 
 void navigation(){
@@ -258,5 +258,11 @@ void navigation(){
   {
     line--;
     delay(50);
+  }
+
+  if(play.state == 0)
+  {
+    page = 0;
+    line = 0;
   }
 }

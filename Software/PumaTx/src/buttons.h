@@ -1,4 +1,4 @@
-void pin_mode_def()
+void pinModeDef()
 {
 
   pinMode(right.pin, INPUT_PULLUP);
@@ -17,7 +17,7 @@ void pin_mode_def()
 }
 
 
-void process_buttons()
+void processButtons()
 {
   
   //Navigation joystick
@@ -28,8 +28,8 @@ void process_buttons()
   down.state = digitalRead(down.pin);
 
   //Switches
-  rightpot.state = analogRead(rightpot.pin);
-  leftpot.state = analogRead(leftpot.pin);
+  rightPot.state = analogRead(rightPot.pin);
+  leftPot.state = analogRead(leftPot.pin);
   arm.state = digitalRead(arm.pin);
   pre.state = digitalRead(pre.pin);
   rth.state = digitalRead(rth.pin);
