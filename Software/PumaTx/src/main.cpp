@@ -25,8 +25,8 @@ const long menuInterval = 50;
 unsigned long previousRcMillis = 0;
 const long rcInterval = 40;
 
-HardwareSerial debug = Serial(0);
-HardwareSerial crsf = Serial(1);
+
+
 
 void setup() 
 {

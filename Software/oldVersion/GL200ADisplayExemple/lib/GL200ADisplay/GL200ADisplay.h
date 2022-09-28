@@ -11,7 +11,7 @@
 class GL200ADisplay
 {
 	public:
-		GL200ADisplay(TwoWire *displayI2C, uint8_t BlPin);
+		GL200ADisplay(/*TwoWire displayI2C,*/ uint8_t BlPin);
 		void begin();
 		void update();
 		
@@ -42,8 +42,6 @@ class GL200ADisplay
 		void displayDefault();  //display 0 everywhere
 
 	private:
-		TwoWire *_displayI2C;
-
 		byte displayByte[68];
 		
 		byte charTo7Segment(char digit);

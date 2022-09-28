@@ -1,6 +1,6 @@
 /*
 	display.cpp - Library made to write to a DJI Mavic Pro controller (GL200A) display using I2C
-	dont forget to initialise I2C with this command:   _displayI2C->begin(I2C_SDA, I2C_SCL);
+	dont forget to initialise I2C with this command:   Wire.begin(I2C_SDA, I2C_SCL);
 
   Display pinout on the ribbon cable (take reference from the 2 no connected pads): 1-BL | 2-Gnd | 3-Gnd | 4-NC  | 5-Gnd | 6-NC | 7-3.3v | 8-SCL | 9-SDA | 10-Gnd | 11-NC | 12-NC
 	
@@ -11,11 +11,11 @@
 #include "GL200ADisplay.h"
 #include "Wire.h"
 
-/*TwoWire _displayI2C;*/
+/*TwoWire Wire;*/
 
-GL200ADisplay::GL200ADisplay(TwoWire *displayI2C, uint8_t BlPin)
+GL200ADisplay::GL200ADisplay(/*TwoWire displayI2C,*/ uint8_t BlPin)
 {
-  _displayI2C = displayI2C;
+  /*Wire = displayI2C;*/
 	_BlPin = BlPin;
 }
 
@@ -24,77 +24,77 @@ void GL200ADisplay::begin()  //setup function. has to be called to init program
   ledcSetup(0, 5000, 8);
   ledcAttachPin(_BlPin, 0);
   ledcWrite(0, 255);
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x12);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x12);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0xFE);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xFE);
+  Wire.endTransmission();
 
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0xE0);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xE0);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0xb9);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xb9);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x80);
-  _displayI2C->write(0xA8);
-  _displayI2C->write(0x80);
-  _displayI2C->write(0x46);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x80);
+  Wire.write(0xA8);
+  Wire.write(0x80);
+  Wire.write(0x46);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0xD4);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xD4);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x11);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x11);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x35);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x35);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0xC8);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0xC8);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x14);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x14);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x00);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x00);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x4C);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x4C);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x40);
+  Wire.beginTransmission(0x38);
+  Wire.write(0x40);
   
   for(int i = 0; i < 69; i++)
   {
-    _displayI2C->write(0x00);
+    Wire.write(0x00);
   }
   
-  _displayI2C->endTransmission();  
+  Wire.endTransmission();  
   for(int i = 0; i < 68; i++)
   {
     displayByte[i] = 0x00; 
@@ -705,25 +705,25 @@ void GL200ADisplay::setText(String text)  //set text to display on the 11 14 seg
 
 void GL200ADisplay::update()	//update display, has to be called to update display.
 {
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x00);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x00);
+  Wire.endTransmission();
   
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x00);
-  _displayI2C->write(0x4C);
-  _displayI2C->endTransmission();
+  Wire.beginTransmission(0x38);
+  Wire.write(0x00);
+  Wire.write(0x4C);
+  Wire.endTransmission();
 
-  _displayI2C->beginTransmission(0x38);
-  _displayI2C->write(0x40);
+  Wire.beginTransmission(0x38);
+  Wire.write(0x40);
     
   for(int i = 0; i < 68; i++)
   {
-    _displayI2C->write(displayByte[i]);
+    Wire.write(displayByte[i]);
   }
   
-  _displayI2C->endTransmission();  
+  Wire.endTransmission();  
 }
 
 void GL200ADisplay::drawText(int display, int chara)	//draw to individual digit of 14 segment displays

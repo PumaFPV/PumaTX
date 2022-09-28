@@ -53,12 +53,16 @@
 
 
 //--------------------------------------------------Initialize libraries--------------------------------------------------
-TwoWire *mlxI2C = &Wire;
-TwoWire *displayI2C = &Wire1;
 
-MLX mlx(/*mlxI2C,*/ 0x0C, 0x0D);  //Left, Right
+HardwareSerial debug = HardwareSerial(0);
+HardwareSerial crsf = HardwareSerial(1);
 
-GL200ADisplay display(/*displayI2C,*/ 22);
+TwoWire mlxI2C = TwoWire(0);
+TwoWire displayI2C = TwoWire(1); 
+
+MLX mlx(&mlxI2C, PUMATX_SDA, PUMATX_SCL, 400000, 0x0C, 0x0D);  //I2C pointer, SDA, SCL, freqI2C, Left address, Right address 
+GL200ADisplay display(&displayI2C, 22);
+
 
 //--------------------------------------------------Structs--------------------------------------------------
 struct Channel
