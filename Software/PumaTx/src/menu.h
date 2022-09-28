@@ -102,7 +102,7 @@ void telemPage()
   }
 }
 
-void telem_line_1()
+void telemLine_1()
 {
   Serial.println("telem page 1");
   display.setName("line");
@@ -110,7 +110,7 @@ void telem_line_1()
   display.setText("telem page 1");
 }
 
-void telem_line_2()
+void telemLine_2()
 {
   Serial.println("telem page 2");
   display.setName("line");
@@ -118,7 +118,7 @@ void telem_line_2()
   display.setText("telem page 2");
 }
 
-void telem_line_3()
+void telemLine_3()
 {
   Serial.println("telem page 3");
   display.setName("line");
@@ -126,7 +126,7 @@ void telem_line_3()
   display.setText("telem page 3");
 }
 
-void telem_line_4()
+void telemLine_4()
 {
   Serial.println("telem page 4");
   display.setName("line");

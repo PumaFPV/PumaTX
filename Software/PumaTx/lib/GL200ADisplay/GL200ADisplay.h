@@ -7,6 +7,7 @@
 #define display_h
 
 #include "Arduino.h"
+#include <Wire.h>
 
 class GL200ADisplay
 {

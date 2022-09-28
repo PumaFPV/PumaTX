@@ -7,6 +7,7 @@
 #define MLX_h
 
 #include "Arduino.h"
+#include <Wire.h>
 
 class MLX {
   public:
@@ -25,7 +26,7 @@ class MLX {
   
   private:  //Put here variables (in pin for example)
     TwoWire *_mlxI2C;
-    uint8_t _DA;
+    uint8_t _SDA;
     uint8_t _SCL;
     unsigned long _freqI2C;
     int _throttleReading;

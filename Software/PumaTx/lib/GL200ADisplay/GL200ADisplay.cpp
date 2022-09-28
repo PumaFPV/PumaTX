@@ -9,8 +9,8 @@
 
 #include "Arduino.h"
 #include "GL200ADisplay.h"
-#include "Wire.h"
-
+/* #include <Wire.h>
+ */
 /*TwoWire _displayI2C;*/
 
 GL200ADisplay::GL200ADisplay(TwoWire *displayI2C, uint8_t BlPin)

@@ -11,15 +11,15 @@
 
 #include "Arduino.h"
 #include "mlx.h"
-#include <Wire.h>
-
+/* #include <Wire.h>
+ */
 int _throttleReading;
 int _yawReading;
 int _pitchReading;
 int _rollReading;
 int _leftAddr;
 int _rightAddr; 
-uint8_t _SDA,
+uint8_t _SDA;
 uint8_t _SCL;
 unsigned long _freqI2C;
 TwoWire *_mlxI2C;
