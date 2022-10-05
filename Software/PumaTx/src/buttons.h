@@ -6,13 +6,12 @@ void pinModeDef()
   pinMode(up.pin, INPUT_PULLUP);
   pinMode(down.pin, INPUT_PULLUP);
   pinMode(ok.pin, INPUT_PULLUP);
-  pinMode(rth.pin, INPUT_PULLUP);    
+  //pinMode(rth.pin, INPUT_PULLUP);    
   pinMode(arm.pin, INPUT_PULLUP);
   pinMode(pre.pin, INPUT_PULLUP);
   pinMode(pwr.pin, INPUT_PULLUP);
   pinMode(play.pin, INPUT_PULLUP);
   pinMode(led.pin, OUTPUT);
-  pinMode(17, OUTPUT);
   
 }
 

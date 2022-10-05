@@ -23,6 +23,8 @@ void setup()
 
 void loop() 
 {
+  display.begin();
+  delay(100);
 /*   int i = 1;
   display.setLeftGraph(6-i%6, 0);
   display.setRightGraph(i%6, 0);

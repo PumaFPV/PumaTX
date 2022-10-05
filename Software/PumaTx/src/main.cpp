@@ -31,19 +31,23 @@ const long rcInterval = 40;
 void setup() 
 {
   Serial.begin(115200); //Starts Serial connection
+  Serial.println("setup");
   crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
   Wire.begin(PUMATX_SDA, PUMATX_SCL); //Starts I2C connection
-  
+
   //-----MLX
+  Serial.println("mlx setup");
   mlx.begin();
 
   //-----Button
+  Serial.println("pinMode setup");
   pinModeDef(); //Defines every buttons
 
   //-----RC
 
 
   //-----Display / Menu
+  Serial.println("display setup");
   display.begin();
   display.displayDefault();
 
@@ -52,11 +56,13 @@ void setup()
 
 void loop()
 {
+
+
   unsigned long currentMlxMillis = millis();
   unsigned long currentButtonMillis = millis();
   unsigned long currentMenuMillis = millis();
   unsigned long currentRcMillis = millis();
-
+  Serial.println("loop");
   //-----MLX
   if(currentMlxMillis - previousMlxMillis >= mlxInterval)
   {
