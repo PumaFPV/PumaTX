@@ -65,36 +65,51 @@ void loop()
   //-----MLX
   if(currentTime - previousMlxMillis >= mlxInterval)
   {
-    previousMlxMillis = currentMlxMillis;
-    
+    previousMlxMillis = currentTime;
+    unsigned long mlxBeginTime = micros();
     mlx.process();
-    getMlxData();  
+    getMlxData(); 
+    unsigned long mlxEndTime = micros();
+    Serial.println("mlx time: ");
+    Serial.println(mlxEndTime - mlxBeginTime); 
   }
 
   //-----Button
   if(currentTime - previousButtonMillis >= buttonInterval)
   {
-    previousButtonMillis = currentButtonMillis;
+    previousButtonMillis = currentTime;
+    unsigned long buttonBeginTime = micros();
 
     processButtons();
+    unsigned long buttonEndTime = micros();
+    Serial.println("button time: ");
+    Serial.println(buttonEndTime - buttonBeginTime); 
   }
 
   //-----RC
   if(currentTime - previousRcMillis >= rcInterval)
   {
-    previousRcMillis = currentRcMillis;
+    previousRcMillis = currentTime;
+    unsigned long rcBeginTime = micros();
 
     computeRc();
     rcData(); 
+    unsigned long rcEndTime = micros();
+    Serial.println("rc time: ");
+    Serial.println(rcEndTime - rcBeginTime); 
   } 
 
   //-----Display / Menu
   if(currentTime - previousMenuMillis >= menuInterval)
   {
-    previousMenuMillis = currentMenuMillis;
+    previousMenuMillis = currentTime;
+    unsigned long displayBeginTime = micros();
 
     navigation();
     menuLoop();
+    unsigned long displayEndTime = micros();
+    Serial.println("display time: ");
+    Serial.println(displayEndTime - displayBeginTime); 
   }  
 
 }
