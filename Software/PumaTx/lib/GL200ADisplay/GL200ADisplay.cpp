@@ -21,9 +21,11 @@ GL200ADisplay::GL200ADisplay(TwoWire *displayI2C, uint8_t BlPin)
 
 void GL200ADisplay::begin()  //setup function. has to be called to init program
 {
+  Serial.println("ledc setup");
   ledcSetup(0, 5000, 8);
   ledcAttachPin(_BlPin, 0);
   ledcWrite(0, 255);
+  Serial.println("begin i2c transaction");
   _displayI2C->beginTransmission(0x38);
   _displayI2C->write(0x00);
   _displayI2C->write(0x12);

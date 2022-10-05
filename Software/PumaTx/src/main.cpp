@@ -8,7 +8,6 @@
 //#include "dualcore.h"
 
 
-
 //-----MLX
 unsigned long previousMlxMillis = 0;
 const long mlxInterval = 10;  
@@ -26,14 +25,13 @@ unsigned long previousRcMillis = 0;
 const long rcInterval = 40;
 
 
-
-
 void setup() 
 {
   Serial.begin(115200); //Starts Serial connection
   Serial.println("setup");
   crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
-  Wire.begin(PUMATX_SDA, PUMATX_SCL); //Starts I2C connection
+  mlxI2C.begin(PUMATX_SDA, PUMATX_SCL); //Starts I2C connection
+  displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL);
 
   //-----MLX
   Serial.println("mlx setup");
@@ -49,7 +47,9 @@ void setup()
   //-----Display / Menu
   Serial.println("display setup");
   display.begin();
+  Serial.println("display begin done");
   display.displayDefault();
+
 
 }
 
@@ -57,14 +57,13 @@ void setup()
 void loop()
 {
 
+  currentTime = millis();
+  
 
-  unsigned long currentMlxMillis = millis();
-  unsigned long currentButtonMillis = millis();
-  unsigned long currentMenuMillis = millis();
-  unsigned long currentRcMillis = millis();
   Serial.println("loop");
+ 
   //-----MLX
-  if(currentMlxMillis - previousMlxMillis >= mlxInterval)
+  if(currentTime - previousMlxMillis >= mlxInterval)
   {
     previousMlxMillis = currentMlxMillis;
     
@@ -73,7 +72,7 @@ void loop()
   }
 
   //-----Button
-  if(currentButtonMillis - previousButtonMillis >= buttonInterval)
+  if(currentTime - previousButtonMillis >= buttonInterval)
   {
     previousButtonMillis = currentButtonMillis;
 
@@ -81,7 +80,7 @@ void loop()
   }
 
   //-----RC
-  if(currentRcMillis - previousRcMillis >= rcInterval)
+  if(currentTime - previousRcMillis >= rcInterval)
   {
     previousRcMillis = currentRcMillis;
 
@@ -90,7 +89,7 @@ void loop()
   } 
 
   //-----Display / Menu
-  if(currentMenuMillis - previousMenuMillis >= menuInterval)
+  if(currentTime - previousMenuMillis >= menuInterval)
   {
     previousMenuMillis = currentMenuMillis;
 
