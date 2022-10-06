@@ -377,10 +377,12 @@
   },
   "libraries": {
     "pinned_footprint_libs": [],
-    "pinned_symbol_libs": []
+    "pinned_symbol_libs": [
+      "Component lib"
+    ]
   },
   "meta": {
-    "filename": "PumaTX_MB_HW00.kicad_pro",
+    "filename": "PumaTX_MB_HW01.kicad_pro",
     "version": 1
   },
   "net_settings": {
