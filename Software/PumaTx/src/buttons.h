@@ -1,16 +1,16 @@
 void pinModeDef()
 {
 
-  pinMode(right.pin, INPUT_PULLUP);
-  pinMode(left.pin, INPUT_PULLUP);
-  pinMode(up.pin, INPUT_PULLUP);
-  pinMode(down.pin, INPUT_PULLUP);
-  pinMode(ok.pin, INPUT_PULLUP);
-  //pinMode(rth.pin, INPUT_PULLUP);    
-  pinMode(arm.pin, INPUT_PULLUP);
-  pinMode(pre.pin, INPUT_PULLUP);
-  pinMode(pwr.pin, INPUT_PULLUP);
-  pinMode(play.pin, INPUT_PULLUP);
+  pinMode(right.pin, INPUT);
+  pinMode(left.pin, INPUT);
+  pinMode(up.pin, INPUT);
+  pinMode(down.pin, INPUT);
+  pinMode(ok.pin, INPUT);
+  //pinMode(rth.pin, INPUT);    
+  pinMode(arm.pin, INPUT);
+  pinMode(pre.pin, INPUT);
+  pinMode(pwr.pin, INPUT);
+  pinMode(play.pin, INPUT);
   pinMode(led.pin, OUTPUT);
   
 }
@@ -34,5 +34,13 @@ void processButtons()
   rth.state = digitalRead(rth.pin);
   pwr.state = digitalRead(pwr.pin);
   play.state = digitalRead(play.pin);
+  Serial.print(arm.state);
+  Serial.print(" ");
+  Serial.print(pre.state);
+  Serial.print(" ");
+  Serial.print(pwr.state);
+  Serial.print(" ");
+  Serial.print(play.state);
+  Serial.println();
   
 }

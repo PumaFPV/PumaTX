@@ -67,8 +67,8 @@ void loop()
   {
     previousMlxMillis = currentTime;
     unsigned long mlxBeginTime = micros();
-    mlx.process();
-    getMlxData(); 
+    //mlx.process();
+    //getMlxData(); 
     unsigned long mlxEndTime = micros();
     Serial.println("mlx time: ");
     Serial.println(mlxEndTime - mlxBeginTime); 
@@ -92,8 +92,8 @@ void loop()
     previousRcMillis = currentTime;
     unsigned long rcBeginTime = micros();
 
-    computeRc();
-    rcData(); 
+    //computeRc();
+    //rcData(); 
     unsigned long rcEndTime = micros();
     Serial.println("rc time: ");
     Serial.println(rcEndTime - rcBeginTime); 
@@ -105,8 +105,8 @@ void loop()
     previousMenuMillis = currentTime;
     unsigned long displayBeginTime = micros();
 
-    navigation();
-    menuLoop();
+    //navigation();
+    //menuLoop();
     unsigned long displayEndTime = micros();
     Serial.println("display time: ");
     Serial.println(displayEndTime - displayBeginTime); 

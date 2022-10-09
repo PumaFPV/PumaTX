@@ -61,7 +61,7 @@ TwoWire mlxI2C = TwoWire(0);
 TwoWire displayI2C = TwoWire(1); 
 
 MLX mlx(&mlxI2C, PUMATX_SDA, PUMATX_SCL, 400000, 0x0C, 0x0D);  //I2C pointer, SDA, SCL, freqI2C, Left address, Right address 
-GL200ADisplay display(&displayI2C, 22);
+GL200ADisplay display(&displayI2C, DISPLAY_BACKLIGHT);
 
 
 //--------------------------------------------------Structs--------------------------------------------------
