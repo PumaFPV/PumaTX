@@ -60,7 +60,7 @@ void loop()
   currentTime = millis();
   
 
-  Serial.println("loop");
+  //Serial.println("loop");
  
   //-----MLX
   if(currentTime - previousMlxMillis >= mlxInterval)
@@ -70,8 +70,8 @@ void loop()
     //mlx.process();
     //getMlxData(); 
     unsigned long mlxEndTime = micros();
-    Serial.println("mlx time: ");
-    Serial.println(mlxEndTime - mlxBeginTime); 
+    //Serial.println("mlx time: ");
+    //Serial.println(mlxEndTime - mlxBeginTime); 
   }
 
   //-----Button
@@ -82,8 +82,8 @@ void loop()
 
     processButtons();
     unsigned long buttonEndTime = micros();
-    Serial.println("button time: ");
-    Serial.println(buttonEndTime - buttonBeginTime); 
+    //Serial.println("button time: ");
+    //Serial.println(buttonEndTime - buttonBeginTime); 
   }
 
   //-----RC
@@ -95,8 +95,8 @@ void loop()
     //computeRc();
     //rcData(); 
     unsigned long rcEndTime = micros();
-    Serial.println("rc time: ");
-    Serial.println(rcEndTime - rcBeginTime); 
+    //Serial.println("rc time: ");
+    //Serial.println(rcEndTime - rcBeginTime); 
   } 
 
   //-----Display / Menu
@@ -108,8 +108,8 @@ void loop()
     //navigation();
     //menuLoop();
     unsigned long displayEndTime = micros();
-    Serial.println("display time: ");
-    Serial.println(displayEndTime - displayBeginTime); 
+    //Serial.println("display time: ");
+    //Serial.println(displayEndTime - displayBeginTime); 
   }  
 
 }
