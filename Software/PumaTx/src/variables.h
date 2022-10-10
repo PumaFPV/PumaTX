@@ -17,8 +17,8 @@
 #define LEFT_POT 36
 #define RECORD 38
 #define RIGHT_POT 32
-#define RTH 16
-#define ON_OFF 34
+#define RTH 9
+#define ON_OFF 10
 #define C1 23
 #define C2 35
 #define SPORT 21
