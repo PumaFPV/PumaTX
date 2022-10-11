@@ -39,6 +39,9 @@ unsigned long previousRcMillis = 0;
 const long rcInterval = 40;
 
 
+void scanner1();
+void scanner2();
+
 void setup() 
 {
   //ledcSetup(1, 40000, 8);
@@ -74,6 +77,11 @@ void setup()
 void loop()
 {
 
+  scanner1();
+  scanner2();
+  delay(250);
+
+/*
   currentTime = millis();
   
 
@@ -130,5 +138,53 @@ void loop()
   }  
 
 
+*/
+}
 
+void scanner1()
+{
+  Serial.println ();
+  Serial.println ("I2C scanner. Scanning ...");
+  byte count = 0;
+  mlxI2C.begin();
+  for (byte i = 8; i < 120; i++)
+  {
+    mlxI2C.beginTransmission (i);          // Begin I2C transmission Address (i)
+    if (mlxI2C.endTransmission () == 0)  // Receive 0 = success (ACK response) 
+    {
+      Serial.print ("Found address: ");
+      Serial.print (i, DEC);
+      Serial.print (" (0x");
+      Serial.print (i, HEX);     // PCF8574 7 bit address
+      Serial.println (")");
+      count++;
+    }
+  }
+  Serial.print ("Found ");      
+  Serial.print (count, DEC);        // numbers of devices
+  Serial.println (" device(s) on mlxI2C");
+}
+
+void scanner2()
+{
+  Serial.println ();
+  Serial.println ("I2C scanner. Scanning ...");
+  byte count = 0;
+  displayI2C.begin();
+  for (byte i = 8; i < 120; i++)
+  {
+    displayI2C.beginTransmission (i);          // Begin I2C transmission Address (i)
+    if (displayI2C.endTransmission () == 0)  // Receive 0 = success (ACK response) 
+    {
+      Serial.print ("Found address: ");
+      Serial.print (i, DEC);
+      Serial.print (" (0x");
+      Serial.print (i, HEX);     // PCF8574 7 bit address
+      Serial.println (")");
+      count++;
+    }
+  }
+  Serial.print ("Found ");      
+  Serial.print (count, DEC);        // numbers of devices
+  Serial.println (" device(s) on displayI2C");
 }

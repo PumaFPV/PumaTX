@@ -41,7 +41,6 @@ void processButtons()
 
   voltage.state = analogRead(voltage.pin);
   float tension = (-0.023 * (voltage.state * voltage.state) + 233.93 * voltage.state - 145559) / 100;  
-  Serial.println(tension);
 
 }
 
