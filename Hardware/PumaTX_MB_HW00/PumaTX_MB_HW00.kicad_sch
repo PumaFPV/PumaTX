@@ -9131,6 +9131,10 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid fe3f730f-c3e6-4909-877a-e20252d22f0e)
   )
+  (text "350k\n1M" (at 179.705 279.4 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid ff14ed1d-0024-4fb1-868a-7644ed329c90)
+  )
 
   (label "MOSI" (at 271.78 231.14 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))

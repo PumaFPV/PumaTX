@@ -14,7 +14,7 @@ void pinModeDef()
   pinMode(c1.pin,    INPUT);
   pinMode(c2.pin,    INPUT);
   pinMode(led.pin,   OUTPUT);
-
+  
 }
 
 
