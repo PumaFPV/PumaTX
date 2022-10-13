@@ -116,6 +116,10 @@ void computeRc()
     }
     
     c2.prev = c2.state;
+
+//-----Sport
+    sport.output = map(sport.state, 0, 1, UPPER_CHAN, LOWER_CHAN);
+
     
 }
 
@@ -134,7 +138,7 @@ void rcData()
     channels[9] = pre.output;       //play    
     channels[10]= c1.output;
     channels[11]= c2.output;
-    channels[12]= 1024;
+    channels[12]= sport.output;
     channels[13]= 1024;
     channels[14]= 1024;
     channels[15]= 1024;

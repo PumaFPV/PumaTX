@@ -39,8 +39,8 @@ unsigned long previousRcMillis = 0;
 const long rcInterval = 40;
 
 
-void scanner1();
-void scanner2();
+void scannerMlx();
+void scannerDisplay();
 
 void setup() 
 {
@@ -77,20 +77,17 @@ void setup()
 void loop()
 {
 
-
-
   currentTime = millis();
-  /*
-
-  //Serial.println("loop");
- 
+  
   //-----MLX
   if(currentTime - previousMlxMillis >= mlxInterval)
   {
     previousMlxMillis = currentTime;
     unsigned long mlxBeginTime = micros();
-    //mlx.process();
-    //getMlxData(); 
+
+    mlx.process();
+    getMlxData(); 
+
     unsigned long mlxEndTime = micros();
     //Serial.println("mlx time: ");
     //Serial.println(mlxEndTime - mlxBeginTime); 
@@ -103,6 +100,7 @@ void loop()
     unsigned long buttonBeginTime = micros();
 
     processButtons();
+
     unsigned long buttonEndTime = micros();
     //Serial.println("button time: ");
     //Serial.println(buttonEndTime - buttonBeginTime); 
@@ -111,18 +109,27 @@ void loop()
   //-----RC
   if(currentTime - previousRcMillis >= rcInterval)
   {
-    Serial.print("RC time ");
     previousRcMillis = currentTime;
     unsigned long rcBeginTime = micros();
 
     computeRc();
-    //rcData(); 
+    rcData(); 
+
     unsigned long rcEndTime = micros();
     //Serial.println("rc time: ");
     //Serial.println(rcEndTime - rcBeginTime); 
 
   } 
+  /*
+  for(uint8_t i = 0; i<15; ++i)
+  {
+    Serial.print(channels[i]);
+    Serial.print(" ");
+  }
+  Serial.println();
+*/
 
+/*
   //-----Display / Menu
   if(currentTime - previousMenuMillis >= menuInterval)
   {
@@ -131,6 +138,7 @@ void loop()
 
     navigation();
     menuLoop();
+
     unsigned long displayEndTime = micros();
     //Serial.println("display time: ");
     //Serial.println(displayEndTime - displayBeginTime); 
@@ -139,12 +147,12 @@ void loop()
 
 */
 
-  scanner1();
-  scanner2();
-  delay(1000);
+  //scannerMlx();
+  //scannerDisplay();
+  //delay(1000);
 }
 
-void scanner1()
+void scannerMlx()
 {
   Serial.println ();
   Serial.println ("I2C scanner. Scanning ...");
@@ -168,7 +176,7 @@ void scanner1()
   Serial.println (" device(s) on mlxI2C");
 }
 
-void scanner2()
+void scannerDisplay()
 {
   Serial.println ();
   Serial.println ("I2C scanner. Scanning ...");

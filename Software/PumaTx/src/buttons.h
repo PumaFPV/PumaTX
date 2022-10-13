@@ -13,6 +13,7 @@ void pinModeDef()
   pinMode(play.pin,  INPUT);
   pinMode(c1.pin,    INPUT);
   pinMode(c2.pin,    INPUT);
+  pinMode(sport.pin, INPUT_PULLUP);
   pinMode(led.pin,   OUTPUT);
   
 }
@@ -38,6 +39,7 @@ void processButtons()
   play.state = digitalRead(play.pin);
   c1.state = digitalRead(c1.pin);
   c2.state = digitalRead(c2.pin);
+  sport.state = digitalRead(sport.pin);
 
   voltage.state = analogRead(voltage.pin);
   float tension = (-0.023 * (voltage.state * voltage.state) + 233.93 * voltage.state - 145559) / 100;  

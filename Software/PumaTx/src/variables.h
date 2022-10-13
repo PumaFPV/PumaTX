@@ -13,9 +13,9 @@
 //--------------------------------------------------Define--------------------------------------------------
 //----------GPI
 //--RC
-#define PHOTO 37
+#define PHOTO 38
 #define LEFT_POT 36
-#define RECORD 38
+#define RECORD 37
 #define RIGHT_POT 32
 #define RTH 9
 #define ON_OFF 10
@@ -142,6 +142,7 @@ Button left = {LEFT, 1, 1, 1, 0};
 Button up = {UP, 1, 1, 1, 0};
 Button down = {DOWN, 1, 1, 1, 0};
 Button ok = {OK, 1, 1, 1, 0};
+
 Button rth = {RTH, 1, LOWER_CHAN, 1, 0};
 Button play = {PAUSE, 1, LOWER_CHAN, 1, 0};
 Button pwr = {ON_OFF, 1, 1, 1, 0};  
@@ -150,6 +151,7 @@ Button pre = {RECORD, 1, LOWER_CHAN, 1, 0};
 Button led = {LED, 1, 1, 1, 0};   
 Button c1 = {C1, 1, LOWER_CHAN, 1, 0};
 Button c2 = {C2, 1, LOWER_CHAN, 1, 0};
+Button sport = {SPORT, 1, 1, 1, 0};
 
 
 //--------------------------------------------------ADC struct--------------------------------------------------
