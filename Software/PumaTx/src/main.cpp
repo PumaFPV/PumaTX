@@ -1,14 +1,14 @@
 /*
 
-__/\\\\\\\\\\\\\_____________________________________________________/\\\\\\\\\\\\\\\__/\\\_______/\\\_        
- _\/\\\/////////\\\__________________________________________________\///////\\\/////__\///\\\___/\\\/__       
-  _\/\\\_______\/\\\________________________________________________________\/\\\_________\///\\\\\\/____      
-   _\/\\\\\\\\\\\\\/___/\\\____/\\\____/\\\\\__/\\\\\____/\\\\\\\\\__________\/\\\___________\//\\\\______     
-    _\/\\\/////////____\/\\\___\/\\\__/\\\///\\\\\///\\\_\////////\\\_________\/\\\____________\/\\\\______    
-     _\/\\\_____________\/\\\___\/\\\_\/\\\_\//\\\__\/\\\___/\\\\\\\\\\________\/\\\____________/\\\\\\_____   
-      _\/\\\_____________\/\\\___\/\\\_\/\\\__\/\\\__\/\\\__/\\\/////\\\________\/\\\__________/\\\////\\\___  
-       _\/\\\_____________\//\\\\\\\\\__\/\\\__\/\\\__\/\\\_\//\\\\\\\\/\\_______\/\\\________/\\\/___\///\\\_ 
-        _\///_______________\/////////___\///___\///___\///___\////////\//________\///________\///_______\///__
+ /\\\\\\\\\\\\\                                                     /\\\\\\\\\\\\\\\  /\\\       /\\\         
+ \/\\\/////////\\\                                                  \///////\\\/////  \///\\\   /\\\/         
+  \/\\\       \/\\\                                                        \/\\\         \///\\\\\\/          
+   \/\\\\\\\\\\\\\/   /\\\    /\\\    /\\\\\  /\\\\\    /\\\\\\\\\          \/\\\           \//\\\\         
+    \/\\\/////////    \/\\\   \/\\\  /\\\///\\\\\///\\\ \////////\\\         \/\\\            \/\\\\    
+     \/\\\             \/\\\   \/\\\ \/\\\ \//\\\  \/\\\   /\\\\\\\\\\        \/\\\            /\\\\\\   
+      \/\\\             \/\\\   \/\\\ \/\\\  \/\\\  \/\\\  /\\\/////\\\        \/\\\          /\\\////\\\  
+       \/\\\             \//\\\\\\\\\  \/\\\  \/\\\  \/\\\ \//\\\\\\\\/\\       \/\\\        /\\\/   \///\\\ 
+        \///               \/////////   \///   \///   \///   \////////\//        \///        \///       \///
    
 */                             
 
@@ -47,15 +47,15 @@ void setup()
   //ledcSetup(1, 40000, 8);
   //ledcAttachPin(HAPTIC_PWM, 1);
   //ledcWrite(1, 40);
-  Serial.begin(115200); //Starts Serial connection
+  Serial.begin(115200); //Start Serial connection
   Serial.println("setup");
-  crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
-  mlxI2C.begin(PUMATX_SDA, PUMATX_SCL); //Starts I2C connection
+  //crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
+  mlxI2C.begin(PUMATX_SDA, PUMATX_SCL); //Start I2C connection
   displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL);
 
   //-----MLX
   Serial.println("mlx setup");
-  mlx.begin();
+ // mlx.begin();
 
   //-----Button
   Serial.println("pinMode setup");
@@ -68,7 +68,7 @@ void setup()
   Serial.println("display setup");
   display.begin();
   Serial.println("display begin done");
-  display.displayDefault();
+  //display.displayDefault();
 
 
 }
@@ -77,13 +77,10 @@ void setup()
 void loop()
 {
 
-  scanner1();
-  scanner2();
-  delay(250);
 
-/*
+
   currentTime = millis();
-  
+  /*
 
   //Serial.println("loop");
  
@@ -114,14 +111,16 @@ void loop()
   //-----RC
   if(currentTime - previousRcMillis >= rcInterval)
   {
+    Serial.print("RC time ");
     previousRcMillis = currentTime;
     unsigned long rcBeginTime = micros();
 
-    //computeRc();
+    computeRc();
     //rcData(); 
     unsigned long rcEndTime = micros();
     //Serial.println("rc time: ");
     //Serial.println(rcEndTime - rcBeginTime); 
+
   } 
 
   //-----Display / Menu
@@ -139,6 +138,10 @@ void loop()
 
 
 */
+
+  scanner1();
+  scanner2();
+  delay(1000);
 }
 
 void scanner1()

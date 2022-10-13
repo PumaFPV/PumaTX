@@ -88,7 +88,7 @@ struct Button
 struct ADC
 {
     uint8_t pin;    //which pin the analog device is connected to
-    float state;    //What state the analog device is at
+    uint16_t state;    //What state the analog device is at
     int process;
     int output; //from -100 to 100
     unsigned long currentTime;
@@ -153,7 +153,7 @@ Button c2 = {C2, 1, LOWER_CHAN, 1, 0};
 
 
 //--------------------------------------------------ADC struct--------------------------------------------------
-ADC voltage = {BATTERY_VOLTAGE, 0.00, 0, 0, 0}; 
+ADC voltage = {BATTERY_VOLTAGE, 0, 0, 0, 0}; 
 ADC leftPot = {LEFT_POT, 0, 0, 0, 0};  
 ADC rightPot = {RIGHT_POT, 0, 0, 0, 0}; 
 
@@ -163,16 +163,16 @@ unsigned long currentTime = 0;
 
 volatile int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
 
-float lipo100 = 4.2;
-float lipo90 = 4.13;
-float lipo80 = 4.06;
-float lipo70 = 3.99;
-float lipo60 = 3.92;
-float lipo50 = 3.85;
-float lipo40 = 3.78;
-float lipo30 = 3.71;
-float lipo20 = 3.64;
-float lipo10 = 3.57;
-float lipo0 = 3.5;
+uint16_t lipo100 = 4200;
+uint16_t lipo90 = 4130;
+uint16_t lipo80 = 4060;
+uint16_t lipo70 = 3990;
+uint16_t lipo60 = 3920;
+uint16_t lipo50 = 3850;
+uint16_t lipo40 = 3780;
+uint16_t lipo30 = 3710;
+uint16_t lipo20 = 3640;
+uint16_t lipo10 = 3570;
+uint16_t lipo0 = 3500;
 
 #endif
