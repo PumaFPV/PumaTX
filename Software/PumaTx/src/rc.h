@@ -1,38 +1,42 @@
-int16_t throttleMin = -7950;
-int16_t throttleMax = 9150;
-int16_t yawMin = -8250;
-int16_t yawMax = 9530;
-int16_t pitchMin = -7640;
-int16_t pitchMax = 8540;
-int16_t rollMin = -8920;
-int16_t rollMax = 8200;
+throttle.min = -7950;
+throttle.max = 9150;
+yaw.min = -8250;
+yaw.max = 9530;
+pitch.min = -7640;
+pitch.max = 8540;
+roll.min = -8920;
+roll.max = 8200;
+rightPot.min = 440;
+rightPot.max = 3600;
+leftPot.min = 440;
+leftPot.max = 3570;
 
 
 void computeRc()
 {
 //-----Throttle
 
-    throttle.output = constrain(map(throttle.reading, -7950, 9150, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    throttle.output = constrain(map(throttle.reading, throttle.min, throttle.max, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //-----Yaw
 
-    yaw.output = constrain(map(yaw.reading, -8250, 9530, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    yaw.output = constrain(map(yaw.reading, yaw.min, yaw.max, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //-----Pitch
 
-    pitch.output = constrain(map(pitch.reading, -7640, 8540, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    pitch.output = constrain(map(pitch.reading, pitch.min, pitch.max, LOWER_CHAN, UPPER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //-----Roll
 
-    roll.output = constrain(map(roll.reading, -8920, 8200, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    roll.output = constrain(map(roll.reading, roll.min, roll.max, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //-----Right Pot
     
-    rightPot.output = constrain(map(rightPot.state, 440, 3600, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
+    rightPot.output = constrain(map(rightPot.state, rightPot.min, rightPot.max, UPPER_CHAN, LOWER_CHAN), LOWER_CHAN, UPPER_CHAN);
 
 //-----Left Pot
 
-    leftPot.process = constrain(map(leftPot.state, 3570, 440, -100, 100), -100, 100);
+    leftPot.process = constrain(map(leftPot.state, leftPot.max, leftPot.min, -100, 100), -100, 100);
     
     if (leftPot.process > 75 && millis() - leftPot.currentTime > debounceDelay && leftPot.intermediate <= 80)
     {

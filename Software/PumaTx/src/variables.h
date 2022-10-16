@@ -1,8 +1,8 @@
 #ifndef variables_h
 #define variables_h
 
-#define LOWER_CHAN  256
-#define UPPER_CHAN  1792
+#define LOWER_CHAN  172
+#define UPPER_CHAN  1811
 
 //--------------------------------------------------Include libraries--------------------------------------------------
 #include <Arduino.h>
@@ -93,6 +93,8 @@ struct ADC
     int output; //from -100 to 100
     unsigned long currentTime;
     int intermediate;
+    int min;
+    int max;
 };
 
 //--------------------------------------------------Channel struct--------------------------------------------------
