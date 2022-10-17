@@ -1,15 +1,4 @@
-throttle.min = -7950;
-throttle.max = 9150;
-yaw.min = -8250;
-yaw.max = 9530;
-pitch.min = -7640;
-pitch.max = 8540;
-roll.min = -8920;
-roll.max = 8200;
-rightPot.min = 440;
-rightPot.max = 3600;
-leftPot.min = 440;
-leftPot.max = 3570;
+
 
 
 void computeRc()

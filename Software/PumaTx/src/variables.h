@@ -100,8 +100,8 @@ struct ADC
 //--------------------------------------------------Channel struct--------------------------------------------------
 Channel throttle = {
   0, //reading
-  -10000, //Min
-  10000,  //Max
+  -7950, //Min
+  9150,  //Max
   0,  //Trim
   0,  //Inter
   0,  //ouput
@@ -110,8 +110,8 @@ Channel throttle = {
 
 Channel yaw = {
   0, //reading
-  -10000, //Min
-  10000,  //Max
+  -8250, //Min
+  9530,  //Max
   0,  //Trim
   0,  //Inter
   0,  //ouput
@@ -120,8 +120,8 @@ Channel yaw = {
 
 Channel pitch = {
   0, //reading
-  -10000, //Min
-  10000,  //Max
+  -7640, //Min
+  8540,  //Max
   0,  //Trim
   0,  //Inter
   0,  //ouput
@@ -130,8 +130,8 @@ Channel pitch = {
 
 Channel roll = {
   0, //reading
-  -10000, //Min
-  10000,  //Max
+  -8920, //Min
+  8200,  //Max
   0,  //Trim
   0,  //Inter
   0,  //ouput
@@ -157,9 +157,11 @@ Button sport = {SPORT, 1, 1, 1, 0};
 
 
 //--------------------------------------------------ADC struct--------------------------------------------------
-ADC voltage = {BATTERY_VOLTAGE, 0, 0, 0, 0}; 
-ADC leftPot = {LEFT_POT, 0, 0, 0, 0};  
-ADC rightPot = {RIGHT_POT, 0, 0, 0, 0}; 
+ADC voltage = {BATTERY_VOLTAGE, 0, 0, 0, 0, 0, 0, 0}; 
+ADC leftPot = {LEFT_POT, 0, 0, 0, 0, 0, 440, 3570};  
+ADC rightPot = {RIGHT_POT, 0, 0, 0, 0, 0, 440, 3600}; 
+
+
 
 //--------------------------------------------------Variables--------------------------------------------------
 unsigned long debounceDelay = 200;

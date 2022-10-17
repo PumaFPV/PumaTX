@@ -44,11 +44,17 @@ void navigation();
 
 void menuLoop()
 {
+  int test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
+  display.setLeftGraph(test, 1);
+  display.update();
+  /*
   switch(page)
   {
     case 0:
       Serial.println("  pumatx  ");
-      display.setText("  pumatx  ");
+      //display.setText("  pumatx  ");
+      int test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
+      display.setLeftGraph(test, 1);
       display.update();
       break;
    
@@ -76,6 +82,7 @@ void menuLoop()
       rfConfigPage();
       break;
   }
+  */
 }
 
 

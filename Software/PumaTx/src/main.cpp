@@ -51,7 +51,7 @@ void setup()
   Serial.println("setup");
   //crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
   mlxI2C.begin(PUMATX_SDA, PUMATX_SCL); //Start I2C connection
-  displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL);
+  displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 240000L);
 
   //-----MLX
   Serial.println("mlx setup");
@@ -68,7 +68,7 @@ void setup()
   Serial.println("display setup");
   display.begin();
   Serial.println("display begin done");
-  //display.displayDefault();
+  display.displayDefault();
 
 
 }
@@ -129,7 +129,7 @@ void loop()
   Serial.println();
 */
 
-/*
+
   //-----Display / Menu
   if(currentTime - previousMenuMillis >= menuInterval)
   {
@@ -145,7 +145,7 @@ void loop()
   }  
 
 
-*/
+
 
   //scannerMlx();
   //scannerDisplay();
