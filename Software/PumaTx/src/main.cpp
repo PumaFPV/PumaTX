@@ -152,7 +152,7 @@ void loop()
 
     unsigned long displayEndTime = micros();
     //debug.print("display time: ");
-    //debug.println(displayEndTime - displayBeginTime); //3200us@240kHz / 1300us@1MHz
+    //debug.println(displayEndTime - displayBeginTime); //3200us@240kHz without button reading / 1300us@1MHz with button reading
   }  
 
   //scannerMlx();
