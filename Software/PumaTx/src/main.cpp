@@ -142,12 +142,21 @@ void loop()
     previousMenuMillis = currentTime;
     unsigned long displayBeginTime = micros();
 
-    displayTxBattery();
 
     processNavButtons();
     navigation();
-    menuLoop();
-    display.update();
+
+    if(page =! lastPage || line =! lastLine || update =! lastUpdate)
+    {
+      display.off();
+      displayTxBattery();
+      menuLoop();
+      display.update();
+      lastPage = page;
+      lastLine = line;
+      lastUpdate = update;
+    }
+
 
 
     unsigned long displayEndTime = micros();

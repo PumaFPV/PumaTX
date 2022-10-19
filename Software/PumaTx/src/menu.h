@@ -44,6 +44,11 @@ void rfConfigLine_5();
 void navigation();
 
 uint8_t maxLines = 0;
+uint8_t lastPage = 255;
+uint8_t lastLine = 255;
+uint32_t update = 0; 
+uint32_t lastUpdate = 0;
+
 
 void menuLoop()
 {
@@ -68,6 +73,7 @@ void menuLoop()
       }
       //test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
       //display.setLeftGraph(test, 1);
+      //update++;
       break;
   
     case 1: //Telem
@@ -298,5 +304,6 @@ void displayTxBattery()
     voltage.output = constrain(map(voltage.process, 3500, 4190, 0, 100), 0, 100);
     display.setTxBatteryPercentage(voltage.output, 1);
     display.setTxBatteryBar(map(voltage.output, -20, 80, 0, 3), 1);
+    update++;
 
 }
