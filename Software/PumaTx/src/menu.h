@@ -43,6 +43,8 @@ void rfConfigLine_5();
 
 void navigation();
 
+uint8_t maxLines = 0;
+
 void menuLoop()
 {
 
@@ -50,46 +52,53 @@ void menuLoop()
   //display.setLeftGraph(test, 1);
   //display.update();
   int test;
+  if(line == 0)
+  {
+    display.setName("page");
+    display.setNamedRssi(page, 3);
+  }
   switch(page)
   {
+
     case 0:
-      //Serial.println("  pumatx  ");
-      display.setText("  pumatx  ");
-      test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
-      display.setLeftGraph(test, 1);
-      display.setNamedRssi(page, 3);
-      display.update();
-      break;
-   
-    case 1: //Telem
-      display.setText("telem");
-      display.setName("page");
-      display.setNamedRssi(page, 3);
-      display.update();
-      if(ok.state)  //if selected
+      maxLines = 0;
+      if(line == 0)
       {
-        telemPage();   
+        display.setText("  pumatx  ");
       }
+      //test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
+      //display.setLeftGraph(test, 1);
+      break;
+  
+    case 1: //Telem
+      maxLines = 4;
+      if(line == 0)
+      {
+        display.setText("telem");
+      }
+      telemPage();   
       break;
       
     case 2: //RC Config
-      display.setText("rc config");
-      display.setName("page");
-      display.setNamedRssi(page, 3);
-      display.update();
+      maxLines = 3;
+      if(line == 0)
+      {
+        display.setText("rc config");
+      }
       rcConfigPage();
       break;
       
     case 3: //RF Config
-      display.setText("rf config");
-      display.setName("page");
-      display.setNamedRssi(page, 3);
-      display.update();
+      maxLines = 5;
+      if(line == 0)
+      {
+        display.setText("rf config");
+      }
       rfConfigPage();
       break;
   }
-  
-}
+}  
+
 
 
 
@@ -143,18 +152,19 @@ void telemLine_4()
   display.setText("telem p4");
 }
 
-
-
 void rcConfigPage()
 {
   switch(line)
   {
     case 1:
       rcConfigLine_1();
+      break;
     case 2:
       rcConfigLine_2();
+      break;
     case 3:
       rcConfigLine_3();
+      break;
   }
 }
 
@@ -183,21 +193,24 @@ void rcConfigLine_3()
 
 void rfConfigPage()
 {
-  Serial.print("line: ");
-  Serial.println(line);
 
   switch(line)
   {
     case 1:
       rfConfigLine_1();
+      break;
     case 2:
       rfConfigLine_2();
+      break;
     case 3:
       rfConfigLine_3();
+      break;
     case 4:
       rfConfigLine_4();
+      break;
     case 5:
       rfConfigLine_5(); 
+      break;
   }
 }
 
@@ -252,7 +265,7 @@ void navigation(){
     left.currentTime = millis();
   }
   
-  if(down.state == 0 && line < 5 && down.prev == 1 && millis() - down.currentTime > debounceDelay)
+  if(down.state == 0 && line < maxLines && down.prev == 1 && millis() - down.currentTime > debounceDelay)
   {
     ++line;
     down.currentTime = millis();
@@ -268,6 +281,10 @@ void navigation(){
   {
     page = 0;
     line = 0;
+    display.begin();
+    display.off();
+    display.update();
+
   }
 }
 
@@ -275,6 +292,9 @@ void displayTxBattery()
 {
     voltage.state = analogRead(voltage.pin);
     voltage.process = (-0.023 * (voltage.state * voltage.state) + 233.93 * voltage.state - 145559) / 100;  //output in mV
+    
+    voltage.process = 4200;
+    
     voltage.output = constrain(map(voltage.process, 3500, 4190, 0, 100), 0, 100);
     display.setTxBatteryPercentage(voltage.output, 1);
     display.setTxBatteryBar(map(voltage.output, -20, 80, 0, 3), 1);

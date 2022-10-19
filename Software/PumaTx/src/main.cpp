@@ -51,31 +51,33 @@ void setup()
   //ledcSetup(1, 40000, 8);
   //ledcAttachPin(HAPTIC_PWM, 1);
   //ledcWrite(1, 40);
-  Serial.begin(115200); //Start Serial connection
-  Serial.println("setup");
+  debug.begin(115200); //Start Serial connection
+  debug.println("setup");
   //crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
   mlxI2C.begin(PUMATX_SDA, PUMATX_SCL, 1000000L); //Start I2C connection
   displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 240000L);
 
   //-----MLX
-  Serial.println("mlx setup");
+  debug.println("mlx setup");
   mlx.begin();
 
   //-----Button
-  Serial.println("pinMode setup");
+  debug.println("pinMode setup");
   pinModeDef(); //Defines every buttons
 
   //-----RC
 
 
   //-----Display / Menu
-  Serial.println("display setup");
+  debug.println("display setup");
   display.begin();
-  Serial.println("display begin done");
+  debug.println("display begin done");
   //display.displayDefault();
-
+  display.off();
+  delay(1000);
   display.setText("  pumatx");
-
+  display.update();
+  delay(2000);
 }
 
 
@@ -83,7 +85,6 @@ void loop()
 {
 
   currentTime = millis();
-  
   //-----MLX
   if(currentTime - previousMlxMillis >= mlxInterval)
   {
@@ -142,10 +143,12 @@ void loop()
     unsigned long displayBeginTime = micros();
 
     displayTxBattery();
-    
+
     processNavButtons();
     navigation();
     menuLoop();
+    display.update();
+
 
     unsigned long displayEndTime = micros();
     //Serial.print("display time: ");

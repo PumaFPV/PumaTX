@@ -106,6 +106,14 @@ void GL200ADisplay::begin()  //setup function. has to be called to init program
   
 }
 
+void GL200ADisplay::off()
+{
+  for(int i = 0; i<68; ++i)
+  {
+    displayByte[i] = 0;
+  }
+}
+
 void GL200ADisplay::setLeftGraph(uint8_t bar, bool pic)	//left bar graph | pic is the outline
 {
   byte leftGraph = 0b000000;
@@ -221,10 +229,23 @@ void GL200ADisplay::setTxBatteryPercentage(uint8_t percentage, bool pic)  //tx b
   uint8_t txBatteryPercentage_100 = percentage / 100;
   uint8_t txBatteryPercentage_10 = (percentage - txBatteryPercentage_100 * 100 ) / 10;
   uint8_t txBatteryPercentage_1 = (percentage - txBatteryPercentage_100 * 100 - txBatteryPercentage_10 * 10);
-
-  drawTxBatteryPercentage(1, txBatteryPercentage_1);
-  drawTxBatteryPercentage(2, txBatteryPercentage_10);
-  bitWrite(displayByte[67], 5, txBatteryPercentage_100);
+  if(percentage < 10)
+  {
+    drawTxBatteryPercentage(1, txBatteryPercentage_1);
+    bitWrite(displayByte[66], 0, bitRead(0, 0));  //a
+    bitWrite(displayByte[66], 4, bitRead(0, 1));  //b
+    bitWrite(displayByte[66], 6, bitRead(0, 2));  //c
+    bitWrite(displayByte[66], 1, bitRead(0, 3));  //d
+    bitWrite(displayByte[67], 6, bitRead(0, 4));  //e
+    bitWrite(displayByte[67], 4, bitRead(0, 5));  //f
+    bitWrite(displayByte[66], 2, bitRead(0, 6));  //g
+  }
+  else
+  {
+    drawTxBatteryPercentage(1, txBatteryPercentage_1);
+    drawTxBatteryPercentage(2, txBatteryPercentage_10);
+    bitWrite(displayByte[67], 5, txBatteryPercentage_100);
+  }
   bitWrite(displayByte[64], 1, pic);
   bitWrite(displayByte[66], 5, pic);
 }
@@ -236,7 +257,7 @@ void GL200ADisplay::drawTxBatteryPercentage(uint8_t display, char digit)  //draw
   switch(display)
   {
     case 1: // tx battery  1
-      bitWrite(displayByte[65], 5, bitRead(segment, 0));  //a
+      bitWrite(displayByte[65], 4, bitRead(segment, 0));  //a
       bitWrite(displayByte[64], 0, bitRead(segment, 1));  //b
       bitWrite(displayByte[64], 2, bitRead(segment, 2));  //c
       bitWrite(displayByte[65], 5, bitRead(segment, 3));  //d

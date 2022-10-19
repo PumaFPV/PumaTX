@@ -16,6 +16,7 @@ class GL200ADisplay
 		void begin();
 		void update();
 		
+		void off();
 		void setLeftGraph(uint8_t bar, bool pic);
 		void setRightGraph(uint8_t bar, bool pic);
 		void setRcRssi(uint8_t bar, bool pic);
