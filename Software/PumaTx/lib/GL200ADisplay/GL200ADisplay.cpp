@@ -177,7 +177,7 @@ void GL200ADisplay::setRcRssi(uint8_t bar, bool pic)	//bar rssi for tx (upper ri
    
 }
 
-void GL200ADisplay::setNamedRssi(uint8_t bar, bool pic)	//bar rssi for named (upper left) | pic
+void GL200ADisplay::setNamedRssi(uint8_t bar, uint8_t pic)	//bar rssi for named (upper left) | pic max 5
 {
   byte namedRssiTop =    0b00000;
   byte namedRssiBottom = 0b00000;

@@ -1,5 +1,5 @@
 /*
-  MLX Hall Sensor reading
+  MLX30393 Hall Sensor reading
   Reads From both sensors at addresses 0x0D (right) and 0x0C (left)
 */
 

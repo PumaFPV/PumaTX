@@ -17,6 +17,7 @@
     - Range
  */
 
+
 volatile int page = 0;
 volatile int line = 0;
 
@@ -44,23 +45,26 @@ void navigation();
 
 void menuLoop()
 {
-  int test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
-  display.setLeftGraph(test, 1);
-  display.update();
-  /*
+
+  //int test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
+  //display.setLeftGraph(test, 1);
+  //display.update();
+  int test;
   switch(page)
   {
     case 0:
-      Serial.println("  pumatx  ");
-      //display.setText("  pumatx  ");
-      int test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
+      //Serial.println("  pumatx  ");
+      display.setText("  pumatx  ");
+      test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
       display.setLeftGraph(test, 1);
+      display.setNamedRssi(page, 3);
       display.update();
       break;
    
     case 1: //Telem
-      Serial.println("telem");   
       display.setText("telem");
+      display.setName("page");
+      display.setNamedRssi(page, 3);
       display.update();
       if(ok.state)  //if selected
       {
@@ -69,20 +73,22 @@ void menuLoop()
       break;
       
     case 2: //RC Config
-      Serial.println("rc config");
       display.setText("rc config");
+      display.setName("page");
+      display.setNamedRssi(page, 3);
       display.update();
       rcConfigPage();
       break;
       
     case 3: //RF Config
-      Serial.println("rf config");    
       display.setText("rf config");
+      display.setName("page");
+      display.setNamedRssi(page, 3);
       display.update();
       rfConfigPage();
       break;
   }
-  */
+  
 }
 
 
@@ -111,34 +117,30 @@ void telemPage()
 
 void telemLine_1()
 {
-  Serial.println("telem page 1");
   display.setName("line");
   display.setNamedRssi(1, 4);
-  display.setText("telem page 1");
+  display.setText("telem p1");
 }
 
 void telemLine_2()
 {
-  Serial.println("telem page 2");
   display.setName("line");
   display.setNamedRssi(2, 4);
-  display.setText("telem page 2");
+  display.setText("telem p2");
 }
 
 void telemLine_3()
 {
-  Serial.println("telem page 3");
   display.setName("line");
   display.setNamedRssi(3, 4);
-  display.setText("telem page 3");
+  display.setText("telem p3");
 }
 
 void telemLine_4()
 {
-  Serial.println("telem page 4");
   display.setName("line");
   display.setNamedRssi(4, 4);
-  display.setText("telem page 4");
+  display.setText("telem p4");
 }
 
 
@@ -201,7 +203,6 @@ void rfConfigPage()
 
 void rfConfigLine_1()
 {
-  Serial.println("rf_config_line_1");
   display.setName("line");
   display.setNamedRssi(1, 5);
   display.setText("rf1");
@@ -209,7 +210,6 @@ void rfConfigLine_1()
 
 void rfConfigLine_2()
 {
-  Serial.println("rf_config_line_2");
   display.setName("line");
   display.setNamedRssi(2, 5);
   display.setText("rf2");
@@ -217,7 +217,6 @@ void rfConfigLine_2()
 
 void rfConfigLine_3()
 {
-  Serial.println("rf_config_line_3");
   display.setName("line");
   display.setNamedRssi(3, 5);
   display.setText("rf3");
@@ -225,7 +224,6 @@ void rfConfigLine_3()
 
 void rfConfigLine_4()
 {
-  Serial.println("rf_config_line_4");
   display.setName("line");
   display.setNamedRssi(4, 5);
   display.setText("rf4");
@@ -233,7 +231,6 @@ void rfConfigLine_4()
 
 void rfConfigLine_5()
 {
-  Serial.println("rf_config_line_5");
   display.setName("line");
   display.setNamedRssi(5, 5);
   display.setText("rf5");
@@ -241,30 +238,30 @@ void rfConfigLine_5()
 
 void navigation(){
     
-  if (right.state == 0 && page < 3) 
+  if (right.state == 0 && page < 3 && right.prev == 1 && millis() - right.currentTime > debounceDelay) 
   { //menu right -> page+
     ++page;
     line = 0;
-    delay(50);
+    right.currentTime = millis(); 
   }
 
-  if (left.state == 0 && page > 0)
+  if (left.state == 0 && page > 0 && left.prev == 1 && millis() - left.currentTime > debounceDelay)
   { //menu left -> page-
     --page;
     line = 0;
-    delay(50);
+    left.currentTime = millis();
   }
   
-  if(down.state == 0 && line < 5)
+  if(down.state == 0 && line < 5 && down.prev == 1 && millis() - down.currentTime > debounceDelay)
   {
-    line++;
-    delay(50);
+    ++line;
+    down.currentTime = millis();
   }
 
-  if(up.state == 0 && line > 0)
+  if(up.state == 0 && line > 0 && up.prev == 1 && millis() - up.currentTime > debounceDelay)
   {
-    line--;
-    delay(50);
+    --line;
+    up.currentTime = millis();
   }
 
   if(play.state == 0)
@@ -272,4 +269,14 @@ void navigation(){
     page = 0;
     line = 0;
   }
+}
+
+void displayTxBattery()
+{
+    voltage.state = analogRead(voltage.pin);
+    voltage.process = (-0.023 * (voltage.state * voltage.state) + 233.93 * voltage.state - 145559) / 100;  //output in mV
+    voltage.output = constrain(map(voltage.process, 3500, 4190, 0, 100), 0, 100);
+    display.setTxBatteryPercentage(voltage.output, 1);
+    display.setTxBatteryBar(map(voltage.output, -20, 80, 0, 3), 1);
+
 }

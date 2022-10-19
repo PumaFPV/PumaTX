@@ -12,7 +12,11 @@
    
 */                             
 
+//--------------------------------------------------Include libraries--------------------------------------------------
 #include <Arduino.h>
+#include <Wire.h>
+#include "mlx.h"
+#include "GL200ADisplay.h"
 
 #include "variables.h"
 
@@ -50,12 +54,12 @@ void setup()
   Serial.begin(115200); //Start Serial connection
   Serial.println("setup");
   //crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
-  mlxI2C.begin(PUMATX_SDA, PUMATX_SCL); //Start I2C connection
+  mlxI2C.begin(PUMATX_SDA, PUMATX_SCL, 1000000L); //Start I2C connection
   displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 240000L);
 
   //-----MLX
   Serial.println("mlx setup");
- // mlx.begin();
+  mlx.begin();
 
   //-----Button
   Serial.println("pinMode setup");
@@ -68,8 +72,9 @@ void setup()
   Serial.println("display setup");
   display.begin();
   Serial.println("display begin done");
-  display.displayDefault();
+  //display.displayDefault();
 
+  display.setText("  pumatx");
 
 }
 
@@ -89,8 +94,8 @@ void loop()
     getMlxData(); 
 
     unsigned long mlxEndTime = micros();
-    //Serial.println("mlx time: ");
-    //Serial.println(mlxEndTime - mlxBeginTime); 
+    //Serial.print("mlx time: ");
+    //Serial.println(mlxEndTime - mlxBeginTime); //740
   }
 
   //-----Button
@@ -99,11 +104,11 @@ void loop()
     previousButtonMillis = currentTime;
     unsigned long buttonBeginTime = micros();
 
-    processButtons();
+    processRcButtons(); //reads 16 inputs
 
     unsigned long buttonEndTime = micros();
-    //Serial.println("button time: ");
-    //Serial.println(buttonEndTime - buttonBeginTime); 
+    //Serial.print("button time: ");
+    //Serial.println(buttonEndTime - buttonBeginTime); //355us with 16 readings, 230us with rc necessary
   }
 
   //-----RC
@@ -116,8 +121,8 @@ void loop()
     rcData(); 
 
     unsigned long rcEndTime = micros();
-    //Serial.println("rc time: ");
-    //Serial.println(rcEndTime - rcBeginTime); 
+    //Serial.print("rc time: ");
+    //Serial.println(rcEndTime - rcBeginTime); //17us
 
   } 
   /*
@@ -136,16 +141,19 @@ void loop()
     previousMenuMillis = currentTime;
     unsigned long displayBeginTime = micros();
 
+    displayTxBattery();
+    
+    processNavButtons();
     navigation();
     menuLoop();
 
     unsigned long displayEndTime = micros();
-    //Serial.println("display time: ");
-    //Serial.println(displayEndTime - displayBeginTime); 
+    //Serial.print("display time: ");
+    //Serial.println(displayEndTime - displayBeginTime); //3200us
   }  
 
 
-
+  delay(25);
 
   //scannerMlx();
   //scannerDisplay();

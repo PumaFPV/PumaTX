@@ -4,11 +4,7 @@
 #define LOWER_CHAN  172
 #define UPPER_CHAN  1811
 
-//--------------------------------------------------Include libraries--------------------------------------------------
-#include <Arduino.h>
-#include <Wire.h>
-#include "mlx.h"
-#include "GL200ADisplay.h"
+
 
 //--------------------------------------------------Define--------------------------------------------------
 //----------GPI
@@ -170,15 +166,15 @@ unsigned long currentTime = 0;
 volatile int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
 
 uint16_t lipo100 = 4200;
-uint16_t lipo90 = 4130;
-uint16_t lipo80 = 4060;
-uint16_t lipo70 = 3990;
-uint16_t lipo60 = 3920;
-uint16_t lipo50 = 3850;
-uint16_t lipo40 = 3780;
-uint16_t lipo30 = 3710;
-uint16_t lipo20 = 3640;
-uint16_t lipo10 = 3570;
-uint16_t lipo0 = 3500;
+uint16_t lipo90 =  4130;
+uint16_t lipo80 =  4060;
+uint16_t lipo70 =  3990;
+uint16_t lipo60 =  3920;
+uint16_t lipo50 =  3850;
+uint16_t lipo40 =  3780;
+uint16_t lipo30 =  3710;
+uint16_t lipo20 =  3640;
+uint16_t lipo10 =  3570;
+uint16_t lipo0 =   3500;
 
 #endif

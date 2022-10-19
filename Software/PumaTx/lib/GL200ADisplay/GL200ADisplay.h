@@ -19,7 +19,7 @@ class GL200ADisplay
 		void setLeftGraph(uint8_t bar, bool pic);
 		void setRightGraph(uint8_t bar, bool pic);
 		void setRcRssi(uint8_t bar, bool pic);
-		void setNamedRssi(uint8_t bar, bool pic);
+		void setNamedRssi(uint8_t bar, uint8_t pic);
 		void setTxBatteryBar(uint8_t bar, bool pic);
 		void setTxBatteryPercentage(uint8_t percentage, bool pic);
 		void setDroneBatteryBar(uint8_t bar, bool pic);

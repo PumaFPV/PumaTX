@@ -19,32 +19,32 @@ void pinModeDef()
 }
 
 
-void processButtons()
+void processRcButtons()
 {
-  
+  //Buttons
+  arm.state = digitalRead(arm.pin);
+  pre.state = digitalRead(pre.pin);
+  rth.state = digitalRead(rth.pin);
+  c1.state = digitalRead(c1.pin);
+  c2.state = digitalRead(c2.pin);
+  sport.state = digitalRead(sport.pin);
+
+  //Pots
+  rightPot.state = analogRead(rightPot.pin);
+  leftPot.state = analogRead(leftPot.pin);
+
+}
+
+void processNavButtons()
+{
   //Navigation joystick
   ok.state = digitalRead(ok.pin);
   right.state = digitalRead(right.pin);
   left.state = digitalRead(left.pin);
   up.state = digitalRead(up.pin);
   down.state = digitalRead(down.pin);
-
-  //Switches
-  rightPot.state = analogRead(rightPot.pin);
-  leftPot.state = analogRead(leftPot.pin);
-  arm.state = digitalRead(arm.pin);
-  pre.state = digitalRead(pre.pin);
-  rth.state = digitalRead(rth.pin);
   pwr.state = digitalRead(pwr.pin);
   play.state = digitalRead(play.pin);
-  c1.state = digitalRead(c1.pin);
-  c2.state = digitalRead(c2.pin);
-  sport.state = digitalRead(sport.pin);
-
-  voltage.state = analogRead(voltage.pin);
-  float tension = (-0.023 * (voltage.state * voltage.state) + 233.93 * voltage.state - 145559) / 100;  
-
-
 
 }
 
