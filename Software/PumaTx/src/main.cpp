@@ -55,7 +55,7 @@ void setup()
   debug.println("setup");
   //crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
   mlxI2C.begin(PUMATX_SDA, PUMATX_SCL, 1000000L); //Start I2C connection
-  displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 240000L);
+  displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 1000000L/*240000L*/);
 
   //-----MLX
   debug.println("mlx setup");
@@ -151,12 +151,9 @@ void loop()
 
 
     unsigned long displayEndTime = micros();
-    //Serial.print("display time: ");
-    //Serial.println(displayEndTime - displayBeginTime); //3200us
+    //debug.print("display time: ");
+    //debug.println(displayEndTime - displayBeginTime); //3200us@240kHz / 1300us@1MHz
   }  
-
-
-  delay(25);
 
   //scannerMlx();
   //scannerDisplay();
