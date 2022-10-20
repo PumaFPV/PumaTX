@@ -115,6 +115,7 @@ void menuLoop()
 
 void telemPage()
 {
+
   switch(line)
   {
     case 1:
@@ -137,34 +138,39 @@ void telemPage()
 
 void telemLine_1()
 {
-  display.setName("line");
+    display.setName("tlm");
+
   display.setNamedRssi(1, 4);
   display.setText("telem p1");
 }
 
 void telemLine_2()
 {
-  display.setName("line");
+    display.setName("tlm");
+
   display.setNamedRssi(2, 4);
   display.setText("telem p2");
 }
 
 void telemLine_3()
 {
-  display.setName("line");
+    display.setName("tlm");
+
   display.setNamedRssi(3, 4);
   display.setText("telem p3");
 }
 
 void telemLine_4()
 {
-  display.setName("line");
+    display.setName("tlm");
+
   display.setNamedRssi(4, 4);
   display.setText("telem p4");
 }
 
 void rcConfigPage()
 {
+
   switch(line)
   {
     case 1:
@@ -181,21 +187,24 @@ void rcConfigPage()
 
 void rcConfigLine_1()
 {
-  display.setName("line");
+    display.setName("rc");
+
   display.setNamedRssi(1, 3);
   display.setText("rc1");
 }
 
 void rcConfigLine_2()
 {
-  display.setName("line");
+    display.setName("rc");
+
   display.setNamedRssi(2, 3);
   display.setText("rc2");
 }
 
 void rcConfigLine_3()
 {
-  display.setName("line");
+    display.setName("rc");
+
   display.setNamedRssi(3, 3);
   display.setText("rc3");
 }
@@ -227,35 +236,40 @@ void rfConfigPage()
 
 void rfConfigLine_1()
 {
-  display.setName("line");
+    display.setName("rf");
+
   display.setNamedRssi(1, 5);
   display.setText("rf1");
 }
 
 void rfConfigLine_2()
 {
-  display.setName("line");
+    display.setName("rf");
+
   display.setNamedRssi(2, 5);
   display.setText("rf2");
 }
 
 void rfConfigLine_3()
 {
-  display.setName("line");
+    display.setName("rf");
+
   display.setNamedRssi(3, 5);
   display.setText("rf3");
 }
 
 void rfConfigLine_4()
 {
-  display.setName("line");
+    display.setName("rf");
+
   display.setNamedRssi(4, 5);
   display.setText("rf4");
 }
 
 void rfConfigLine_5()
 {
-  display.setName("line");
+    display.setName("rf");
+
   display.setNamedRssi(5, 5);
   display.setText("rf5");
 }
