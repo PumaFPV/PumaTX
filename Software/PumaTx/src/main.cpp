@@ -24,122 +24,179 @@
 #include "buttons.h"
 #include "rc.h"
 #include "menu.h"
-
-
-//-----MLX
-unsigned long previousMlxMillis = 0;
-const long mlxInterval = 10;  
-
-//-----Button
-unsigned long previousButtonMillis = 0;
-const long buttonInterval = 10;
-
-//-----Display / Menu
-unsigned long previousMenuMillis = 0;
-const long menuInterval = 50;
-
-//-----RC
-unsigned long previousRcMillis = 0;
-const long rcInterval = 40;
-
-
-void scannerMlx();
-void scannerDisplay();
+#include "haptic.h"
 
 void setup() 
 {
-  //ledcSetup(1, 40000, 8);
-  //ledcAttachPin(HAPTIC_PWM, 1);
-  //ledcWrite(1, 40);
+
   debug.begin(115200); //Start Serial connection
-  debug.println("setup");
-  //crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
+  crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
   mlxI2C.begin(PUMATX_SDA, PUMATX_SCL, 1000000L); //Start I2C connection
   displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 1000000L/*240000L*/);
 
   //-----MLX
-  debug.println("mlx setup");
   mlx.begin();
 
   //-----Button
-  debug.println("pinMode setup");
   pinModeDef(); //Defines every buttons
 
+ 
   //-----RC
 
 
   //-----Display / Menu
-  debug.println("display setup");
   display.begin();
-  debug.println("display begin done");
   //display.displayDefault();
   display.off();
   display.setText("  pumatx");
   display.update();
-  delay(1000);
-}
 
+  //-----Haptic
+  hapticSetup();
+  delay(500);
+
+}
 
 void loop()
 {
 
-  currentTime = millis();
-  //-----MLX
-  if(currentTime - previousMlxMillis >= mlxInterval)
+  if(mlxTask.counter == 0)
   {
-    previousMlxMillis = currentTime;
-    unsigned long mlxBeginTime = micros();
+    mlxTask.startTime = micros();
+  }
+  if(micros() - mlxTask.startTime > 1000000)
+  {
+    mlxTask.frequency = mlxTask.counter;
+    //debug.println(mlxTask.counter);
+    mlxTask.counter = 0;
+    mlxTask.startTime = micros();
+  }
+
+  if(buttonTask.counter == 0)
+  {
+    buttonTask.startTime = micros();
+  }
+  if(micros() - buttonTask.startTime > 1000000)
+  {
+    buttonTask.frequency = buttonTask.counter;
+    //debug.println(buttonTask.counter);
+    buttonTask.counter = 0;
+    buttonTask.startTime = micros();
+  }
+
+  if(rcTask.counter == 0)
+  {
+    rcTask.startTime = micros();
+  }
+  if(micros() - rcTask.startTime > 1000000)
+  {
+    rcTask.frequency = rcTask.counter;
+    //debug.println(rcTask.counter);
+    rcTask.counter = 0;
+    rcTask.startTime = micros();
+  }
+
+  if(crsfTask.counter == 0)
+  {
+    crsfTask.startTime = micros();
+  }
+  if(micros() - crsfTask.startTime > 1000000)
+  {
+    crsfTask.frequency = crsfTask.counter;
+    //debug.println(crsfTask.counter);
+    crsfTask.counter = 0;
+    crsfTask.startTime = micros();
+  }
+
+  if(menuTask.counter == 0)
+  {
+    menuTask.startTime = micros();
+  }
+  if(micros() - menuTask.startTime > 1000000)
+  {
+    menuTask.frequency = menuTask.counter;
+    //debug.println(menuTask.counter);
+    menuTask.counter = 0;
+    menuTask.startTime = micros();
+  }
+
+  if(hapticTask.counter == 0)
+  {
+    hapticTask.startTime = micros();
+  }
+  if(micros() - hapticTask.startTime > 1000000)
+  {
+    hapticTask.frequency = hapticTask.counter;
+    //debug.println(hapticTask.counter);
+    hapticTask.counter = 0;
+    hapticTask.startTime = micros();
+  }
+
+  currentTime = millis();
+
+
+  //-----MLX
+  if(currentTime - mlxTask.previousTime >= mlxTask.interval)
+  {
+    mlxTask.previousTime = currentTime;
+    mlxTask.beginTime = micros();
 
     mlx.process();
-    getMlxData(); 
+    getMlxData();
 
-    unsigned long mlxEndTime = micros();
-    //Serial.print("mlx time: ");
-    //Serial.println(mlxEndTime - mlxBeginTime); //740
+    mlxTask.endTime = micros();
+    mlxTask.counter++;
+    mlxTask.duration = mlxTask.endTime - mlxTask.beginTime;
+    //debug.print("mlx time: ");
+    //debug.println(mlxTask.duration); //730us
   }
 
   //-----Button
-  if(currentTime - previousButtonMillis >= buttonInterval)
+  if(currentTime - buttonTask.previousTime >= buttonTask.interval)
   {
-    previousButtonMillis = currentTime;
-    unsigned long buttonBeginTime = micros();
+    buttonTask.previousTime = currentTime;
+    buttonTask.beginTime = micros();
 
     processRcButtons(); //reads 16 inputs
 
-    unsigned long buttonEndTime = micros();
-    //Serial.print("button time: ");
-    //Serial.println(buttonEndTime - buttonBeginTime); //355us with 16 readings, 230us with rc necessary
+    buttonTask.endTime = micros();
+    buttonTask.counter++;
+    buttonTask.duration = buttonTask.endTime - buttonTask.beginTime;
+    //debug.print("button time: ");
+    //debug.println(buttonTask.duration); //355us with 16 readings, 230us with rc necessary
   }
 
   //-----RC
-  if(currentTime - previousRcMillis >= rcInterval)
+  if(currentTime - rcTask.previousTime >= rcTask.interval) //40ms->25Hz
   {
-    previousRcMillis = currentTime;
-    unsigned long rcBeginTime = micros();
+    rcTask.previousTime = currentTime;
+    rcTask.beginTime = micros();
+    rcTask.counter++;
 
     computeRc();
     rcData(); 
 
-    unsigned long rcEndTime = micros();
-    //Serial.print("rc time: ");
-    //Serial.println(rcEndTime - rcBeginTime); //17us
+    rcTask.endTime = micros();
+    rcTask.counter++;
+    rcTask.duration = rcTask.endTime - rcTask.beginTime;
+    //debug.print("rc time: ");
+    //debug.println(rcTask.duration); //17us
 
   } 
   /*
   for(uint8_t i = 0; i<15; ++i)
   {
-    Serial.print(channels[i]);
-    Serial.print(" ");
+    debug.print(channels[i]);
+    debug.print(" ");
   }
-  Serial.println();
+  debug.println();
 */
 
-
   //-----Display / Menu
-  if(currentTime - previousMenuMillis >= menuInterval)  //20Hz
+  if(currentTime - menuTask.previousTime >= menuTask.interval)  //20Hz
   {
-    previousMenuMillis = currentTime;
-    unsigned long displayBeginTime = micros();
+    menuTask.previousTime = currentTime;
+    menuTask.beginTime = micros();
 
 
     processNavButtons();
@@ -154,68 +211,52 @@ void loop()
       lastUpdate = update;
       display.off();
       displayTxBattery();
-      menuLoop();
+      display.setRpm(mlxTask.frequency, 0);
+      menuHandler();
       display.update();
 
     }
 
-
-
-    unsigned long displayEndTime = micros();
-
-    //debug.print("display time: ");
-    //debug.println(displayEndTime - displayBeginTime); //3200us@240kHz without button reading / 1300us@1MHz with button reading / 1400 when updating, 118@CPU240MHz when not 214 @CPU80MHz
+    menuTask.endTime = micros();
+    menuTask.counter++;
+    menuTask.duration = menuTask.endTime - menuTask.beginTime;
+    //debug.print("display duration time: ");
+    //debug.println(menuLoop.duration); //3200us@240kHz without button reading / 1300us@1MHz with button reading / 1400 when updating, 118@CPU240MHz when not 214 @CPU80MHz
   }  
 
-  //scannerMlx();
-  //scannerDisplay();
-  //delay(1000);
+
+  hapticHandler();
+
 }
 
-void scannerMlx()
-{
-  Serial.println ();
-  Serial.println ("I2C scanner. Scanning ...");
-  byte count = 0;
-  mlxI2C.begin();
-  for (byte i = 8; i < 120; i++)
-  {
-    mlxI2C.beginTransmission (i);          // Begin I2C transmission Address (i)
-    if (mlxI2C.endTransmission () == 0)  // Receive 0 = success (ACK response) 
-    {
-      Serial.print ("Found address: ");
-      Serial.print (i, DEC);
-      Serial.print (" (0x");
-      Serial.print (i, HEX);     // PCF8574 7 bit address
-      Serial.println (")");
-      count++;
-    }
-  }
-  Serial.print ("Found ");      
-  Serial.print (count, DEC);        // numbers of devices
-  Serial.println (" device(s) on mlxI2C");
-}
 
-void scannerDisplay()
-{
-  Serial.println ();
-  Serial.println ("I2C scanner. Scanning ...");
-  byte count = 0;
-  displayI2C.begin();
-  for (byte i = 8; i < 120; i++)
+/* Typical task outline
+
+  //Task
+  if(currentTime - Task.previousTime >= Task.interval)
   {
-    displayI2C.beginTransmission (i);          // Begin I2C transmission Address (i)
-    if (displayI2C.endTransmission () == 0)  // Receive 0 = success (ACK response) 
-    {
-      Serial.print ("Found address: ");
-      Serial.print (i, DEC);
-      Serial.print (" (0x");
-      Serial.print (i, HEX);     // PCF8574 7 bit address
-      Serial.println (")");
-      count++;
-    }
+    Task.previousTime = currentTime;
+    Task.beginTime = micros();
+
+    **functions
+
+    Task.endTime = micros();
+    Task.counter++;
+    Task.duration = Task.endTime - Task.beginTime;
+
   }
-  Serial.print ("Found ");      
-  Serial.print (count, DEC);        // numbers of devices
-  Serial.println (" device(s) on displayI2C");
-}
+
+  //Task frequency counter
+  if(Task.counter == 0)
+  {
+    Task.startTime = micros();
+  }
+  if(micros() - Task.startTime > 1000000)
+  {
+    Task.frequency = Task.counter;
+    debug.println(Task.counter);
+    Task.counter = 0;
+    Task.startTime = micros();
+  }
+
+*/

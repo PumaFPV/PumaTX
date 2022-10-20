@@ -17,6 +17,7 @@
     - Range
  */
 
+
 #define PAGES 3
 #define TELEM_LINES 4
 #define RC_LINES 3
@@ -63,7 +64,7 @@ uint8_t lastTest = 0;
 
 int test;
 
-void menuLoop()
+void menuHandler()
 {
 
   //int test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);

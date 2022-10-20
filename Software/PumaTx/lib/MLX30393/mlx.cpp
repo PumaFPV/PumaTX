@@ -19,17 +19,11 @@ int _pitchReading;
 int _rollReading;
 int _leftAddr;
 int _rightAddr; 
-uint8_t _SDA;
-uint8_t _SCL;
-unsigned long _freqI2C;
 TwoWire *_mlxI2C;
 
-MLX::MLX(TwoWire *mlxI2C, uint8_t SDA, uint8_t SCL, unsigned long freqI2C, int leftAddr, int rightAddr)
+MLX::MLX(TwoWire *mlxI2C, int leftAddr, int rightAddr)
 {    
   _mlxI2C = mlxI2C; 
-  _SDA = SDA,
-  _SCL = SCL;
-  _freqI2C = freqI2C;
   _leftAddr = leftAddr;
   _rightAddr = rightAddr;
 }

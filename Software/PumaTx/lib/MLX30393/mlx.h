@@ -11,7 +11,7 @@
 
 class MLX {
   public:
-    MLX(TwoWire *mlxI2C, uint8_t SDA, uint8_t SCL, unsigned long freqI2C, int leftAddr, int rightAddr);
+    MLX(TwoWire *mlxI2C, int leftAddr, int rightAddr);
     void begin();
     void begin(bool init);
     void beginRight();
@@ -26,9 +26,6 @@ class MLX {
   
   private:  //Put here variables (in pin for example)
     TwoWire *_mlxI2C;
-    uint8_t _SDA;
-    uint8_t _SCL;
-    unsigned long _freqI2C;
     int _throttleReading;
     int _yawReading; 
     int _pitchReading;
