@@ -101,7 +101,7 @@ struct Func
   unsigned long previousTime;
   unsigned long duration;
   const    long interval;
-  uint8_t perSec;
+  uint8_t frequency;
 };
 
 //--------------------------------------------------Channel struct--------------------------------------------------
