@@ -137,7 +137,7 @@ void loop()
 
 
   //-----Display / Menu
-  if(currentTime - previousMenuMillis >= menuInterval)
+  if(currentTime - previousMenuMillis >= menuInterval)  //20Hz
   {
     previousMenuMillis = currentTime;
     unsigned long displayBeginTime = micros();
@@ -145,23 +145,27 @@ void loop()
 
     processNavButtons();
     navigation();
+    computeBattery();
+    computeThrottle();
 
-    if(page =! lastPage || line =! lastLine || update =! lastUpdate)
+    if(page != lastPage || line != lastLine || update != lastUpdate)
     {
+      lastPage = page;
+      lastLine = line;
+      lastUpdate = update;
       display.off();
       displayTxBattery();
       menuLoop();
       display.update();
-      lastPage = page;
-      lastLine = line;
-      lastUpdate = update;
+
     }
 
 
 
     unsigned long displayEndTime = micros();
-    //debug.print("display time: ");
-    //debug.println(displayEndTime - displayBeginTime); //3200us@240kHz without button reading / 1300us@1MHz with button reading
+
+    debug.print("display time: ");
+    debug.println(displayEndTime - displayBeginTime); //3200us@240kHz without button reading / 1300us@1MHz with button reading / 1400 when updating, 118@CPU240MHz when not 214 @CPU80MHz
   }  
 
   //scannerMlx();

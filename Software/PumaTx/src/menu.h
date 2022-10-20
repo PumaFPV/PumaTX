@@ -43,12 +43,18 @@ void rfConfigLine_5();
 
 void navigation();
 
+void displayTxBattery();
+void computeBattery();
+void displayThrottle();
+
 uint8_t maxLines = 0;
 uint8_t lastPage = 255;
 uint8_t lastLine = 255;
 uint32_t update = 0; 
 uint32_t lastUpdate = 0;
+uint8_t lastTest = 0;
 
+int test;
 
 void menuLoop()
 {
@@ -56,12 +62,13 @@ void menuLoop()
   //int test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
   //display.setLeftGraph(test, 1);
   //display.update();
-  int test;
+
   if(line == 0)
   {
     display.setName("page");
     display.setNamedRssi(page, 3);
   }
+
   switch(page)
   {
 
@@ -71,9 +78,7 @@ void menuLoop()
       {
         display.setText("  pumatx  ");
       }
-      //test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 1, 6);
-      //display.setLeftGraph(test, 1);
-      //update++;
+      displayThrottle();
       break;
   
     case 1: //Telem
@@ -296,14 +301,37 @@ void navigation(){
 
 void displayTxBattery()
 {
-    voltage.state = analogRead(voltage.pin);
-    voltage.process = (-0.023 * (voltage.state * voltage.state) + 233.93 * voltage.state - 145559) / 100;  //output in mV
-    
-    voltage.process = 4200;
-    
-    voltage.output = constrain(map(voltage.process, 3500, 4190, 0, 100), 0, 100);
-    display.setTxBatteryPercentage(voltage.output, 1);
-    display.setTxBatteryBar(map(voltage.output, -20, 80, 0, 3), 1);
+  display.setTxBatteryPercentage(voltage.output, 1);
+  display.setTxBatteryBar(map(voltage.output, -20, 80, 0, 3), 1);
+}
+
+void computeBattery()
+{
+  voltage.state = analogRead(voltage.pin);
+  voltage.process = (-0.023 * (voltage.state * voltage.state) + 233.93 * voltage.state - 145559) / 100;  //output in mV
+  
+  voltage.process = 4200;
+  
+  voltage.output = constrain(map(voltage.process, 3500, 4190, 0, 100), 0, 100);
+  if(voltage.output != voltage.previous)
+  {
+    voltage.previous = voltage.output;
     update++;
+  }
+}
+
+void displayThrottle()
+{
+  display.setLeftGraph(test, 1);
+}
+
+void computeThrottle()
+{
+  test = map(throttle.output, LOWER_CHAN, UPPER_CHAN, 0, 7);
+  if(test != lastTest)
+  {
+    lastTest = test;
+    update++;
+  }
 
 }

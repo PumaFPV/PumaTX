@@ -91,6 +91,7 @@ struct ADC
     int intermediate;
     int min;
     int max;
+    uint16_t previous;
 };
 
 //--------------------------------------------------Channel struct--------------------------------------------------
@@ -153,9 +154,9 @@ Button sport = {SPORT, 1, 1, 1, 0};
 
 
 //--------------------------------------------------ADC struct--------------------------------------------------
-ADC voltage = {BATTERY_VOLTAGE, 0, 0, 0, 0, 0, 0, 0}; 
-ADC leftPot = {LEFT_POT, 0, 0, 0, 0, 0, 440, 3570};  
-ADC rightPot = {RIGHT_POT, 0, 0, 0, 0, 0, 440, 3600}; 
+ADC voltage = {BATTERY_VOLTAGE, 0, 0, 0, 0, 0, 0, 0, 0}; 
+ADC leftPot = {LEFT_POT, 0, 0, 0, 0, 0, 440, 3570, 0};  
+ADC rightPot = {RIGHT_POT, 0, 0, 0, 0, 0, 440, 3600, 0}; 
 
 
 
