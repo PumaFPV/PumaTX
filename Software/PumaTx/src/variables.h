@@ -49,7 +49,6 @@
 
 
 //--------------------------------------------------Initialize libraries--------------------------------------------------
-
 HardwareSerial debug = HardwareSerial(0);
 HardwareSerial crsf = HardwareSerial(1);
 

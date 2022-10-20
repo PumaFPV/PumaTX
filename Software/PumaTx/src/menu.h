@@ -17,9 +17,16 @@
     - Range
  */
 
+#define PAGES 3
+#define TELEM_LINES 4
+#define RC_LINES 3
+#define RF_LINES 5
 
 volatile int page = 0;
 volatile int line = 0;
+
+uint8_t mW = 250;
+String countryCode = "eu";
 
 void menuLoop();
 
@@ -66,7 +73,7 @@ void menuLoop()
   if(line == 0)
   {
     display.setName("page");
-    display.setNamedRssi(page, 3);
+    display.setNamedRssi(page, PAGES);
   }
 
   switch(page)
@@ -82,7 +89,7 @@ void menuLoop()
       break;
   
     case 1: //Telem
-      maxLines = 4;
+      maxLines = TELEM_LINES;
       if(line == 0)
       {
         display.setText("telem");
@@ -91,7 +98,7 @@ void menuLoop()
       break;
       
     case 2: //RC Config
-      maxLines = 3;
+      maxLines = RC_LINES;
       if(line == 0)
       {
         display.setText("rc config");
@@ -100,7 +107,7 @@ void menuLoop()
       break;
       
     case 3: //RF Config
-      maxLines = 5;
+      maxLines = RF_LINES;
       if(line == 0)
       {
         display.setText("rf config");
@@ -115,6 +122,10 @@ void menuLoop()
 
 void telemPage()
 {
+  if(line != 0)
+  {
+    display.setName("tlm");
+  }
 
   switch(line)
   {
@@ -138,34 +149,34 @@ void telemPage()
 
 void telemLine_1()
 {
-  display.setName("tlm");
-  display.setNamedRssi(1, 4);
+  display.setNamedRssi(1, TELEM_LINES);
   display.setText("telem p1");
 }
 
 void telemLine_2()
 {
-  display.setName("tlm");
-  display.setNamedRssi(2, 4);
+  display.setNamedRssi(2, TELEM_LINES);
   display.setText("telem p2");
 }
 
 void telemLine_3()
 {
-  display.setName("tlm");
-  display.setNamedRssi(3, 4);
+  display.setNamedRssi(3, TELEM_LINES);
   display.setText("telem p3");
 }
 
 void telemLine_4()
 {
-  display.setName("tlm");
-  display.setNamedRssi(4, 4);
+  display.setNamedRssi(4, TELEM_LINES);
   display.setText("telem p4");
 }
 
 void rcConfigPage()
 {
+  if(line != 0)
+  {
+    display.setName("rc");
+  }
 
   switch(line)
   {
@@ -183,29 +194,30 @@ void rcConfigPage()
 
 void rcConfigLine_1()
 {
-  display.setName("rc");
-  display.setNamedRssi(1, 3);
-  display.setText("rc1");
+  display.setNamedRssi(1, RC_LINES);
+  display.setText("model nb");
 }
 
 void rcConfigLine_2()
 {
-  display.setName("rc");
-  display.setNamedRssi(2, 3);
-  display.setText("rc2");
+  display.setNamedRssi(2, RC_LINES);
+  display.setText("type");
 }
 
 void rcConfigLine_3()
 {
-  display.setName("rc");
-  display.setNamedRssi(3, 3);
-  display.setText("rc3");
+  display.setNamedRssi(3, RC_LINES);
+  display.setText("calib");
 }
 
 
 
 void rfConfigPage()
 {
+  if(line != 0)
+  {
+    display.setName("rf");
+  }
 
   switch(line)
   {
@@ -229,37 +241,34 @@ void rfConfigPage()
 
 void rfConfigLine_1()
 {
-  display.setName("rf");
-  display.setNamedRssi(1, 5);
-  display.setText("rf1");
+  display.setNamedRssi(1, RF_LINES);
+  display.setText("protocol");
 }
 
 void rfConfigLine_2()
 {
-  display.setName("rf");
-  display.setNamedRssi(2, 5);
-  display.setText("rf2");
+  display.setNamedRssi(2, RF_LINES);
+  display.setText("rx nb");
 }
 
 void rfConfigLine_3()
 {
-  display.setName("rf");
-  display.setNamedRssi(3, 5);
-  display.setText("rf3");
+  display.setNamedRssi(3, RF_LINES);
+  display.setText("mode eu 10");
+  display.setClearance(countryCode, 0);
+  display.setEv(mW, 0);
 }
 
 void rfConfigLine_4()
 {
-  display.setName("rf");
-  display.setNamedRssi(4, 5);
-  display.setText("rf4");
+  display.setNamedRssi(4, RF_LINES);
+  display.setText("bind");
 }
 
 void rfConfigLine_5()
 {
-  display.setName("rf");
-  display.setNamedRssi(5, 5);
-  display.setText("rf5");
+  display.setNamedRssi(5, RF_LINES);
+  display.setText("range");
 }
 
 void navigation(){

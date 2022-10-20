@@ -14,6 +14,7 @@
 
 //--------------------------------------------------Include libraries--------------------------------------------------
 #include <Arduino.h>
+
 #include <Wire.h>
 #include "mlx.h"
 #include "GL200ADisplay.h"
@@ -23,7 +24,6 @@
 #include "buttons.h"
 #include "rc.h"
 #include "menu.h"
-//#include "dualcore.h"
 
 
 //-----MLX
@@ -74,10 +74,9 @@ void setup()
   debug.println("display begin done");
   //display.displayDefault();
   display.off();
-  delay(1000);
   display.setText("  pumatx");
   display.update();
-  delay(2000);
+  delay(1000);
 }
 
 
@@ -164,8 +163,8 @@ void loop()
 
     unsigned long displayEndTime = micros();
 
-    debug.print("display time: ");
-    debug.println(displayEndTime - displayBeginTime); //3200us@240kHz without button reading / 1300us@1MHz with button reading / 1400 when updating, 118@CPU240MHz when not 214 @CPU80MHz
+    //debug.print("display time: ");
+    //debug.println(displayEndTime - displayBeginTime); //3200us@240kHz without button reading / 1300us@1MHz with button reading / 1400 when updating, 118@CPU240MHz when not 214 @CPU80MHz
   }  
 
   //scannerMlx();

@@ -574,6 +574,12 @@ void GL200ADisplay::setClearance(int clearance, bool pic)		//set clearance, 3 di
   bitWrite(displayByte[11], 4, pic);  //saw teeth
 }
 
+void GL200ADisplay::setClearance(String clearance, bool pic)
+{
+  drawClearance(1, clearance.charAt(1));
+  drawClearance(2, clearance.charAt(0));
+}
+
 void GL200ADisplay::drawClearance(uint8_t display, char digit)  //draw to individual digit of clearance
 {
   byte segment = charTo7Segment(digit);
@@ -606,6 +612,12 @@ void GL200ADisplay::setEv(int ev, bool pic)  //set ev, 3 digit max, 2 if using +
   drawEv(2, ev_10);
   drawEv(3, ev_100);
   bitWrite(displayByte[60], 5, pic);
+}
+
+void GL200ADisplay::setEv(String ev, bool pic)  //set ev, 3 digit max, 2 if using + or - | pic is ev | dot kinda supported
+{
+  drawEv(2, ev.charAt(0));
+  drawEv(1, ev.charAt(1));
 }
 
 void GL200ADisplay::drawEv(uint8_t display, char digit) //draw to individual digit of ev 
@@ -696,34 +708,7 @@ void GL200ADisplay::setText(String text, int scrollSpeed)  //set text to display
 
 void GL200ADisplay::setText(String text)  //set text to display on the 11 14 segment display. if size of text > 11 the text will scroll automaticly | scroll speed is in ms 
 {
-  int scrollSpeed = 400;
-
-  if(text.length() > 11)
-  {
-    for(int j = 0; text.length() - j + 2 > 11; j++)
-    {
-      for(int i = 0; i < text.length() ; i++)
-      {
-        drawText(i - j, text.charAt(i)); 
-      }
-      update();
-      delay(scrollSpeed);
-    }
-  }
-  else
-  {
-    for(int i = 0; i < text.length() ; i++)
-    {
-      drawText(i, text.charAt(i)); 
-    }
-    if(text.length() < 11)
-    {
-      for(int i = 0; i < 11 - text.length(); i++)
-      {
-        drawText(i + text.length(), 32);
-      }
-    }
-  }
+  GL200ADisplay::setText(text, 400);
 }
 
 void GL200ADisplay::update()	//update display, has to be called to update display.
@@ -965,33 +950,7 @@ void GL200ADisplay::setName(String name, int scrollSpeed)  //set text for rssi n
 
 void GL200ADisplay::setName(String name)  //set text for rssi name 4 14 segment display. if size of text > 4 the text will scroll automaticly | scroll speed is in ms 
 {
-  int scrollSpeed = 400;
-  if(name.length() > 4)
-  {
-    for(int j = 0; name.length() - j + 2 > 4; j++)
-    {
-      for(int i = 0; i < name.length() ; i++)
-      {
-        drawName(i - j, name.charAt(i)); 
-      }
-      update();
-      delay(scrollSpeed);
-    }
-  }
-  else
-  {
-    for(int i = 0; i < name.length() ; i++)
-    {
-      drawName(i, name.charAt(i)); 
-    }
-    if(name.length() < 4)
-    {
-      for(int i = 0; i < 4 - name.length(); i++)
-      {
-        drawName(i + name.length(), 32); //fill with space if less than 4 char
-      }
-    }
-  }
+  GL200ADisplay::setName(name, 400);
 }
 
 void GL200ADisplay::drawName(int display, int chara)	//draw to individual digit of 14 segment displays
@@ -1068,7 +1027,22 @@ void GL200ADisplay::drawName(int display, int chara)	//draw to individual digit 
 
 byte GL200ADisplay::charTo7Segment(char digit) //input number, output segment to turn on. order is 0bgfedcba
 {
-  byte bit7Digit[] = {63,6,91,79,102,109,125,7,127,111};
+  byte bit7Digit[] = {63,6,91,79,102,109,125,7,127,111,0b1111001,0b0111110,};
+  switch(digit)
+  {
+    case 'e':
+      digit = 10;
+      break;
+    case 'u':
+      digit = 11;
+      break;
+    case 's':
+      digit = 5;
+      break;
+    
+    default:
+      break;
+  }
 
   return bit7Digit[digit];
 }
