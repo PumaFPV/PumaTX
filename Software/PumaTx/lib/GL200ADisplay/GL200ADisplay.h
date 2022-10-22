@@ -16,7 +16,8 @@ class GL200ADisplay
 		void begin();
 		void update();
 		
-		void off();
+		void off(uint32_t zone);
+			void off();
 		void setLeftGraph(uint8_t bar, bool pic);
 		void setRightGraph(uint8_t bar, bool pic);
 		void setRcRssi(uint8_t bar, bool pic);
@@ -44,6 +45,36 @@ class GL200ADisplay
    			void setName(String text);
     
 		void displayDefault();  //display 0 everywhere
+
+		bool speedNumberMask = 1;
+		bool kmhMask = 1;
+		bool leftGraphMask = 1;
+		bool namedRssiMask = 1;
+		bool droneBatteryMask = 1;
+		bool rcRssiMask = 1;
+		bool rightGraphMask = 1;
+		bool rpmNumberMask = 1;
+		bool rpmTextMask = 1;
+		bool rpmX10Mask = 1;
+		bool textMask = 1;
+		bool txBatteryMask = 1;
+		bool visionMask = 1;
+		bool recMask = 1;
+		bool evMask = 1;
+		bool evPicMask = 1;
+		bool sdMask = 1;
+		bool sportMask = 1;
+		bool clearancePicMask = 1;
+		bool clearanceNumbeMask = 1;
+		bool clearanceTextMask = 1;
+		bool clearanceUnitMask = 1;
+		bool heightNumberMask = 1;
+		bool heightUnitMask = 1;
+		bool heightTextMask = 1;
+		bool varioMask = 1;
+		bool distanceNumberMask = 1;
+		bool distanceUnitMask = 1;
+		bool distanceTextMask = 1;
 
 	private:
 		TwoWire *_displayI2C;

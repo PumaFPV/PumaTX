@@ -7,11 +7,38 @@
 	Created by Nicolas de Grave and with the help of fakolours, November 23rd, 2020
 */
 
+#define SPEEDNUMBERPOSITION 1
+#define KMHPOSITION 2
+#define LEFTGRAPHPOSITION 3
+#define NAMEDRSSIPOSITION 4
+#define DRONEBATTERYPOSITION 5
+#define RCRSSIPOSITION 6
+#define RIGHTGRAPHPOSITION 7
+#define RPMNUMBERPOSITION 8
+#define RPMTEXTPOSITION 9
+#define RPMX10POSITION 10
+#define TEXTPOSITION 11
+#define TXBATTERYPOSITION 12
+#define VISIONPOSITION 13
+#define RECPOSITION 14
+#define EVPOSITION 15
+#define EVPICPOSITION 16
+#define SDPOSITION 17
+#define SPORTPOSITION 18
+#define CLEARANCEPICPOSITION 19
+#define CLEARANCENUMBEPOSITION 20
+#define CLEARANCETEXTPOSITION 21
+#define CLEARANCEUNITPOSITION 22
+#define HEIGHTNUMBERPOSITION 23
+#define HEIGHTUNITPOSITION 24
+#define HEIGHTTEXTPOSITION 25
+#define VARIOPOSITION 26
+#define DISTANCENUMBERPOSITION 27
+#define DISTANCEUNITPOSITION 28
+#define DISTANCETEXTPOSITION 29
+
 #include "Arduino.h"
 #include "GL200ADisplay.h"
-/* #include <Wire.h>
- */
-/*TwoWire _displayI2C;*/
 
 GL200ADisplay::GL200ADisplay(TwoWire *displayI2C, uint8_t BlPin)
 {
@@ -104,6 +131,16 @@ void GL200ADisplay::begin()  //setup function. has to be called to init program
   
   displayDefault();
   
+}
+
+void GL200ADisplay::off(uint32_t zone)
+{
+  
+  if(zone && (speedNumberMask << SPEEDNUMBERPOSITION))
+  {
+
+  }
+
 }
 
 void GL200ADisplay::off()

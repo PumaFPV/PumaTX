@@ -135,10 +135,13 @@ void loop()
   currentTime = millis();
 
 
+
+
   //-----MLX
   if(currentTime - mlxTask.previousTime >= mlxTask.interval)
   {
     mlxTask.previousTime = currentTime;
+    mlxTask.inBetweenTime = mlxTask.previousTime - mlxTask.endTime;
     mlxTask.beginTime = micros();
 
     mlx.process();
@@ -155,6 +158,7 @@ void loop()
   if(currentTime - buttonTask.previousTime >= buttonTask.interval)
   {
     buttonTask.previousTime = currentTime;
+    buttonTask.inBetweenTime = buttonTask.previousTime - buttonTask.endTime;
     buttonTask.beginTime = micros();
 
     processRcButtons(); //reads 16 inputs
@@ -170,8 +174,8 @@ void loop()
   if(currentTime - rcTask.previousTime >= rcTask.interval) //40ms->25Hz
   {
     rcTask.previousTime = currentTime;
+    rcTask.inBetweenTime = rcTask.previousTime - rcTask.endTime;
     rcTask.beginTime = micros();
-    rcTask.counter++;
 
     computeRc();
     rcData(); 
@@ -196,14 +200,14 @@ void loop()
   if(currentTime - menuTask.previousTime >= menuTask.interval)  //20Hz
   {
     menuTask.previousTime = currentTime;
+    menuTask.inBetweenTime = menuTask.previousTime - menuTask.endTime;
     menuTask.beginTime = micros();
-
 
     processNavButtons();
     navigation();
     computeBattery();
     computeThrottle();
-
+    
     if(page != lastPage || line != lastLine || update != lastUpdate)
     {
       lastPage = page;
@@ -214,7 +218,6 @@ void loop()
       display.setRpm(mlxTask.frequency, 0);
       menuHandler();
       display.update();
-
     }
 
     menuTask.endTime = micros();
@@ -235,6 +238,7 @@ void loop()
   //Task
   if(currentTime - Task.previousTime >= Task.interval)
   {
+    Task.inBetweenTime = Task.previousTime - Task.endTime;
     Task.previousTime = currentTime;
     Task.beginTime = micros();
 

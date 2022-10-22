@@ -102,6 +102,7 @@ struct Func
   unsigned long duration;
   const    long interval;
   uint8_t frequency;
+  unsigned long inBetweenTime;
 };
 
 //--------------------------------------------------Channel struct--------------------------------------------------
@@ -168,12 +169,12 @@ ADC leftPot =  {LEFT_POT, 0, 0, 0, 0, 0, 440, 3570, 0};
 ADC rightPot = {RIGHT_POT, 0, 0, 0, 0, 0, 440, 3600, 0}; 
 
 //--------------------------------------------------Func struct--------------------------------------------------
-Func mlxTask =    {0, 0, 0, 0, 0, 0, 10, 0};
-Func buttonTask = {0, 0, 0, 0, 0, 0, 20, 0};
-Func rcTask =     {0, 0, 0, 0, 0, 0, 10, 0};
-Func crsfTask =   {0, 0, 0, 0, 0, 0, 10, 0};
-Func menuTask =   {0, 0, 0, 0, 0, 0, 50, 0};
-Func hapticTask = {0, 0, 0, 0, 0, 0, 50, 0};
+Func mlxTask =    {0, 0, 0, 0, 0, 0, 10, 0, 0};
+Func buttonTask = {0, 0, 0, 0, 0, 0, 20, 0, 0};
+Func rcTask =     {0, 0, 0, 0, 0, 0, 10, 0, 0};
+Func crsfTask =   {0, 0, 0, 0, 0, 0, 10, 0, 0};
+Func menuTask =   {0, 0, 0, 0, 0, 0, 50, 0, 0};
+Func hapticTask = {0, 0, 0, 0, 0, 0, 50, 0, 0};
 
 //--------------------------------------------------Variables--------------------------------------------------
 unsigned long debounceDelay = 200;
