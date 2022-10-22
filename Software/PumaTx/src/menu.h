@@ -15,13 +15,14 @@
     - RF mode: EU, US / 10mw, 100mw
     - Bind
     - Range
+    - Flash
  */
 
 
 #define PAGES 3
 #define TELEM_LINES 4
 #define RC_LINES 3
-#define RF_LINES 5
+#define RF_LINES 6
 
 volatile int page = 0;
 volatile int line = 0;
@@ -48,12 +49,14 @@ void rfConfigLine_2();
 void rfConfigLine_3();
 void rfConfigLine_4();
 void rfConfigLine_5();
+void rfConfigLine_6();
 
 void navigation();
 
 void displayTxBattery();
 void computeBattery();
 void displayThrottle();
+void displayPitch();
 
 uint8_t maxLines = 0;
 uint8_t lastPage = 255;
@@ -61,8 +64,9 @@ uint8_t lastLine = 255;
 uint32_t update = 0; 
 uint32_t lastUpdate = 0;
 uint8_t lastTest = 0;
+uint8_t lastTestP = 0;
 
-int test;
+int test, testP;
 
 void menuHandler()
 {
@@ -87,6 +91,7 @@ void menuHandler()
         display.setText("  pumatx  ");
       }
       displayThrottle();
+      displayPitch();
       break;
   
     case 1: //Telem
@@ -237,6 +242,9 @@ void rfConfigPage()
     case 5:
       rfConfigLine_5(); 
       break;
+    case 6:
+      rfConfigLine_6();
+      break;
   }
 }
 
@@ -270,6 +278,12 @@ void rfConfigLine_5()
 {
   display.setNamedRssi(5, RF_LINES);
   display.setText("range");
+}
+
+void rfConfigLine_6()
+{
+  display.setNamedRssi(6, RF_LINES);
+  display.setText("flash");
 }
 
 void navigation(){
@@ -307,7 +321,6 @@ void navigation(){
     display.begin();
     display.off();
     display.update();
-
   }
 }
 
@@ -343,6 +356,22 @@ void computeThrottle()
   if(test != lastTest)
   {
     lastTest = test;
+    update++;
+  }
+
+}
+
+void displayPitch()
+{
+  display.setRightGraph(testP, 1);
+}
+
+void computePitch()
+{
+  testP = map(pitch.output, LOWER_CHAN, UPPER_CHAN, 0, 7);
+  if(testP != lastTestP)
+  {
+    lastTestP = testP;
     update++;
   }
 

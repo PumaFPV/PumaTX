@@ -40,7 +40,7 @@ void setup()
   //-----Button
   pinModeDef(); //Defines every buttons
 
- 
+
   //-----RC
 
 
@@ -132,15 +132,33 @@ void loop()
     hapticTask.startTime = micros();
   }
 
-  currentTime = millis();
 
+
+  currentTime = micros();
+
+
+  //-----Button
+  if(currentTime - buttonTask.previousTime >= buttonTask.interval)
+  {
+    buttonTask.previousTime = micros();
+    buttonTask.inBetweenTime = buttonTask.previousTime - buttonTask.endTime;
+    buttonTask.beginTime = micros();
+
+    processRcButtons(); //reads 16 inputs
+
+    buttonTask.endTime = micros();
+    buttonTask.counter++;
+    buttonTask.duration = buttonTask.endTime - buttonTask.beginTime;
+    //debug.print("button time: ");
+    //debug.println(buttonTask.duration); //355us with 16 readings, 230us with rc necessary
+  }
 
 
 
   //-----MLX
   if(currentTime - mlxTask.previousTime >= mlxTask.interval)
   {
-    mlxTask.previousTime = currentTime;
+    mlxTask.previousTime = micros();
     mlxTask.inBetweenTime = mlxTask.previousTime - mlxTask.endTime;
     mlxTask.beginTime = micros();
 
@@ -154,26 +172,12 @@ void loop()
     //debug.println(mlxTask.duration); //730us
   }
 
-  //-----Button
-  if(currentTime - buttonTask.previousTime >= buttonTask.interval)
-  {
-    buttonTask.previousTime = currentTime;
-    buttonTask.inBetweenTime = buttonTask.previousTime - buttonTask.endTime;
-    buttonTask.beginTime = micros();
 
-    processRcButtons(); //reads 16 inputs
-
-    buttonTask.endTime = micros();
-    buttonTask.counter++;
-    buttonTask.duration = buttonTask.endTime - buttonTask.beginTime;
-    //debug.print("button time: ");
-    //debug.println(buttonTask.duration); //355us with 16 readings, 230us with rc necessary
-  }
 
   //-----RC
   if(currentTime - rcTask.previousTime >= rcTask.interval) //40ms->25Hz
   {
-    rcTask.previousTime = currentTime;
+    rcTask.previousTime = micros();
     rcTask.inBetweenTime = rcTask.previousTime - rcTask.endTime;
     rcTask.beginTime = micros();
 
@@ -199,7 +203,7 @@ void loop()
   //-----Display / Menu
   if(currentTime - menuTask.previousTime >= menuTask.interval)  //20Hz
   {
-    menuTask.previousTime = currentTime;
+    menuTask.previousTime = micros();
     menuTask.inBetweenTime = menuTask.previousTime - menuTask.endTime;
     menuTask.beginTime = micros();
 
@@ -207,7 +211,9 @@ void loop()
     navigation();
     computeBattery();
     computeThrottle();
-    
+    computePitch();
+
+
     if(page != lastPage || line != lastLine || update != lastUpdate)
     {
       lastPage = page;
@@ -215,7 +221,7 @@ void loop()
       lastUpdate = update;
       display.off();
       displayTxBattery();
-      display.setRpm(mlxTask.frequency, 0);
+      display.setRpm(mlxTask.duration, 0);
       menuHandler();
       display.update();
     }
