@@ -16,6 +16,13 @@
     - Bind
     - Range
     - Flash
+  4- Function stats
+    -mlx
+    -button
+    -rc
+    -crsf
+    -menu
+    -haptic
  */
 
 

@@ -129,6 +129,17 @@ void loop()
     hapticTask.counter = 0;
   }
 
+  if(hapticTask.counter == 0)
+  {
+    hapticTask.startCounterTime = micros();
+  }
+  if(micros() - hapticTask.startCounterTime > 1000000)
+  {
+    hapticTask.frequency = hapticTask.counter;
+    //debug.println(hapticTask.counter);
+    hapticTask.counter = 0;
+  }
+
 
   //-----Button
   if(micros() - buttonTask.beginTime >= buttonTask.interval)
@@ -220,7 +231,19 @@ void loop()
     //debug.println(menuLoop.duration); //3200us@240kHz without button reading / 1300us@1MHz with button reading / 1400 when updating, 118@CPU240MHz when not 214 @CPU80MHz
   }  
 
-  hapticHandler();
+
+  if(micros() - hapticTask.beginTime >= hapticTask.interval)
+  {
+    hapticTask.beginTime = micros();
+    hapticTask.inBetweenTime = hapticTask.beginTime - hapticTask.endTime;
+
+    hapticHandler();
+
+    hapticTask.endTime = micros();
+    hapticTask.counter++;
+    hapticTask.duration = hapticTask.endTime - hapticTask.beginTime;
+
+  }
 
 }
 
