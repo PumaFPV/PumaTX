@@ -11,7 +11,7 @@ void hapticSetup()
     ledcWrite(1, 0);
 }
 
-void hapticHandler()
+void hapticHandler(uint8_t hapticDutyCycle)
 {
-    ledcWrite(1, hapticDuty);
+    ledcWrite(1, hapticDutyCycle);
 }

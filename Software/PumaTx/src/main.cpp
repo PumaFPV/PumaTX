@@ -237,7 +237,7 @@ void loop()
     hapticTask.beginTime = micros();
     hapticTask.inBetweenTime = hapticTask.beginTime - hapticTask.endTime;
 
-    hapticHandler();
+    hapticHandler(hapticDuty);
 
     hapticTask.endTime = micros();
     hapticTask.counter++;

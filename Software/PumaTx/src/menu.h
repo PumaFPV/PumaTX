@@ -284,9 +284,9 @@ void rfConfigLine_2()
 void rfConfigLine_3()
 {
   display.setNamedRssi(3, RF_LINES);
-  display.setText("mode eu 10");
+  display.setText("mode");
   display.setClearance(countryCode, 0);
-  display.setEv(mW, 0);
+  display.setHeight(mW, 0);
 }
 
 void rfConfigLine_4()
