@@ -541,7 +541,7 @@ void GL200ADisplay::drawDistance(uint8_t display, char digit)  //draw to individ
   bitWrite(displayByte[display], 5, bitRead(segment, 6));  //g
 }
 
-void GL200ADisplay::setAltitude(int altitude, bool pic)	//set altitude, 4 digit max | pic is altitude on middle bottom | only meter yet (turn on by pic)
+void GL200ADisplay::setHeight(int altitude, bool pic)	//set altitude, 4 digit max | pic is altitude on middle bottom | only meter yet (turn on by pic)
 {
   int altitude_1 = 0;
   int altitude_10 = 0;

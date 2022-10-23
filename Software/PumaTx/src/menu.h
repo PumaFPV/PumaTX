@@ -19,10 +19,11 @@
  */
 
 
-#define PAGES 3
+#define PAGES 4
 #define TELEM_LINES 4
 #define RC_LINES 3
 #define RF_LINES 6
+#define FUNC_LINES 6
 
 volatile int page = 0;
 volatile int line = 0;
@@ -50,6 +51,8 @@ void rfConfigLine_3();
 void rfConfigLine_4();
 void rfConfigLine_5();
 void rfConfigLine_6();
+
+void funcStatPage();
 
 void navigation();
 
@@ -120,10 +123,16 @@ void menuHandler()
       }
       rfConfigPage();
       break;
+
+    case 4: //Func stat
+      maxLines = FUNC_LINES;
+      if(line == 0)
+      {
+        display.setText("func stat");
+      }
+      funcStatPage();
   }
 }  
-
-
 
 
 void telemPage()
@@ -153,6 +162,7 @@ void telemPage()
   }
 }
 
+
 void telemLine_1()
 {
   display.setNamedRssi(1, TELEM_LINES);
@@ -177,6 +187,8 @@ void telemLine_4()
   display.setText("telem p4");
 }
 
+
+
 void rcConfigPage()
 {
   if(line != 0)
@@ -197,6 +209,7 @@ void rcConfigPage()
       break;
   }
 }
+
 
 void rcConfigLine_1()
 {
@@ -248,6 +261,7 @@ void rfConfigPage()
   }
 }
 
+
 void rfConfigLine_1()
 {
   display.setNamedRssi(1, RF_LINES);
@@ -286,9 +300,72 @@ void rfConfigLine_6()
   display.setText("flash");
 }
 
+
+
+void funcStatPage()
+{
+  if(line != 0)
+  {
+    display.setName("func");
+  }
+
+  switch(line)
+  {
+    case 1:
+      display.setNamedRssi(line, FUNC_LINES);
+      display.setText("mlx");
+      display.setRpm(mlxTask.duration, 0);
+      display.setHeight(mlxTask.frequency, 0);
+      display.setDistance(mlxTask.inBetweenTime + mlxTask.duration, 0);
+      break;
+      
+    case 2:
+      display.setNamedRssi(line, FUNC_LINES);
+      display.setText("button");
+      display.setRpm(buttonTask.duration, 0);
+      display.setHeight(buttonTask.frequency, 0);
+      display.setDistance(buttonTask.inBetweenTime + buttonTask.duration, 0);
+      break;
+    
+    case 3:
+      display.setNamedRssi(line, FUNC_LINES);
+      display.setText("rc");
+      display.setRpm(rcTask.duration, 0);
+      display.setHeight(rcTask.frequency, 0);
+      display.setDistance(rcTask.inBetweenTime + rcTask.duration, 0);
+      break;
+      
+    case 4:
+      display.setNamedRssi(line, FUNC_LINES);
+      display.setText("crsf");
+      display.setRpm(crsfTask.duration, 0);
+      display.setHeight(crsfTask.frequency, 0);
+      display.setDistance(crsfTask.inBetweenTime + crsfTask.duration, 0);
+      break;
+
+    case 5:
+      display.setNamedRssi(line, FUNC_LINES);
+      display.setText("menu");
+      display.setRpm(menuTask.duration, 0);
+      display.setHeight(menuTask.frequency, 0);
+      display.setDistance(menuTask.inBetweenTime + menuTask.duration, 0);
+      break;
+
+    case 6:
+      display.setNamedRssi(line, FUNC_LINES);
+      display.setText("haptic");
+      display.setRpm(hapticTask.duration, 0);
+      display.setHeight(hapticTask.frequency, 0);
+      display.setDistance(hapticTask.inBetweenTime + hapticTask.duration, 0);
+      break;
+  }
+}
+
+
+
 void navigation(){
     
-  if (right.state == 0 && page < 3 && right.prev == 1 && millis() - right.currentTime > debounceDelay) 
+  if (right.state == 0 && page < PAGES && right.prev == 1 && millis() - right.currentTime > debounceDelay) 
   { //menu right -> page+
     ++page;
     line = 0;

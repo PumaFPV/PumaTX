@@ -30,7 +30,7 @@ class GL200ADisplay
 		void setRpm(int rpm, bool pic); 
 		void setSpeed(int speed, bool pic);
 		void setDistance(int distance, bool pic);
-		void setAltitude(int altitude, bool pic);
+		void setHeight(int altitude, bool pic);
 		void setClearance(int clearance, bool pic);
 			void setClearance(String clearance, bool pic);
 		void setEv(int ev, bool pic);

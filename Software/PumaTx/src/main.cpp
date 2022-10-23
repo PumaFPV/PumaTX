@@ -57,92 +57,84 @@ void setup()
 
 }
 
+
+
+
 void loop()
 {
 
   if(mlxTask.counter == 0)
   {
-    mlxTask.startTime = micros();
+    mlxTask.startCounterTime = micros();
   }
-  if(micros() - mlxTask.startTime > 1000000)
+  if(micros() - mlxTask.startCounterTime > MIRCOS2SECONDS)
   {
     mlxTask.frequency = mlxTask.counter;
     //debug.println(mlxTask.counter);
     mlxTask.counter = 0;
-    mlxTask.startTime = micros();
-  }
+  }   
 
   if(buttonTask.counter == 0)
   {
-    buttonTask.startTime = micros();
+    buttonTask.startCounterTime = micros();
   }
-  if(micros() - buttonTask.startTime > 1000000)
+  if(micros() - buttonTask.startCounterTime > MIRCOS2SECONDS)
   {
     buttonTask.frequency = buttonTask.counter;
     //debug.println(buttonTask.counter);
     buttonTask.counter = 0;
-    buttonTask.startTime = micros();
   }
 
   if(rcTask.counter == 0)
   {
-    rcTask.startTime = micros();
+    rcTask.startCounterTime = micros();
   }
-  if(micros() - rcTask.startTime > 1000000)
+  if(micros() - rcTask.startCounterTime > MIRCOS2SECONDS)
   {
     rcTask.frequency = rcTask.counter;
     //debug.println(rcTask.counter);
     rcTask.counter = 0;
-    rcTask.startTime = micros();
   }
 
   if(crsfTask.counter == 0)
   {
-    crsfTask.startTime = micros();
+    crsfTask.startCounterTime = micros();
   }
-  if(micros() - crsfTask.startTime > 1000000)
+  if(micros() - crsfTask.startCounterTime > MIRCOS2SECONDS)
   {
     crsfTask.frequency = crsfTask.counter;
     //debug.println(crsfTask.counter);
     crsfTask.counter = 0;
-    crsfTask.startTime = micros();
   }
 
   if(menuTask.counter == 0)
   {
-    menuTask.startTime = micros();
+    menuTask.startCounterTime = micros();
   }
-  if(micros() - menuTask.startTime > 1000000)
+  if(micros() - menuTask.startCounterTime > MIRCOS2SECONDS)
   {
     menuTask.frequency = menuTask.counter;
     //debug.println(menuTask.counter);
     menuTask.counter = 0;
-    menuTask.startTime = micros();
   }
 
   if(hapticTask.counter == 0)
   {
-    hapticTask.startTime = micros();
+    hapticTask.startCounterTime = micros();
   }
-  if(micros() - hapticTask.startTime > 1000000)
+  if(micros() - hapticTask.startCounterTime > MIRCOS2SECONDS)
   {
     hapticTask.frequency = hapticTask.counter;
     //debug.println(hapticTask.counter);
     hapticTask.counter = 0;
-    hapticTask.startTime = micros();
   }
 
 
-
-  currentTime = micros();
-
-
   //-----Button
-  if(currentTime - buttonTask.previousTime >= buttonTask.interval)
+  if(micros() - buttonTask.beginTime >= buttonTask.interval)
   {
-    buttonTask.previousTime = micros();
-    buttonTask.inBetweenTime = buttonTask.previousTime - buttonTask.endTime;
     buttonTask.beginTime = micros();
+    buttonTask.inBetweenTime = buttonTask.beginTime - buttonTask.endTime;
 
     processRcButtons(); //reads 16 inputs
 
@@ -154,13 +146,11 @@ void loop()
   }
 
 
-
   //-----MLX
-  if(currentTime - mlxTask.previousTime >= mlxTask.interval)
+  if(micros() - mlxTask.beginTime >= mlxTask.interval)
   {
-    mlxTask.previousTime = micros();
-    mlxTask.inBetweenTime = mlxTask.previousTime - mlxTask.endTime;
     mlxTask.beginTime = micros();
+    mlxTask.inBetweenTime = mlxTask.beginTime - mlxTask.endTime;
 
     mlx.process();
     getMlxData();
@@ -169,17 +159,15 @@ void loop()
     mlxTask.counter++;
     mlxTask.duration = mlxTask.endTime - mlxTask.beginTime;
     //debug.print("mlx time: ");
-    //debug.println(mlxTask.duration); //730us
+    //debug.println(mlxTask.duration); //940us
   }
 
 
-
   //-----RC
-  if(currentTime - rcTask.previousTime >= rcTask.interval) //40ms->25Hz
+  if(micros() - rcTask.beginTime >= rcTask.interval) //40ms->25Hz
   {
-    rcTask.previousTime = micros();
-    rcTask.inBetweenTime = rcTask.previousTime - rcTask.endTime;
     rcTask.beginTime = micros();
+    rcTask.inBetweenTime = rcTask.beginTime - rcTask.endTime;
 
     computeRc();
     rcData(); 
@@ -190,29 +178,29 @@ void loop()
     //debug.print("rc time: ");
     //debug.println(rcTask.duration); //17us
 
+    /*
+    for(uint8_t i = 0; i<15; ++i)
+    {
+      debug.print(channels[i]);
+      debug.print(" ");
+    }
+    debug.println();
+    */
+
   } 
-  /*
-  for(uint8_t i = 0; i<15; ++i)
-  {
-    debug.print(channels[i]);
-    debug.print(" ");
-  }
-  debug.println();
-*/
+
 
   //-----Display / Menu
-  if(currentTime - menuTask.previousTime >= menuTask.interval)  //20Hz
+  if(micros() - menuTask.beginTime >= menuTask.interval)  //20Hz
   {
-    menuTask.previousTime = micros();
-    menuTask.inBetweenTime = menuTask.previousTime - menuTask.endTime;
     menuTask.beginTime = micros();
+    menuTask.inBetweenTime = menuTask.beginTime - menuTask.endTime;
 
     processNavButtons();
     navigation();
     computeBattery();
     computeThrottle();
     computePitch();
-
 
     if(page != lastPage || line != lastLine || update != lastUpdate)
     {
@@ -221,7 +209,6 @@ void loop()
       lastUpdate = update;
       display.off();
       displayTxBattery();
-      display.setRpm(mlxTask.duration, 0);
       menuHandler();
       display.update();
     }
@@ -233,7 +220,6 @@ void loop()
     //debug.println(menuLoop.duration); //3200us@240kHz without button reading / 1300us@1MHz with button reading / 1400 when updating, 118@CPU240MHz when not 214 @CPU80MHz
   }  
 
-
   hapticHandler();
 
 }
@@ -242,11 +228,10 @@ void loop()
 /* Typical task outline
 
   //Task
-  if(currentTime - Task.previousTime >= Task.interval)
+  if(micros() - Task.beginTime >= Task.interval)
   {
-    Task.inBetweenTime = Task.previousTime - Task.endTime;
-    Task.previousTime = currentTime;
     Task.beginTime = micros();
+    Task.inBetweenTime = Task.beginTime - Task.endTime;
 
     **functions
 
@@ -259,14 +244,13 @@ void loop()
   //Task frequency counter
   if(Task.counter == 0)
   {
-    Task.startTime = micros();
+    Task.startCounterTime = micros();
   }
-  if(micros() - Task.startTime > 1000000)
+  if(micros() - Task.startCounterTime > 1000000)
   {
     Task.frequency = Task.counter;
     debug.println(Task.counter);
     Task.counter = 0;
-    Task.startTime = micros();
   }
 
 */

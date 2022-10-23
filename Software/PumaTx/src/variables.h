@@ -1,12 +1,13 @@
 #ifndef variables_h
 #define variables_h
 
+//--------------------------------------------------Define--------------------------------------------------
+//----------Global values
 #define LOWER_CHAN  172
 #define UPPER_CHAN  1811
 
+#define MIRCOS2SECONDS 1000000
 
-
-//--------------------------------------------------Define--------------------------------------------------
 //----------GPI
 //--RC
 #define PHOTO 38
@@ -96,9 +97,8 @@ struct Func
 {
   uint16_t counter;
   unsigned long beginTime;
-  unsigned long startTime;
+  unsigned long startCounterTime;
   unsigned long endTime;
-  unsigned long previousTime;
   unsigned long duration;
   const    long interval;
   uint8_t frequency;
@@ -169,12 +169,12 @@ ADC leftPot =  {LEFT_POT, 0, 0, 0, 0, 0, 440, 3570, 0};
 ADC rightPot = {RIGHT_POT, 0, 0, 0, 0, 0, 440, 3600, 0}; 
 
 //--------------------------------------------------Func struct--------------------------------------------------
-Func mlxTask =    {0, 0, 0, 0, 0, 0, 10000, 0, 0};
-Func buttonTask = {0, 0, 0, 0, 0, 0, 20000, 0, 0};
-Func rcTask =     {0, 0, 0, 0, 0, 0, 10000, 0, 0};
-Func crsfTask =   {0, 0, 0, 0, 0, 0, 10000, 0, 0};
-Func menuTask =   {0, 0, 0, 0, 0, 0, 50000, 0, 0};
-Func hapticTask = {0, 0, 0, 0, 0, 0, 50000, 0, 0};
+Func mlxTask =    {0, 0, 0, 0, 0, 10000, 0, 0};
+Func buttonTask = {0, 0, 0, 0, 0, 20000, 0, 0};
+Func rcTask =     {0, 0, 0, 0, 0, 10000, 0, 0};
+Func crsfTask =   {0, 0, 0, 0, 0, 10000, 0, 0};
+Func menuTask =   {0, 0, 0, 0, 0, 50000, 0, 0};
+Func hapticTask = {0, 0, 0, 0, 0, 50000, 0, 0};
 
 //--------------------------------------------------Variables--------------------------------------------------
 unsigned long debounceDelay = 200;
