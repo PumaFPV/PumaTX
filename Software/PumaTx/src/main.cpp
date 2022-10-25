@@ -211,6 +211,7 @@ void loop()
   } 
 
 
+
   //-----CRFS
   if(micros() - crsfTask.beginTime >= crsfTask.interval)
   {
@@ -238,13 +239,11 @@ void loop()
     computeBattery();
     computeThrottle();
     computePitch();
-
     if(page != lastPage || line != lastLine || update != lastUpdate)
     {
       lastPage = page;
       lastLine = line;
       lastUpdate = update;
-      display.off();
       displayTxBattery();
       menuHandler();
       display.update();

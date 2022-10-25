@@ -135,10 +135,149 @@ void GL200ADisplay::begin()  //setup function. has to be called to init program
 
 void GL200ADisplay::off(uint32_t zone)
 {
-  
+
   if(zone && (speedNumberMask << SPEEDNUMBERPOSITION))
   {
+    displayByte[55] &= 0b11110101; 
+    displayByte[56] &= 0b00010101; 
+    displayByte[57] &= 0b00010001; 
+    displayByte[58] &= 0b00010011; 
+    displayByte[59] &= 0b00010001; 
+  }
 
+  if(zone && (speedNumberMask << KMHPOSITION))
+  {
+    displayByte[58] &= 0b11111101; 
+  }
+
+  if(zone && (speedNumberMask << LEFTGRAPHPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << NAMEDRSSIPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+  
+  if(zone && (speedNumberMask << RCRSSIPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << RIGHTGRAPHPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << RPMNUMBERPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << RPMTEXTPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << RPMX10POSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << TEXTPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << TXBATTERYPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << VISIONPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << RECPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << EVPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << EVPICPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << SDPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << SPORTPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << CLEARANCEPICPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << CLEARANCENUMBEPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << CLEARANCETEXTPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << CLEARANCEUNITPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << HEIGHTNUMBERPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << HEIGHTUNITPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << HEIGHTTEXTPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << VARIOPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << DISTANCENUMBERPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << DISTANCEUNITPOSITION))
+  {
+    displayByte[55] &= 0; 
+  }
+
+  if(zone && (speedNumberMask << DISTANCETEXTPOSITION))
+  {
+    displayByte[55] &= 0; 
   }
 
 }

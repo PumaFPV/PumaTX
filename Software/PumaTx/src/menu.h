@@ -174,12 +174,15 @@ void telemLine_1()
 {
   display.setNamedRssi(1, TELEM_LINES);
   display.setText("telem p1");
+  display.off(0b10);
+
 }
 
 void telemLine_2()
 {
   display.setNamedRssi(2, TELEM_LINES);
   display.setText("telem p2");
+  display.setSpeed(59, 1);
 }
 
 void telemLine_3()
