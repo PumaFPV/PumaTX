@@ -6,8 +6,8 @@ void hapticSetup()
 {
     ledcSetup(1, 40000, 8);
     ledcAttachPin(HAPTIC_PWM, 1);
-    ledcWrite(1, 200);
-    delay(400);
+    ledcWrite(1, 100);
+    delay(300);
     ledcWrite(1, 0);
 }
 

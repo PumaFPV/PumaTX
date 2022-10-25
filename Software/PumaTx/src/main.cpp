@@ -18,6 +18,7 @@
 #include <Wire.h>
 #include "mlx.h"
 #include "GL200ADisplay.h"
+#include "crsf.h"
 
 #include "variables.h"
 
@@ -26,13 +27,19 @@
 #include "menu.h"
 #include "haptic.h"
 
+
+uint8_t crsfPacket[CRSF_PACKET_SIZE];
+uint8_t crsfCmdPacket[CRSF_CMD_PACKET_SIZE];
+int16_t rcChannels[CRSF_MAX_CHANNEL];
+uint32_t crsfTime = 0;
+
 void setup() 
 {
 
   debug.begin(115200); //Start Serial connection
-  crsf.begin(400000, SERIAL_8N1, CRSF, CRSF, false, 500);
+  crsf.begin(400000, SERIAL_8N1, CRSF_UART, CRSF_UART, false, 500);
   mlxI2C.begin(PUMATX_SDA, PUMATX_SCL, 1000000L); //Start I2C connection
-  displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 1000000L/*240000L*/);
+  displayI2C.begin(DISPLAY_SDA, DISPLAY_SCL, 1000000L);
 
   //-----MLX
   mlx.begin();
@@ -43,6 +50,9 @@ void setup()
 
   //-----RC
 
+
+  //-----CRSF
+  crsfClass.begin();
 
   //-----Display / Menu
   display.begin();
@@ -199,6 +209,22 @@ void loop()
     */
 
   } 
+
+
+  //-----CRFS
+  if(micros() - crsfTask.beginTime >= crsfTask.interval)
+  {
+    crsfTask.beginTime = micros();
+    crsfTask.inBetweenTime = crsfTask.beginTime - crsfTask.endTime;
+
+    crsfClass.crsfPrepareDataPacket(crsfPacket, channels);
+    crsfClass.CrsfWritePacket(crsfPacket, CRSF_PACKET_SIZE);
+
+    crsfTask.endTime = micros();
+    crsfTask.counter++;
+    crsfTask.duration = crsfTask.endTime - crsfTask.beginTime;
+
+  }
 
 
   //-----Display / Menu

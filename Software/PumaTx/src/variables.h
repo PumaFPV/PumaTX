@@ -41,7 +41,7 @@
 //---UART
 #define RX_PUMATX_DEBUG 3
 #define TX_PUMATX_DEBUG 1
-#define CRSF 13
+#define CRSF_UART 13
 //---I2C
 #define PUMATX_SDA 25
 #define PUMATX_SCL 26
@@ -58,6 +58,9 @@ TwoWire displayI2C = TwoWire(1);
 
 MLX               mlx(&mlxI2C, 0x0C, 0x0D);  //I2C pointer, SDA, SCL, freqI2C, Left address, Right address 
 GL200ADisplay display(&displayI2C, DISPLAY_BACKLIGHT);
+
+CRSF crsfClass(crsf, CRSF_UART);
+
 
 //--------------------------------------------------Structs--------------------------------------------------
 struct Channel
@@ -172,7 +175,7 @@ ADC rightPot = {RIGHT_POT, 0, 0, 0, 0, 0, 440, 3600, 0};
 Func mlxTask =    {0, 0, 0, 0, 0, 10000, 0, 0};
 Func buttonTask = {0, 0, 0, 0, 0, 20000, 0, 0};
 Func rcTask =     {0, 0, 0, 0, 0, 10000, 0, 0};
-Func crsfTask =   {0, 0, 0, 0, 0, 10000, 0, 0};
+Func crsfTask =   {0, 0, 0, 0, 0, 4000,  0, 0};
 Func menuTask =   {0, 0, 0, 0, 0, 50000, 0, 0};
 Func hapticTask = {0, 0, 0, 0, 0, 50000, 0, 0};
 
@@ -182,7 +185,7 @@ unsigned long currentTime = 0;
 
 uint8_t hapticDuty = 0;
 
-volatile int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
+int16_t channels[16] = {LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN,LOWER_CHAN};
 
 uint16_t lipo100 = 4200;
 uint16_t lipo90 =  4130;
