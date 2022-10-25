@@ -59,7 +59,7 @@ TwoWire displayI2C = TwoWire(1);
 MLX               mlx(&mlxI2C, 0x0C, 0x0D);  //I2C pointer, SDA, SCL, freqI2C, Left address, Right address 
 GL200ADisplay display(&displayI2C, DISPLAY_BACKLIGHT);
 
-CRSF crsfClass(crsf, CRSF_UART);
+CRSF        crsfClass(&crsf, CRSF_UART);
 
 
 //--------------------------------------------------Structs--------------------------------------------------
