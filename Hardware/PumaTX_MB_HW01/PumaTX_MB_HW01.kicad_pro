@@ -377,9 +377,7 @@
   },
   "libraries": {
     "pinned_footprint_libs": [],
-    "pinned_symbol_libs": [
-      "Component lib"
-    ]
+    "pinned_symbol_libs": []
   },
   "meta": {
     "filename": "PumaTX_MB_HW01.kicad_pro",
