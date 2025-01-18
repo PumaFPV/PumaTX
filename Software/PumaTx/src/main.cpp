@@ -96,8 +96,8 @@ void loop()
     mlxTask.beginTime = micros();
     mlxTask.inBetweenTime = mlxTask.beginTime - mlxTask.endTime;
 
-    mlx.process();
-    getMlxData();
+    mlx.process();  //Does the I2C processing etc
+    getMlxData(); //only transfers data around variables
 
     mlxTask.endTime = micros();
     mlxTask.counter++;
@@ -113,8 +113,8 @@ void loop()
     rcTask.beginTime = micros();
     rcTask.inBetweenTime = rcTask.beginTime - rcTask.endTime;
 
-    computeRc();
-    rcData(); 
+    computeRc();  //Maps data for RC output, deals with custom button mapping (toggling arm, etc)
+    rcData(); //concatenate everything in one array
 
     rcTask.endTime = micros();
     rcTask.counter++;
